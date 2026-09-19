@@ -40,11 +40,32 @@
 <meta name="description" content="تصنيع لوحات التوزيع الرئيسية وATS والإنارة والتحكم وصناديق الرايزر وحوامل الكابلات — الجهد المنخفض والمتوسط. مصنع بمدينة العاشر من رمضان.">
 <meta name="theme-color" content="#0F2438">
 
+<link rel="canonical" href="https://elhana.pages.dev/">
+
+<!-- ✏️  بطاقة المشاركة على واتساب وفيسبوك
+
+     المسار هنا لازم يكون كاملًا يبدأ بـ https — المسار النسبي
+     مثل ./img/... لا تقرأه واتساب ولا فيسبوك، فتظهر البطاقة
+     بلا صورة. لو غيّرت رابط الموقع، غيّر العنوانين أدناه. -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="شركة الهنا اليكتريك">
-<meta property="og:description" content="تصنيع اللوحات الكهربائية والأعمال الهندسية — الجهد المنخفض والمتوسط.">
-<meta property="og:image" content="./img/panel-busbar.jpg">
+<meta property="og:url" content="https://elhana.pages.dev/">
+<meta property="og:site_name" content="El Hana Electric">
+<meta property="og:title" content="شركة الهنا اليكتريك — تصنيع اللوحات الكهربائية">
+<meta property="og:description" content="لوحات التوزيع والتحكم والتغذية الاحتياطية للجهد المنخفض والمتوسط — مصنع بمدينة العاشر من رمضان.">
+<meta property="og:image" content="https://elhana.pages.dev/img/panel-busbar.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="1600">
 <meta property="og:locale" content="ar_EG">
+<meta property="og:locale:alternate" content="en_US">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="شركة الهنا اليكتريك">
+<meta name="twitter:description" content="تصنيع اللوحات الكهربائية والأعمال الهندسية.">
+<meta name="twitter:image" content="https://elhana.pages.dev/img/panel-busbar.jpg">
+
+<!-- صورة الواجهة تُحمَّل أولًا: هي أول ما يُرى، وتحميلها المتأخر
+     يترك فراغًا في أعلى الصفحة -->
+<link rel="preload" as="image" href="./img/panel-busbar.jpg" fetchpriority="high">
 
 <link rel="icon" href="./img/logo.png">
 <link rel="apple-touch-icon" href="./img/logo.png">
@@ -314,11 +335,40 @@ section { padding-block: 72px; }
             transition: transform .5s var(--ease); }
 .item:hover img { transform: scale(1.045); }
 .item .body { padding: 15px 17px 18px; border-top: 3px solid var(--copper); flex: 1; }
+
+/* بطاقة بلا صورة — للمنتجات التي لم تُصوَّر بعد.
+   مربّع رمادي مكتوب عليه "ضع صورة" يقول للزائر إن الموقع ناقص؛
+   بطاقة نصّية نظيفة لا تقول ذلك، وتُستبدل بصورة متى توفّرت. */
+.item.plain .body { border-top-width: 3px; padding-top: 22px; }
+.item.plain { background: linear-gradient(180deg, var(--shell) 0 56px, #fff 56px); }
+.item.plain .mono { font-family: var(--display); font-weight: 700; font-size: 1.45rem;
+                    color: var(--ink); opacity: .16; line-height: 1; direction: ltr;
+                    padding: 16px 17px 0; letter-spacing: .04em; }
+html:not(.en) .item.plain .mono { text-align: right; }
 .item h3 { font-size: 1.02rem; font-weight: 600; }
 .item .tag { font-family: var(--display); font-weight: 300; font-size: .71rem;
              letter-spacing: .12em; color: var(--steel); direction: ltr; margin-top: 3px; }
 html:not(.en) .item .tag { text-align: right; }
 .item p { font-size: .9rem; color: var(--mute); margin: 9px 0 0; }
+
+/* دليل اختيار نوع اللوحة */
+.picker { border: 1px solid var(--line); background: #fff; }
+.picker .row { display: grid; grid-template-columns: 200px 1fr 1fr; gap: 20px;
+               padding: 18px 22px; border-bottom: 1px solid var(--line); align-items: baseline; }
+.picker .row:last-child { border-bottom: 0; }
+.picker .row.head { background: var(--shell); font-family: var(--display);
+                    font-size: .78rem; letter-spacing: .1em; color: var(--mute); }
+.picker .nm { font-weight: 600; }
+.picker .ab { font-family: var(--display); font-size: .72rem; letter-spacing: .1em;
+              color: var(--steel); direction: ltr; display: block; margin-top: 2px; }
+html:not(.en) .picker .ab { text-align: right; }
+.picker .txt { font-size: .92rem; color: var(--mute); }
+@media (max-width: 760px) {
+  .picker .row { grid-template-columns: 1fr; gap: 6px; padding: 16px 18px; }
+  .picker .row.head { display: none; }
+  .picker .txt::before { content: attr(data-l); display: block; font-size: .72rem;
+                         letter-spacing: .08em; color: var(--copper); margin-bottom: 2px; }
+}
 
 /* شريط الأرقام */
 .stats { background: var(--ink); color: #fff; }
@@ -493,6 +543,45 @@ footer { background: var(--carbon); color: #93A0AD; font-size: .88rem; }
   footer { background: #fff; color: #000; }
 }
 </style>
+
+<!-- ✏️  بيانات منظّمة لجوجل — تجعل نتيجة البحث تعرض العنوان
+     والتليفون ومواعيد العمل. عدّلها كلما غيّرت البيانات أسفل الصفحة. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": "https://elhana.pages.dev/#business",
+  "name": "شركة الهنا اليكتريك",
+  "alternateName": "El Hana Electric",
+  "description": "تصنيع لوحات التوزيع والتحكم والتغذية الاحتياطية للجهد المنخفض والمتوسط، والأعمال الهندسية.",
+  "url": "https://elhana.pages.dev/",
+  "logo": "https://elhana.pages.dev/img/logo.png",
+  "image": "https://elhana.pages.dev/img/panel-busbar.jpg",
+  "email": "elhanaelectric@gmail.com",
+  "telephone": "+201050559450",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "مصنع 164 - 165 - 168، منطقة الـ6 مليون",
+    "addressLocality": "مدينة العاشر من رمضان",
+    "addressRegion": "الشرقية",
+    "addressCountry": "EG"
+  },
+  "openingHoursSpecification": [{
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday"],
+    "opens": "09:00",
+    "closes": "17:00"
+  }],
+  "sameAs": ["https://www.facebook.com/share/1bNzbZugSe/"],
+  "makesOffer": [
+    {"@type":"Offer","itemOffered":{"@type":"Product","name":"لوحات التوزيع الرئيسية MDB"}},
+    {"@type":"Offer","itemOffered":{"@type":"Product","name":"لوحات التوزيع الفرعية SMDB"}},
+    {"@type":"Offer","itemOffered":{"@type":"Product","name":"لوحات التغذية الاحتياطية ATS"}},
+    {"@type":"Offer","itemOffered":{"@type":"Product","name":"لوحات التحكم"}},
+    {"@type":"Offer","itemOffered":{"@type":"Product","name":"لوحات تحسين معامل القدرة"}}
+  ]
+}
+</script>
 </head>
 <body class="loading">
 
@@ -566,6 +655,7 @@ footer { background: var(--carbon); color: #93A0AD; font-size: .88rem; }
         </div>
       </div>
 
+      <a href="#picker"><span data-ar>أي لوحة تحتاج؟</span><span data-en-only>Which panel</span></a>
       <a href="#sectors"><span data-ar>القطاعات</span><span data-en-only>Sectors</span></a>
       <a href="#flow"><span data-ar>مراحل التنفيذ</span><span data-en-only>Process</span></a>
       <a href="#work"><span data-ar>أعمالنا</span><span data-en-only>Our work</span></a>
@@ -626,7 +716,8 @@ footer { background: var(--carbon); color: #93A0AD; font-size: .88rem; }
       </div>
     </div>
     <figure class="rise">
-      <img src="./img/panel-busbar.jpg" alt="لوحة توزيع جهد منخفض أثناء التجميع">
+      <img src="./img/panel-busbar.jpg" width="1200" height="1600" fetchpriority="high"
+           alt="لوحة توزيع جهد منخفض أثناء التجميع">
     </figure>
   </div>
 </div>
@@ -689,7 +780,8 @@ footer { background: var(--carbon); color: #93A0AD; font-size: .88rem; }
 
     <div class="rail" id="rail">
       <article class="item">
-        <div class="shot"><img src="./img/ph-mdp.svg" alt="لوحة توزيع رئيسية"></div>
+        <div class="shot"><img src="./img/panel-mdb.jpg" loading="lazy" decoding="async"
+               width="1200" height="1600" alt="لوحة توزيع رئيسية: بار نحاسي رأسي وخوارج بترميز الأوجه"></div>
         <div class="body">
           <h3><span data-ar>لوحات التوزيع الرئيسية</span><span data-en-only>Main distribution panels</span></h3>
           <div class="tag">MAIN DISTRIBUTION</div>
@@ -697,19 +789,9 @@ footer { background: var(--carbon); color: #93A0AD; font-size: .88rem; }
              <span data-en-only>The heart of the site network: copper busbars sized for full load, with main and outgoing breakers.</span></p>
         </div>
       </article>
-
       <article class="item">
-        <div class="shot"><img src="./img/ph-ats.svg" alt="لوحة تغذية احتياطية"></div>
-        <div class="body">
-          <h3><span data-ar>لوحات التغذية الاحتياطية</span><span data-en-only>ATS panels</span></h3>
-          <div class="tag">AUTOMATIC TRANSFER</div>
-          <p><span data-ar>تحويل تلقائي بين الشبكة والمولّد، بزمن تحويل مضبوط على حساسية الحمل.</span>
-             <span data-en-only>Automatic transfer between grid and generator, timed to the sensitivity of the load.</span></p>
-        </div>
-      </article>
-
-      <article class="item">
-        <div class="shot"><img src="./img/panel-cabinet.jpg" alt="لوحة توزيع فرعية"></div>
+        <div class="shot"><img src="./img/panel-cabinet.jpg" loading="lazy" decoding="async"
+               width="900" height="1598" alt="لوحة توزيع فرعية: بار أفقي وقاطعان"></div>
         <div class="body">
           <h3><span data-ar>لوحات التوزيع الفرعية</span><span data-en-only>Sub-distribution panels</span></h3>
           <div class="tag">SUB-DISTRIBUTION</div>
@@ -717,29 +799,9 @@ footer { background: var(--carbon); color: #93A0AD; font-size: .88rem; }
              <span data-en-only>Floor and department boards, branching from the main panel to the load circuits.</span></p>
         </div>
       </article>
-
       <article class="item">
-        <div class="shot"><img src="./img/ph-lighting.svg" alt="لوحة إنارة"></div>
-        <div class="body">
-          <h3><span data-ar>لوحات الإنارة</span><span data-en-only>Lighting panels</span></h3>
-          <div class="tag">LIGHTING</div>
-          <p><span data-ar>توزيع دوائر الإنارة مع إمكانية التحكم بالمجموعات أو بمؤقّت.</span>
-             <span data-en-only>Lighting circuit distribution, with group or timer control where needed.</span></p>
-        </div>
-      </article>
-
-      <article class="item">
-        <div class="shot"><img src="./img/ph-control.svg" alt="لوحة تحكم"></div>
-        <div class="body">
-          <h3><span data-ar>لوحات التحكم</span><span data-en-only>Control panels</span></h3>
-          <div class="tag">CONTROL</div>
-          <p><span data-ar>تحكم في الماكينات والخطوط، بمنطق تقليدي أو عبر PLC حسب ما يطلبه المشروع.</span>
-             <span data-en-only>Machine and line control, hard-wired logic or PLC-based as the project requires.</span></p>
-        </div>
-      </article>
-
-      <article class="item">
-        <div class="shot"><img src="./img/panel-busbar.jpg" alt="لوحة تحسين معامل القدرة"></div>
+        <div class="shot"><img src="./img/panel-pfc.jpg" loading="lazy" decoding="async"
+               width="1000" height="1333" alt="لوحة تحسين معامل القدرة: بنك مكثفات وكونتاكتورات"></div>
         <div class="body">
           <h3><span data-ar>لوحات تحسين معامل القدرة</span><span data-en-only>Power factor correction</span></h3>
           <div class="tag">POWER FACTOR</div>
@@ -747,27 +809,131 @@ footer { background: var(--carbon); color: #93A0AD; font-size: .88rem; }
              <span data-en-only>Staged capacitor banks that cut the power-factor penalty on the plant bill.</span></p>
         </div>
       </article>
-
       <article class="item">
-        <div class="shot"><img src="./img/ph-riser.svg" alt="صندوق رايزر"></div>
+        <div class="shot"><img src="./img/panel-control.jpg" loading="lazy" decoding="async"
+               width="900" height="1598" alt="صندوق تحكم داخل لوحة: ريلايات وكونتاكتورات وتوصيلات"></div>
+        <div class="body">
+          <h3><span data-ar>لوحات التحكم</span><span data-en-only>Control panels</span></h3>
+          <div class="tag">CONTROL</div>
+          <p><span data-ar>تحكم في الماكينات والخطوط، بمنطق تقليدي أو عبر PLC حسب ما يطلبه المشروع.</span>
+             <span data-en-only>Machine and line control, hard-wired logic or PLC-based as the project requires.</span></p>
+        </div>
+      </article>
+      <article class="item plain">
+        <div class="mono">ATS</div>
+        <div class="body">
+          <h3><span data-ar>لوحات التغذية الاحتياطية</span><span data-en-only>ATS panels</span></h3>
+          <div class="tag">ATS</div>
+          <p><span data-ar>تحويل تلقائي بين الشبكة والمولّد، بزمن تحويل مضبوط على حساسية الحمل.</span>
+             <span data-en-only>Automatic transfer between grid and generator, timed to the sensitivity of the load.</span></p>
+        </div>
+      </article>
+      <article class="item plain">
+        <div class="mono">LIGHTING</div>
+        <div class="body">
+          <h3><span data-ar>لوحات الإنارة</span><span data-en-only>Lighting panels</span></h3>
+          <div class="tag">LIGHTING</div>
+          <p><span data-ar>توزيع دوائر الإنارة مع إمكانية التحكم بالمجموعات أو بمؤقّت.</span>
+             <span data-en-only>Lighting circuit distribution, with group or timer control where needed.</span></p>
+        </div>
+      </article>
+      <article class="item plain">
+        <div class="mono">RISER</div>
         <div class="body">
           <h3><span data-ar>صناديق الرايزر</span><span data-en-only>Riser boxes</span></h3>
-          <div class="tag">RISER BOXES</div>
+          <div class="tag">RISER</div>
           <p><span data-ar>صناديق التوزيع الرأسي في المباني، لتغذية الأدوار من خط صاعد واحد.</span>
              <span data-en-only>Vertical distribution boxes feeding building floors from a single riser.</span></p>
         </div>
       </article>
-
-      <article class="item">
-        <div class="shot"><img src="./img/ph-tray.svg" alt="حوامل كابلات"></div>
+      <article class="item plain">
+        <div class="mono">TRAY</div>
         <div class="body">
           <h3><span data-ar>حوامل الكابلات</span><span data-en-only>Cable trays</span></h3>
-          <div class="tag">CABLE TRAYS</div>
+          <div class="tag">TRAY</div>
           <p><span data-ar>مسارات الكابلات بالمقاسات المطلوبة، مجلفنة أو مدهونة حسب بيئة التركيب.</span>
              <span data-en-only>Cable routes in the required sizes, galvanised or painted to suit the environment.</span></p>
         </div>
       </article>
     </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     ✏️  دليل اختيار نوع اللوحة
+
+     أكثر سؤال يصل المصانع: ما الفرق بين MDB و SMDB و ATS؟
+     المشتري الذي لا يعرف ما يطلبه لا يطلب — يؤجّل ويسأل غيره.
+     هذا الجدول يجعله يعرف قبل أن يتصل، فتصل مكالمته محدَّدة.
+     ═══════════════════════════════════════════════════════════ -->
+<section id="picker">
+  <div class="wrap">
+    <div class="sec-head rise">
+      <div class="kick">WHICH PANEL</div>
+      <h2><span data-ar>أي لوحة تحتاج؟</span><span data-en-only>Which panel do you need?</span></h2>
+      <p><span data-ar>الفرق بين الأنواع في موقعها من الشبكة ووظيفتها — لا في شكلها.</span>
+         <span data-en-only>The types differ in where they sit on the network and what they do — not in how they look.</span></p>
+    </div>
+
+    <div class="picker rise">
+      <div class="row head">
+        <div><span data-ar>النوع</span><span data-en-only>Type</span></div>
+        <div><span data-ar>موقعها من الشبكة</span><span data-en-only>Where it sits</span></div>
+        <div><span data-ar>تحتاجها إذا</span><span data-en-only>You need it when</span></div>
+      </div>
+
+      <div class="row">
+        <div class="nm"><span data-ar>لوحة توزيع رئيسية</span><span data-en-only>Main distribution</span>
+          <span class="ab">MDB</span></div>
+        <div class="txt" data-l="موقعها"><span data-ar>أول لوحة بعد المحوّل أو عدّاد الشركة، ومنها تتفرّع الشبكة كلها.</span>
+          <span data-en-only>First board after the transformer or utility meter; the whole network branches from it.</span></div>
+        <div class="txt" data-l="تحتاجها إذا"><span data-ar>تبني منشأة جديدة، أو تزيد الحمل الكلي فلا يكفي القاطع الرئيسي.</span>
+          <span data-en-only>You are building new, or total load has grown beyond the existing main breaker.</span></div>
+      </div>
+
+      <div class="row">
+        <div class="nm"><span data-ar>لوحة توزيع فرعية</span><span data-en-only>Sub-distribution</span>
+          <span class="ab">SMDB</span></div>
+        <div class="txt" data-l="موقعها"><span data-ar>بين الرئيسية والأحمال — لوحة لكل دور أو قسم أو ورشة.</span>
+          <span data-en-only>Between the main board and the loads — one per floor, department or workshop.</span></div>
+        <div class="txt" data-l="تحتاجها إذا"><span data-ar>تفتح قسمًا جديدًا، أو تريد فصل عطل قسم عن باقي المصنع.</span>
+          <span data-en-only>You are opening a new area, or want a fault in one area isolated from the rest.</span></div>
+      </div>
+
+      <div class="row">
+        <div class="nm"><span data-ar>لوحة تغذية احتياطية</span><span data-en-only>Automatic transfer</span>
+          <span class="ab">ATS</span></div>
+        <div class="txt" data-l="موقعها"><span data-ar>بين مصدرين: الشبكة والمولّد، وتنقل الحمل بينهما تلقائيًا.</span>
+          <span data-en-only>Between two sources — grid and generator — switching the load automatically.</span></div>
+        <div class="txt" data-l="تحتاجها إذا"><span data-ar>عندك مولّد، والانقطاع يوقف إنتاجًا أو يعطّل خدمة حرجة.</span>
+          <span data-en-only>You have a generator and an outage stops production or a critical service.</span></div>
+      </div>
+
+      <div class="row">
+        <div class="nm"><span data-ar>لوحة تحكم</span><span data-en-only>Control panel</span>
+          <span class="ab">CONTROL / PLC</span></div>
+        <div class="txt" data-l="موقعها"><span data-ar>عند الماكينة أو الخط، تدير تشغيلها وتوقيتها وحمايتها.</span>
+          <span data-en-only>At the machine or line, managing its running, timing and protection.</span></div>
+        <div class="txt" data-l="تحتاجها إذا"><span data-ar>تشغّل ماكينة أو مجموعة محرّكات بتسلسل أو بمنطق معيّن.</span>
+          <span data-en-only>You run a machine or motor group in a sequence or to specific logic.</span></div>
+      </div>
+
+      <div class="row">
+        <div class="nm"><span data-ar>تحسين معامل القدرة</span><span data-en-only>Power factor correction</span>
+          <span class="ab">PFC</span></div>
+        <div class="txt" data-l="موقعها"><span data-ar>موازية للوحة الرئيسية، تضيف مكثفات بحسب الحمل اللحظي.</span>
+          <span data-en-only>In parallel with the main board, switching capacitors with the live load.</span></div>
+        <div class="txt" data-l="تحتاجها إذا"><span data-ar>في فاتورة الكهرباء بند غرامة معامل قدرة.</span>
+          <span data-en-only>Your electricity bill carries a power-factor penalty line.</span></div>
+      </div>
+    </div>
+
+    <p class="rise" style="color:var(--mute);font-size:.92rem;margin-top:20px">
+      <span data-ar>لسه مش متأكد؟ ابعت رسومات المشروع أو قائمة الأحمال، ونحدد لك النوع
+        والأمبيرية — دي خدمة قبل عرض السعر ومش عليها التزام.</span>
+      <span data-en-only>Still unsure? Send the drawings or the load list and we will specify the
+        type and rating — before any quotation and with no obligation.</span>
+    </p>
   </div>
 </section>
 
@@ -928,32 +1094,38 @@ footer { background: var(--carbon); color: #93A0AD; font-size: .88rem; }
     <div class="gallery">
       <figure class="rise">
         <button class="shot" type="button" data-full="./img/panel-busbar.jpg" data-cap="توزيع على قضبان نحاسية">
-          <img src="./img/panel-busbar.jpg" alt="قضبان توزيع نحاسية داخل لوحة جهد منخفض">
+          <img src="./img/panel-busbar.jpg" loading="lazy" decoding="async" width="1200" height="1600" alt="قضبان توزيع نحاسية وتوصيلات الأوجه الثلاثة">
         </button>
-        <figcaption><span data-ar>توزيع على قضبان نحاسية بترميز الأوجه الثلاثة، ومفاتيح فرعية على جانبي البار الرئيسي.</span>
-          <span data-en-only>Copper busbar distribution with three-phase colour coding, outgoing breakers either side of the main bar.</span></figcaption>
+        <figcaption><span data-ar>توزيع على قضبان نحاسية بترميز الأوجه الثلاثة، ومفاتيح فرعية على جانبي البار الرئيسي، وأجهزة القياس على الباب.</span>
+          <span data-en-only>Copper busbar distribution with three-phase colour coding, outgoing breakers either side of the main bar, and metering on the door.</span></figcaption>
       </figure>
-
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/panel-cabinet.jpg" data-cap="بار رئيسي وقاطعان">
-          <img src="./img/panel-cabinet.jpg" alt="حديد لوحة جهد منخفض بقاطعين رئيسيين">
+        <button class="shot" type="button" data-full="./img/panel-mdb.jpg" data-cap="بار رأسي وخوارج متعددة">
+          <img src="./img/panel-mdb.jpg" loading="lazy" decoding="async" width="1200" height="1600" alt="لوحة توزيع: بار رأسي وخوارج متعددة">
         </button>
-        <figcaption><span data-ar>بار رئيسي أفقي وقاطعان بأمبيرية مختلفة، مع بار أرضي أسفل الحديد.</span>
-          <span data-en-only>Horizontal main bar with two breakers of different ratings, and an earth bar along the base.</span></figcaption>
+        <figcaption><span data-ar>بار رأسي يغذّي أكثر من عشرين خارجًا، وقاطع رئيسي أسفله ومحوّلات تيار للقياس.</span>
+          <span data-en-only>A vertical bar feeding over twenty outgoing ways, with the main breaker below and current transformers for metering.</span></figcaption>
       </figure>
-
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/ph-factory.svg" data-cap="داخل المصنع">
-          <img src="./img/ph-factory.svg" alt="صورة داخل المصنع">
+        <button class="shot" type="button" data-full="./img/panel-pfc.jpg" data-cap="بنك مكثفات بمراحل">
+          <img src="./img/panel-pfc.jpg" loading="lazy" decoding="async" width="1000" height="1333" alt="لوحة تحسين معامل القدرة: بنك مكثفات">
         </button>
-        <figcaption><span data-ar>صورة من داخل المصنع.</span><span data-en-only>Inside the factory.</span></figcaption>
+        <figcaption><span data-ar>لوحة تحسين معامل القدرة: مراحل مكثفات يديرها كونترولر أعلى اللوحة، وكونتاكتور لكل مرحلة.</span>
+          <span data-en-only>Power factor correction panel: capacitor stages managed by a controller at the top, with a contactor per stage.</span></figcaption>
       </figure>
-
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/ph-site.svg" data-cap="موقع تركيب">
-          <img src="./img/ph-site.svg" alt="صورة من موقع تركيب">
+        <button class="shot" type="button" data-full="./img/panel-control.jpg" data-cap="صندوق التحكم والتوصيلات">
+          <img src="./img/panel-control.jpg" loading="lazy" decoding="async" width="900" height="1598" alt="صندوق تحكم وتوصيلات داخل لوحة">
         </button>
-        <figcaption><span data-ar>لوحة بعد التركيب والتشغيل في الموقع.</span><span data-en-only>A panel installed and commissioned on site.</span></figcaption>
+        <figcaption><span data-ar>صندوق التحكم وتوصيلاته، وأطراف الربط أسفله مرقّمة ومرتّبة لتسهيل الصيانة.</span>
+          <span data-en-only>The control box and its wiring, with numbered, ordered terminals below for easier maintenance.</span></figcaption>
+      </figure>
+      <figure class="rise">
+        <button class="shot" type="button" data-full="./img/panel-front.jpg" data-cap="واجهة لوحة مكتملة">
+          <img src="./img/panel-front.jpg" loading="lazy" decoding="async" width="900" height="1598" alt="واجهة لوحة مكتملة: لمبات بيان وجهاز قياس">
+        </button>
+        <figcaption><span data-ar>واجهة لوحة بعد الإغلاق: لمبات بيان الأوجه الثلاثة وجهاز قياس متعدد يعرض الجهد والتيار.</span>
+          <span data-en-only>A finished panel front: three-phase indicator lamps and a multifunction meter showing voltage and current.</span></figcaption>
       </figure>
     </div>
   </div>
@@ -1053,8 +1225,10 @@ footer { background: var(--carbon); color: #93A0AD; font-size: .88rem; }
           <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.7 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2s-1.2.3-4-1.2-4.3-4.3-4.5-4.5-1.2-1.6-1.2-3 .8-2.1 1-2.4a1 1 0 0 1 .8-.4h.6c.2 0 .4 0 .6.5l.9 2c.1.2.1.4 0 .6l-.4.6-.3.3c-.1.2-.3.3-.1.6a9 9 0 0 0 1.6 2 8 8 0 0 0 2.3 1.4c.3.2.5.1.6 0l.9-1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3a2 2 0 0 1-.1 1.1Z"/></svg>
           <span data-ar>أرسل على واتساب</span><span data-en-only>Send on WhatsApp</span>
         </button>
-        <p class="note"><span data-ar>لا تُحفظ بياناتك في أي مكان — الصفحة تفتح واتساب بالرسالة مكتوبة فقط.</span>
-          <span data-en-only>Nothing is stored anywhere — the page only opens WhatsApp with the message written.</span></p>
+        <p class="note"><span data-ar>بعد فتح واتساب تقدر ترفق الرسومات أو قائمة الأحمال مع الرسالة.
+          لا تُحفظ بياناتك في أي مكان — الصفحة تفتح واتساب بالرسالة مكتوبة فقط.</span>
+          <span data-en-only>Once WhatsApp opens you can attach drawings or a load list. Nothing is
+          stored anywhere — the page only opens WhatsApp with the message written.</span></p>
       </div>
     </div>
   </div>
@@ -1090,7 +1264,17 @@ footer { background: var(--carbon); color: #93A0AD; font-size: .88rem; }
       <div class="line rise">
         <div class="k"><span data-ar>العنوان</span><span data-en-only>Address</span></div>
         <div class="v"><span data-ar>مصنع رقم ١٦٤ – ١٦٥ – ١٦٨<br>منطقة الـ٦ مليون، مدينة العاشر من رمضان، الشرقية</span>
-          <span data-en-only>Factory 164 – 165 – 168<br>6 Million Zone, 10th of Ramadan City, Sharqia</span></div>
+          <span data-en-only>Factory 164 – 165 – 168<br>6 Million Zone, 10th of Ramadan City, Sharqia</span>
+          <div style="margin-top:8px">
+            <!-- ✏️  رابط الخريطة: افتح موقع المصنع على خرائط جوجل ← مشاركة
+                     ← نسخ الرابط، وضعه مكان الرابط أدناه ليفتح على الموقع
+                     بالضبط بدل البحث بالاسم. -->
+            <a href="https://www.google.com/maps/search/?api=1&amp;query=El+Hana+Electric+10th+of+Ramadan+City"
+               target="_blank" rel="noopener" style="font-size:.92rem">
+              <span data-ar>افتح الموقع على الخريطة</span><span data-en-only>Open in Maps</span>
+            </a>
+          </div>
+        </div>
       </div>
       <div class="line rise">
         <div class="k"><span data-ar>فيسبوك</span><span data-en-only>Facebook</span></div>
