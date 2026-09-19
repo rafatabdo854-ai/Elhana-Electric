@@ -272,8 +272,12 @@ html:not(.en) .hero .en-kicker { text-align: right; }
   animation: current 3.4s var(--ease) infinite; }
 @keyframes current { 0% { inset-inline-start: -40%; } 100% { inset-inline-start: 110%; } }
 .hero figure { margin: 0; align-self: end; }
+/* صورة رأسية في عمود نصف الشاشة تطول أكثر من اللازم وتدفع النص لأعلى،
+   فنقيّد ارتفاعها ونُظهر أهم جزء منها: القضبان والقواطع أعلى اللوحة. */
 .hero figure img { width: 100%; display: block; border-radius: 3px 3px 0 0;
-                   border: 1px solid rgba(255,255,255,.14); border-bottom: 0; }
+                   border: 1px solid rgba(255,255,255,.14); border-bottom: 0;
+                   max-height: 560px; object-fit: cover; object-position: center 18%; }
+@media (max-width: 900px) { .hero figure img { max-height: 380px; } }
 @media (max-width: 900px) {
   .hero-in { grid-template-columns: 1fr; gap: 28px; padding-block: 50px 0; }
   .hero figure { max-width: 430px; margin-inline: auto; }
@@ -331,8 +335,11 @@ section { padding-block: 72px; }
         overflow: hidden; transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
 .item:hover { transform: translateY(-4px); box-shadow: 0 16px 34px rgba(16,36,56,.13); }
 .item .shot { overflow: hidden; background: var(--shell-2); }
-.item img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block;
-            transition: transform .5s var(--ease); }
+/* اللوحة الكهربائية جسم رأسي. الإطار العرضي 4/3 كان يقصّ منها شريحة
+   عشوائية — ركن حديد أو قاع كابينة — وتختفي اللوحة نفسها.
+   الإطار هنا رأسي، والقصّ من أعلى حيث القضبان والقواطع. */
+.item img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: center 22%;
+            display: block; transition: transform .5s var(--ease); }
 .item:hover img { transform: scale(1.045); }
 .item .body { padding: 15px 17px 18px; border-top: 3px solid var(--copper); flex: 1; }
 
@@ -340,6 +347,7 @@ section { padding-block: 72px; }
    مربّع رمادي مكتوب عليه "ضع صورة" يقول للزائر إن الموقع ناقص؛
    بطاقة نصّية نظيفة لا تقول ذلك، وتُستبدل بصورة متى توفّرت. */
 .item.plain .body { border-top-width: 3px; padding-top: 22px; }
+.item.plain { min-height: 300px; }
 .item.plain { background: linear-gradient(180deg, var(--shell) 0 56px, #fff 56px); }
 .item.plain .mono { font-family: var(--display); font-weight: 700; font-size: 1.45rem;
                     color: var(--ink); opacity: .16; line-height: 1; direction: ltr;
@@ -411,8 +419,8 @@ html:not(.en) .step .n { text-align: right; }
 .gallery figure { margin: 0; background: #fff; border: 1px solid var(--line); overflow: hidden; }
 .gallery button.shot { display: block; width: 100%; padding: 0; border: 0;
                        background: var(--shell-2); cursor: zoom-in; overflow: hidden; }
-.gallery img { width: 100%; height: 300px; object-fit: cover; display: block;
-               transition: transform .5s var(--ease); }
+.gallery img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: center 22%;
+               display: block; transition: transform .5s var(--ease); }
 .gallery button.shot:hover img { transform: scale(1.05); }
 .gallery figcaption { padding: 14px 16px; font-size: .88rem; color: var(--mute);
                       border-top: 3px solid var(--copper); }
