@@ -23,296 +23,373 @@
 
 <style>
 /* ============================================================
-   الهوية مأخوذة من الصنعة نفسها، والحركة كذلك:
+   بُني على منطق مواقع الشركات الصناعية الكبيرة — مساحة بيضاء
+   واسعة، صور كبيرة، تنقّل منظّم — مع هوية مأخوذة من الصنعة:
 
    - أحمر/أصفر/أزرق: ترميز الأوجه الثلاثة المصري.
    - النحاس: لون البار الرئيسي.
-   - الرمادي: RAL 7035، دهان حديد اللوحات القياسي.
-   - شاشة التحميل: لمبات الأوجه تنوّر بالترتيب ثم يُغلق القاطع —
-     نفس ما يحدث عند تشغيل لوحة حقيقية.
-   - نبضة التيار في الواجهة: تسري في خط واحد فقط. حركة واحدة
-     تُلاحَظ خير من عشر حركات تُتجاهل.
+   - الكحلي والذهبي: من الشعار.
 
-   كل الحركة تتوقف تمامًا عند prefers-reduced-motion.
+   الأبيض هو الأساس هنا لا الكحلي: الغامق الثقيل يصلح لصفحة قصيرة،
+   ومع هذا القدر من المحتوى يُتعب العين ويُصعّب قراءة المواصفات.
    ============================================================ */
 :root {
-  --ink:     #0F2438;
-  --ink-2:   #16324B;
-  --steel:   #4E7CA8;
-  --brass:   #E0A526;
-  --copper:  #A8622F;
-  --copper-l:#C98046;
-  --shell:   #EDEFF1;
-  --shell-2: #E4E8EC;
-  --carbon:  #15181C;
-  --mute:    #5C6874;
-  --line:    #CFD6DC;
+  --ink:      #0F2438;
+  --ink-2:    #16324B;
+  --steel:    #4E7CA8;
+  --brass:    #E0A526;
+  --copper:   #A8622F;
+  --paper:    #FFFFFF;
+  --shell:    #F4F6F8;
+  --shell-2:  #EAEEF1;
+  --carbon:   #15181C;
+  --mute:     #5C6874;
+  --line:     #DCE2E7;
 
   --phase-r: #C8342B;
   --phase-y: #E3B23C;
   --phase-b: #2E5FA3;
 
-  --wrap: 1140px;
+  --wrap: 1200px;
   --sans: "IBM Plex Sans Arabic", system-ui, sans-serif;
   --display: "Readex Pro", "IBM Plex Sans Arabic", sans-serif;
-
   --ease: cubic-bezier(.22, .61, .36, 1);
 }
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-
 body {
-  margin: 0; background: var(--shell); color: var(--carbon);
-  font: 400 1rem/1.85 var(--sans); -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  margin: 0; background: var(--paper); color: var(--carbon);
+  font: 400 1rem/1.8 var(--sans); -webkit-font-smoothing: antialiased; overflow-x: hidden;
 }
-body.loading { overflow: hidden; }
+body.loading, body.locked { overflow: hidden; }
 
-h1, h2, h3 { font-family: var(--display); font-weight: 500; line-height: 1.3; margin: 0; }
-p { margin: 0 0 1em; max-width: 68ch; }
+h1, h2, h3, h4 { font-family: var(--display); font-weight: 500; line-height: 1.28; margin: 0; }
+p { margin: 0 0 1em; max-width: 66ch; }
 a { color: inherit; }
 img { max-width: 100%; }
+button { font: inherit; }
 
-.wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: 22px; }
+.wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: 24px; }
 
-.phases { display: flex; height: 4px; }
+.phases { display: flex; height: 3px; }
 .phases i { flex: 1; }
 .phases i:nth-child(1) { background: var(--phase-r); }
 .phases i:nth-child(2) { background: var(--phase-y); }
 .phases i:nth-child(3) { background: var(--phase-b); }
 
+/* اللغة: العنصر يحمل نصّيه، وclass على html يقرّر أيهما يظهر */
+html.en [data-ar] { display: none; }
+html:not(.en) [data-en-only] { display: none; }
+
 /* ============================================================
-   شاشة التحميل — تسلسل تشغيل لوحة
+   شاشة التشغيل
    ============================================================ */
-#boot {
-  position: fixed; inset: 0; z-index: 999;
-  background: var(--ink); color: #fff;
-  display: grid; place-content: center; justify-items: center; gap: 26px;
-  transition: opacity .5s var(--ease), visibility .5s;
-}
+#boot { position: fixed; inset: 0; z-index: 999; background: var(--ink); color: #fff;
+        display: grid; place-content: center; justify-items: center; gap: 24px;
+        transition: opacity .5s var(--ease), visibility .5s; }
 #boot.done { opacity: 0; visibility: hidden; }
-
-#boot .mark { width: 74px; height: 74px; border-radius: 50%; background: #fff; }
-
-#boot .lamps { display: flex; gap: 16px; }
-#boot .lamp {
-  width: 15px; height: 15px; border-radius: 50%;
-  background: rgba(255,255,255,.14);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.2);
-}
+#boot .mark { width: 72px; height: 72px; border-radius: 50%; background: #fff; }
+#boot .lamps { display: flex; gap: 15px; }
+#boot .lamp { width: 14px; height: 14px; border-radius: 50%;
+              background: rgba(255,255,255,.14); box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); }
 #boot .lamp.on { animation: lampOn .45s var(--ease) forwards; }
 #boot .lamp:nth-child(1).on { --c: var(--phase-r); }
 #boot .lamp:nth-child(2).on { --c: var(--phase-y); }
 #boot .lamp:nth-child(3).on { --c: var(--phase-b); }
-
-@keyframes lampOn {
-  to { background: var(--c); box-shadow: 0 0 16px var(--c), inset 0 0 0 1px var(--c); }
-}
-
-/* قضيب يمتلئ من اليمين لليسار — اتجاه القراءة العربي */
-#boot .bus { width: min(240px, 60vw); height: 3px; background: rgba(255,255,255,.14); overflow: hidden; }
-#boot .bus span {
-  display: block; height: 100%; width: 0;
-  background: linear-gradient(90deg, var(--copper), var(--copper-l), var(--brass));
-}
-#boot.run .bus span { animation: busFill .9s .35s var(--ease) forwards; }
+@keyframes lampOn { to { background: var(--c); box-shadow: 0 0 16px var(--c), inset 0 0 0 1px var(--c); } }
+#boot .bus { width: min(230px, 58vw); height: 3px; background: rgba(255,255,255,.14); overflow: hidden; }
+#boot .bus span { display: block; height: 100%; width: 0;
+                  background: linear-gradient(90deg, var(--copper), #C98046, var(--brass)); }
+#boot.run .bus span { animation: busFill .9s .3s var(--ease) forwards; }
 @keyframes busFill { to { width: 100%; } }
-
-#boot .cap {
-  font-family: var(--display); font-weight: 300; font-size: .74rem;
-  letter-spacing: .3em; color: #8FA6BB; direction: ltr;
-}
+#boot .cap { font-family: var(--display); font-weight: 300; font-size: .72rem;
+             letter-spacing: .3em; color: #8FA6BB; direction: ltr; }
 
 /* ============================================================
-   الترويسة
+   شريط علوي رفيع
    ============================================================ */
-.top {
-  position: sticky; top: 0; z-index: 60;
-  background: rgba(15,36,56,.96); backdrop-filter: blur(8px); color: #fff;
-  transition: box-shadow .3s;
-}
-.top.stuck { box-shadow: 0 10px 30px rgba(6,18,30,.28); }
-.top-in { display: flex; align-items: center; gap: 14px; padding-block: 10px; }
-.top img { width: 42px; height: 42px; border-radius: 50%; background: #fff; flex: none; }
-.top .name { font-family: var(--display); font-weight: 600; font-size: 1.02rem; line-height: 1.25; }
-.top .name small { display: block; font-weight: 300; font-size: .72rem; opacity: .72; letter-spacing: .06em; }
-.top nav { margin-inline-start: auto; display: flex; gap: 18px; font-size: .86rem; }
-.top nav a { text-decoration: none; opacity: .82; padding-block: 4px; border-bottom: 2px solid transparent;
-             transition: opacity .2s, border-color .2s; }
-.top nav a:hover, .top nav a:focus-visible, .top nav a.here { opacity: 1; border-bottom-color: var(--brass); }
-@media (max-width: 980px) { .top nav { display: none; } }
+.util { background: var(--ink); color: #A9BCCC; font-size: .8rem; }
+.util-in { display: flex; align-items: center; gap: 18px; padding-block: 7px; }
+.util a { text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
+.util a:hover { color: #fff; }
+.util svg { width: 14px; height: 14px; fill: currentColor; opacity: .8; }
+.util .sp { margin-inline-start: auto; }
+#lang { background: none; border: 1px solid rgba(255,255,255,.28); color: #fff;
+        border-radius: 2px; padding: 3px 11px; font-size: .76rem; cursor: pointer;
+        font-family: var(--display); letter-spacing: .05em; }
+#lang:hover { background: rgba(255,255,255,.12); }
+@media (max-width: 720px) { .util .hide-s { display: none; } }
 
-/* شريط تقدّم القراءة — خيط نحاسي رفيع أسفل الترويسة */
-.progress { height: 2px; background: transparent; }
+/* ============================================================
+   الترويسة والقائمة المنسدلة
+   ============================================================ */
+.top { position: sticky; top: 0; z-index: 60; background: rgba(255,255,255,.98);
+       backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); transition: box-shadow .3s; }
+.top.stuck { box-shadow: 0 8px 26px rgba(16,36,56,.1); }
+.top-in { display: flex; align-items: center; gap: 16px; padding-block: 12px; }
+.top .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+.top .logo img { width: 46px; height: 46px; border-radius: 50%; flex: none; }
+.top .name { font-family: var(--display); font-weight: 600; font-size: 1.04rem;
+             line-height: 1.22; color: var(--ink); }
+.top .name small { display: block; font-weight: 300; font-size: .7rem;
+                   color: var(--mute); letter-spacing: .07em; }
+
+nav.main { margin-inline-start: auto; display: flex; align-items: center; gap: 4px; }
+nav.main > a, nav.main > .has-menu > button {
+  background: none; border: 0; cursor: pointer; text-decoration: none;
+  color: var(--carbon); font-size: .92rem; padding: 10px 14px;
+  display: inline-flex; align-items: center; gap: 6px; border-radius: 3px;
+  transition: background .18s, color .18s;
+}
+nav.main > a:hover, nav.main > .has-menu > button:hover,
+nav.main > a.here { background: var(--shell); color: var(--ink); }
+nav.main .caret { width: 11px; height: 11px; fill: none; stroke: currentColor;
+                  stroke-width: 2.2; transition: transform .25s var(--ease); }
+.has-menu.open .caret { transform: rotate(180deg); }
+@media (max-width: 1040px) { nav.main { display: none; } }
+
+/* القائمة المنسدلة: عمودان — قائمة المنتجات ولوحة مساعدة */
+.has-menu { position: relative; }
+.mega {
+  position: absolute; inset-inline-end: 0; top: calc(100% + 10px);
+  width: min(720px, 86vw); background: #fff; border: 1px solid var(--line);
+  box-shadow: 0 24px 60px rgba(16,36,56,.16); border-radius: 4px;
+  display: grid; grid-template-columns: 1.25fr .9fr; overflow: hidden;
+  opacity: 0; visibility: hidden; transform: translateY(-8px);
+  transition: opacity .22s var(--ease), transform .22s var(--ease), visibility .22s;
+}
+.has-menu.open .mega { opacity: 1; visibility: visible; transform: none; }
+.mega .list { padding: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.mega .list a { text-decoration: none; padding: 9px 11px; border-radius: 3px;
+                font-size: .88rem; color: var(--carbon); transition: background .15s; }
+.mega .list a:hover { background: var(--shell); color: var(--ink); }
+.mega .side { background: var(--shell); padding: 20px; border-inline-start: 1px solid var(--line); }
+.mega .side h4 { font-size: .95rem; font-weight: 600; margin-bottom: 8px; }
+.mega .side p { font-size: .84rem; color: var(--mute); margin-bottom: 14px; }
+
+/* قائمة الموبايل */
+#burger { margin-inline-start: auto; width: 44px; height: 44px; border: 1px solid var(--line);
+          background: #fff; border-radius: 3px; cursor: pointer; display: none;
+          place-items: center; }
+#burger svg { width: 20px; height: 20px; fill: none; stroke: var(--ink); stroke-width: 2; }
+@media (max-width: 1040px) { #burger { display: grid; } }
+
+#drawer { position: fixed; inset: 0; z-index: 80; background: rgba(9,20,32,.5);
+          opacity: 0; visibility: hidden; transition: opacity .25s, visibility .25s; }
+#drawer.open { opacity: 1; visibility: visible; }
+#drawer .panel { position: absolute; inset-block: 0; inset-inline-end: 0;
+                 width: min(340px, 86vw); background: #fff; padding: 18px;
+                 overflow-y: auto; transform: translateX(-100%);
+                 transition: transform .3s var(--ease); }
+html:not(.en) #drawer .panel { transform: translateX(100%); }
+#drawer.open .panel { transform: none !important; }
+#drawer a { display: block; padding: 13px 10px; text-decoration: none;
+            border-bottom: 1px solid var(--line); font-size: .96rem; }
+#drawer .grp { font-family: var(--display); font-size: .76rem; letter-spacing: .12em;
+               color: var(--copper); margin-block: 18px 6px; }
+#drawer .x { width: 42px; height: 42px; border: 1px solid var(--line); background: #fff;
+             border-radius: 3px; cursor: pointer; font-size: 1.2rem; margin-bottom: 10px; }
+
+.progress { height: 2px; }
 .progress i { display: block; height: 100%; width: 0; background: var(--brass); transition: width .1s linear; }
 
 /* ============================================================
    الواجهة
    ============================================================ */
-.hero { background: var(--ink); color: #fff; position: relative; overflow: hidden; }
-
-/* شبكة رسم هندسي خافتة — خلفية ورق المخططات */
-.hero::before {
-  content: ""; position: absolute; inset: 0; opacity: .16; pointer-events: none;
-  background-image:
-    linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
+.hero { position: relative; background: var(--ink); color: #fff; overflow: hidden; }
+.hero::before { content: ""; position: absolute; inset: 0; opacity: .15; pointer-events: none;
+  background-image: linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px);
   background-size: 34px 34px;
-  mask-image: radial-gradient(ellipse 80% 70% at 70% 30%, #000 30%, transparent 78%);
-}
-
-.hero-in { position: relative; display: grid; grid-template-columns: 1.05fr .95fr;
-           gap: 46px; align-items: center; padding-block: 76px 0; }
-.hero h1 { font-size: clamp(1.9rem, 5.2vw, 3.1rem); font-weight: 600; letter-spacing: -.01em; }
-.hero .lede { font-size: clamp(1rem, 2.4vw, 1.14rem); font-weight: 300;
-              color: #C9D6E2; margin-block: 18px 30px; max-width: 46ch; }
-.hero .en { font-family: var(--display); font-weight: 300; font-size: .78rem;
-            letter-spacing: .34em; color: var(--brass); margin-bottom: 14px;
-            direction: ltr; text-align: right; }
-
-/* خط التغذية: نبضة تيار واحدة تسري فيه — الحركة الوحيدة في الصفحة */
-.feed { height: 2px; background: rgba(255,255,255,.16); margin-block: 26px 30px;
-        position: relative; overflow: hidden; max-width: 380px; }
-.feed::after {
-  content: ""; position: absolute; inset-block: 0; width: 34%;
+  mask-image: radial-gradient(ellipse 80% 70% at 70% 30%, #000 30%, transparent 78%); }
+.hero-in { position: relative; display: grid; grid-template-columns: 1.02fr .98fr;
+           gap: 48px; align-items: center; padding-block: 78px 0; }
+.hero h1 { font-size: clamp(1.95rem, 5vw, 3.15rem); font-weight: 600; letter-spacing: -.01em; }
+.hero .lede { font-size: clamp(1rem, 2.3vw, 1.13rem); font-weight: 300; color: #C9D6E2;
+              margin-block: 18px 28px; max-width: 46ch; }
+.hero .en-kicker { font-family: var(--display); font-weight: 300; font-size: .76rem;
+                   letter-spacing: .32em; color: var(--brass); margin-bottom: 14px;
+                   direction: ltr; }
+html:not(.en) .hero .en-kicker { text-align: right; }
+.feed { height: 2px; background: rgba(255,255,255,.16); margin-block: 24px 28px;
+        position: relative; overflow: hidden; max-width: 360px; }
+.feed::after { content: ""; position: absolute; inset-block: 0; width: 34%;
   background: linear-gradient(90deg, transparent, var(--brass), transparent);
-  animation: current 3.4s var(--ease) infinite;
-}
+  animation: current 3.4s var(--ease) infinite; }
 @keyframes current { 0% { inset-inline-start: -40%; } 100% { inset-inline-start: 110%; } }
-
-.hero figure { margin: 0; align-self: end; position: relative; }
+.hero figure { margin: 0; align-self: end; }
 .hero figure img { width: 100%; display: block; border-radius: 3px 3px 0 0;
                    border: 1px solid rgba(255,255,255,.14); border-bottom: 0; }
-@media (max-width: 880px) {
-  .hero-in { grid-template-columns: 1fr; gap: 30px; padding-block: 50px 0; }
-  .hero figure { max-width: 420px; margin-inline: auto; }
+@media (max-width: 900px) {
+  .hero-in { grid-template-columns: 1fr; gap: 28px; padding-block: 50px 0; }
+  .hero figure { max-width: 430px; margin-inline: auto; }
 }
 
 .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
 .btn { display: inline-flex; align-items: center; gap: 9px; padding: 13px 22px;
        border-radius: 3px; text-decoration: none; font-family: var(--display);
-       font-weight: 500; font-size: .95rem; border: 1px solid transparent; cursor: pointer;
-       transition: background .18s, color .18s, transform .18s var(--ease); }
+       font-weight: 500; font-size: .94rem; border: 1px solid transparent; cursor: pointer;
+       transition: background .18s, color .18s, transform .18s var(--ease), border-color .18s; }
 .btn:active { transform: translateY(1px); }
 .btn-brass { background: var(--brass); color: #1A1200; }
 .btn-brass:hover { background: #EFB63A; }
-.btn-line { border-color: rgba(255,255,255,.32); color: #fff; background: none; }
+.btn-line { border-color: rgba(255,255,255,.34); color: #fff; background: none; }
 .btn-line:hover { background: rgba(255,255,255,.1); }
 .btn-ink { background: var(--ink); color: #fff; }
 .btn-ink:hover { background: var(--ink-2); }
+.btn-ghost { border-color: var(--line); color: var(--ink); background: #fff; }
+.btn-ghost:hover { border-color: var(--ink); }
 .btn svg { width: 18px; height: 18px; fill: currentColor; }
 
 /* ============================================================
    الأقسام
    ============================================================ */
-section { padding-block: 66px; }
-.sec-head { margin-bottom: 34px; }
-.sec-head h2 { font-size: clamp(1.35rem, 3.4vw, 1.9rem); }
+section { padding-block: 72px; }
+.alt { background: var(--shell); }
+.sec-head { margin-bottom: 36px; max-width: 70ch; }
+.sec-head .kick { font-family: var(--display); font-weight: 300; font-size: .74rem;
+                  letter-spacing: .22em; color: var(--copper); margin-bottom: 9px; }
+.sec-head h2 { font-size: clamp(1.4rem, 3.3vw, 2rem); }
 .sec-head p { color: var(--mute); margin-block: 10px 0; }
 
-/* ظهور عند التمرير: حركة واحدة موحّدة في الصفحة كلها */
-.rise { opacity: 0; transform: translateY(18px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+.rise { opacity: 0; transform: translateY(18px);
+        transition: opacity .6s var(--ease), transform .6s var(--ease); }
 .rise.in { opacity: 1; transform: none; }
 
-/* المنتجات */
-.cat { display: grid; grid-template-columns: repeat(auto-fit, minmax(258px, 1fr)); gap: 20px; }
+/* شريط المنتجات الأفقي */
+.rail-head { display: flex; align-items: flex-end; gap: 14px; margin-bottom: 24px; }
+.rail-head .sec-head { margin-bottom: 0; }
+.rail-nav { margin-inline-start: auto; display: flex; gap: 8px; }
+.rail-nav button { width: 42px; height: 42px; border: 1px solid var(--line); background: #fff;
+                   border-radius: 3px; cursor: pointer; display: grid; place-items: center;
+                   transition: border-color .18s, background .18s; }
+.rail-nav button:hover { border-color: var(--ink); background: var(--shell); }
+.rail-nav svg { width: 17px; height: 17px; fill: none; stroke: var(--ink); stroke-width: 2.2; }
+@media (max-width: 720px) { .rail-nav { display: none; } }
+
+.rail { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(266px, 1fr);
+        gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory;
+        scrollbar-width: none; padding-bottom: 6px; }
+.rail::-webkit-scrollbar { display: none; }
+.rail > * { scroll-snap-align: start; }
+
 .item { background: #fff; border: 1px solid var(--line); display: flex; flex-direction: column;
         overflow: hidden; transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
-.item:hover { transform: translateY(-4px); box-shadow: 0 16px 34px rgba(16,36,56,.14); }
-.item .shot { overflow: hidden; background: #DFE4E8; }
+.item:hover { transform: translateY(-4px); box-shadow: 0 16px 34px rgba(16,36,56,.13); }
+.item .shot { overflow: hidden; background: var(--shell-2); }
 .item img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block;
             transition: transform .5s var(--ease); }
 .item:hover img { transform: scale(1.045); }
 .item .body { padding: 15px 17px 18px; border-top: 3px solid var(--copper); flex: 1; }
-.item h3 { font-size: 1.04rem; font-weight: 600; }
-.item .tag { font-family: var(--display); font-weight: 300; font-size: .72rem;
-             letter-spacing: .12em; color: var(--steel); direction: ltr;
-             text-align: right; margin-top: 3px; }
-.item p { font-size: .92rem; color: var(--mute); margin: 9px 0 0; }
+.item h3 { font-size: 1.02rem; font-weight: 600; }
+.item .tag { font-family: var(--display); font-weight: 300; font-size: .71rem;
+             letter-spacing: .12em; color: var(--steel); direction: ltr; margin-top: 3px; }
+html:not(.en) .item .tag { text-align: right; }
+.item p { font-size: .9rem; color: var(--mute); margin: 9px 0 0; }
 
-/* مراحل التنفيذ — الترقيم مبرَّر: المحتوى تسلسل فعلي */
-.flow { background: var(--shell-2); }
+/* القطاعات */
+.sectors { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 18px; }
+.sector { background: #fff; border: 1px solid var(--line); padding: 22px 20px;
+          transition: border-color .22s, transform .22s var(--ease); }
+.sector:hover { border-color: var(--copper); transform: translateY(-3px); }
+.sector svg { width: 30px; height: 30px; fill: none; stroke: var(--copper);
+              stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.sector h3 { font-size: 1rem; font-weight: 600; margin-block: 12px 6px; }
+.sector p { font-size: .88rem; color: var(--mute); margin: 0; }
+
+/* مراحل التنفيذ */
 .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 24px; }
 .step { border-top: 3px solid var(--ink); padding-top: 14px; }
 .step .n { font-family: var(--display); font-weight: 700; font-size: 1.5rem;
-           color: var(--copper); direction: ltr; text-align: right; line-height: 1; }
+           color: var(--copper); direction: ltr; line-height: 1; }
+html:not(.en) .step .n { text-align: right; }
 .step h3 { font-size: 1rem; font-weight: 600; margin-block: 8px 6px; }
 .step p { font-size: .9rem; color: var(--mute); margin: 0; }
 
 /* المكوّنات */
 .brands { display: flex; flex-wrap: wrap; gap: 12px; }
-.brand { border: 1px solid var(--line); background: #fff; padding: 11px 22px;
+.brand { border: 1px solid var(--line); background: #fff; padding: 11px 24px;
          font-family: var(--display); font-weight: 500; font-size: .95rem;
          letter-spacing: .04em; direction: ltr; transition: border-color .2s, color .2s; }
 .brand:hover { border-color: var(--copper); color: var(--copper); }
 
 /* الأعمال */
-.work { background: var(--shell-2); }
-.gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(268px, 1fr)); gap: 22px; }
+.gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(268px, 1fr)); gap: 20px; }
 .gallery figure { margin: 0; background: #fff; border: 1px solid var(--line); overflow: hidden; }
-.gallery button.shot { display: block; width: 100%; padding: 0; border: 0; background: #DFE4E8;
-                       cursor: zoom-in; overflow: hidden; }
-.gallery img { width: 100%; height: 320px; object-fit: cover; display: block;
+.gallery button.shot { display: block; width: 100%; padding: 0; border: 0;
+                       background: var(--shell-2); cursor: zoom-in; overflow: hidden; }
+.gallery img { width: 100%; height: 300px; object-fit: cover; display: block;
                transition: transform .5s var(--ease); }
 .gallery button.shot:hover img { transform: scale(1.05); }
-.gallery figcaption { padding: 14px 16px; font-size: .9rem; color: var(--mute);
+.gallery figcaption { padding: 14px 16px; font-size: .88rem; color: var(--mute);
                       border-top: 3px solid var(--copper); }
 
 /* لماذا نحن */
-.points { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px 40px; }
+.points { display: grid; grid-template-columns: repeat(auto-fit, minmax(246px, 1fr)); gap: 30px 40px; }
 .point { border-top: 2px solid var(--ink); padding-top: 16px; }
-.point h3 { font-size: 1.02rem; font-weight: 600; margin-bottom: 8px; }
-.point p { font-size: .94rem; color: var(--mute); margin: 0; }
+.point h3 { font-size: 1rem; font-weight: 600; margin-bottom: 8px; }
+.point p { font-size: .92rem; color: var(--mute); margin: 0; }
 
-/* ============================================================
-   طلب عرض السعر — يبني رسالة واتساب جاهزة
-   ============================================================ */
+/* طلب عرض السعر */
 .quote { background: var(--ink); color: #fff; }
 .quote .sec-head h2 { color: #fff; }
 .quote .sec-head p { color: #A9BCCC; }
-.form { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; }
+.quote .sec-head .kick { color: var(--brass); }
+.form { display: grid; grid-template-columns: repeat(auto-fit, minmax(228px, 1fr)); gap: 18px; }
 .field { display: flex; flex-direction: column; gap: 7px; }
 .field.wide { grid-column: 1 / -1; }
-.field label { font-size: .84rem; color: #A9BCCC; font-family: var(--display); font-weight: 300; }
+.field label { font-size: .83rem; color: #A9BCCC; font-family: var(--display); font-weight: 300; }
 .field input, .field select, .field textarea {
-  font: inherit; font-size: .95rem; color: #fff;
-  background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.2);
-  border-radius: 3px; padding: 11px 13px; transition: border-color .2s, background .2s;
-}
+  font: inherit; font-size: .94rem; color: #fff; background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.2); border-radius: 3px; padding: 11px 13px;
+  transition: border-color .2s, background .2s; }
 .field textarea { resize: vertical; min-height: 84px; }
 .field input:focus, .field select:focus, .field textarea:focus {
-  outline: none; border-color: var(--brass); background: rgba(255,255,255,.11);
-}
+  outline: none; border-color: var(--brass); background: rgba(255,255,255,.11); }
 .field select option { background: var(--ink); color: #fff; }
 .field input::placeholder, .field textarea::placeholder { color: #7E93A7; }
 .form-foot { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
-.form-foot .note { font-size: .84rem; color: #8FA6BB; margin: 0; }
+.form-foot .note { font-size: .83rem; color: #8FA6BB; margin: 0; }
 
-/* ============================================================
-   التواصل
-   ============================================================ */
-.contact { background: var(--shell-2); }
-.lines { display: grid; grid-template-columns: repeat(auto-fit, minmax(258px, 1fr)); gap: 26px 40px; }
+/* التواصل */
+.lines { display: grid; grid-template-columns: repeat(auto-fit, minmax(252px, 1fr)); gap: 26px 40px; }
 .line { border-top: 1px solid var(--line); padding-top: 16px; }
-.line .k { font-size: .78rem; color: var(--copper); font-family: var(--display);
+.line .k { font-size: .77rem; color: var(--copper); font-family: var(--display);
            font-weight: 300; letter-spacing: .12em; }
-.line .v { font-size: 1.06rem; margin-top: 6px; line-height: 1.6; }
-.line .v a { text-decoration: none; border-bottom: 1px solid var(--line); transition: border-color .2s; }
+.line .v { font-size: 1.04rem; margin-top: 6px; line-height: 1.6; }
+.line .v a { text-decoration: none; border-bottom: 1px solid var(--line); }
 .line .v a:hover { border-bottom-color: var(--copper); }
-.line .v.num { direction: ltr; text-align: right; font-variant-numeric: tabular-nums; }
-
-footer { background: var(--carbon); color: #8C99A6; font-size: .84rem; padding-block: 26px; }
-.foot-in { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between; }
-footer a { color: #B9C6D2; }
+.line .v.num { direction: ltr; font-variant-numeric: tabular-nums; }
+html:not(.en) .line .v.num { text-align: right; }
 
 /* ============================================================
-   العناصر الطافية
+   التذييل
+   ============================================================ */
+footer { background: var(--carbon); color: #93A0AD; font-size: .88rem; }
+.foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 34px;
+             padding-block: 52px 36px; }
+.foot-grid h4 { color: #fff; font-size: .82rem; font-weight: 500; letter-spacing: .1em;
+                margin-bottom: 14px; }
+.foot-grid ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+.foot-grid a { text-decoration: none; }
+.foot-grid a:hover { color: #fff; }
+.foot-about { display: flex; gap: 14px; align-items: flex-start; }
+.foot-about img { width: 52px; height: 52px; border-radius: 50%; background: #fff; flex: none; }
+.foot-about p { font-size: .87rem; margin: 8px 0 0; color: #93A0AD; max-width: 34ch; }
+.foot-about .nm { color: #fff; font-family: var(--display); font-weight: 600; }
+.foot-bar { border-top: 1px solid #262C33; padding-block: 18px; display: flex;
+            flex-wrap: wrap; gap: 12px; justify-content: space-between; font-size: .82rem; }
+@media (max-width: 860px) { .foot-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 520px) { .foot-grid { grid-template-columns: 1fr; gap: 26px; } }
+
+/* ============================================================
+   عناصر طافية
    ============================================================ */
 .wa { position: fixed; inset-inline-end: 18px; bottom: 18px; z-index: 70;
       width: 56px; height: 56px; border-radius: 50%; background: #1FA855; color: #fff;
       display: grid; place-items: center; text-decoration: none;
-      box-shadow: 0 6px 20px rgba(0,0,0,.28); transition: transform .2s var(--ease), background .2s; }
+      box-shadow: 0 6px 20px rgba(0,0,0,.26); transition: transform .2s var(--ease), background .2s; }
 .wa svg { width: 28px; height: 28px; fill: currentColor; }
 .wa:hover { background: #24BC60; transform: scale(1.06); }
 
@@ -324,13 +401,12 @@ footer a { color: #B9C6D2; }
 #toTop:hover { transform: translateY(-2px); }
 #toTop svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.2; }
 
-/* شريط اتصال سفلي على الموبايل — الإبهام يصله بيد واحدة */
 #bar { position: fixed; inset-inline: 0; bottom: 0; z-index: 65; display: none;
        background: #fff; border-top: 1px solid var(--line);
        padding-bottom: env(safe-area-inset-bottom, 0); }
 #bar a { flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px;
          padding: 14px 8px; text-decoration: none; font-family: var(--display);
-         font-weight: 500; font-size: .9rem; }
+         font-weight: 500; font-size: .89rem; }
 #bar a + a { border-inline-start: 1px solid var(--line); }
 #bar svg { width: 17px; height: 17px; fill: currentColor; }
 #bar .call { color: var(--ink); }
@@ -339,29 +415,23 @@ footer a { color: #B9C6D2; }
   #bar { display: flex; }
   .wa { bottom: 76px; }
   #toTop { bottom: 142px; }
-  footer { padding-bottom: 76px; }
+  footer .foot-bar { padding-bottom: 74px; }
 }
 
-/* ============================================================
-   عارض الصور
-   ============================================================ */
-#lb { position: fixed; inset: 0; z-index: 90; background: rgba(8,18,28,.94);
+/* عارض الصور */
+#lb { position: fixed; inset: 0; z-index: 90; background: rgba(8,18,28,.95);
       display: none; place-items: center; padding: 24px; }
 #lb.open { display: grid; }
 #lb img { max-width: min(1000px, 94vw); max-height: 86vh; object-fit: contain;
           border: 1px solid rgba(255,255,255,.16); }
-#lb .close { position: absolute; top: 16px; inset-inline-end: 16px;
-             width: 44px; height: 44px; border-radius: 3px; cursor: pointer;
-             background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.24);
-             color: #fff; font-size: 1.4rem; line-height: 1; }
+#lb .close { position: absolute; top: 16px; inset-inline-end: 16px; width: 44px; height: 44px;
+             border-radius: 3px; cursor: pointer; background: rgba(255,255,255,.1);
+             border: 1px solid rgba(255,255,255,.24); color: #fff; font-size: 1.4rem; }
 #lb .cap { position: absolute; bottom: 20px; inset-inline: 24px; text-align: center;
            color: #C9D6E2; font-size: .9rem; }
 
 :focus-visible { outline: 3px solid var(--brass); outline-offset: 2px; }
 
-/* ============================================================
-   من يطلب تقليل الحركة يحصل على صفحة ساكنة تمامًا
-   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -370,19 +440,20 @@ footer a { color: #B9C6D2; }
 }
 
 @media print {
-  .top, .wa, #toTop, #bar, .cta-row, .quote, #boot, #lb { display: none !important; }
+  .util, .top, .wa, #toTop, #bar, .cta-row, .quote, #boot, #lb, #drawer, .rail-nav { display: none !important; }
   body { background: #fff; }
-  .hero, .flow, .work, .contact { background: #fff; color: #000; }
+  .hero { background: #fff; color: #000; }
   .hero .lede { color: #333; }
   .hero::before, .feed { display: none; }
   .rise { opacity: 1; transform: none; }
-  .item, .gallery figure, .step { break-inside: avoid; }
+  .rail { grid-auto-flow: row; grid-template-columns: 1fr 1fr; overflow: visible; }
+  .item, .gallery figure, .step, .sector { break-inside: avoid; }
+  footer { background: #fff; color: #000; }
 }
 </style>
 </head>
 <body class="loading">
 
-<!-- ============ شاشة التحميل ============ -->
 <div id="boot" role="status" aria-label="جارٍ التشغيل">
   <img class="mark" src="./img/logo.png" alt="">
   <div class="lamps"><span class="lamp"></span><span class="lamp"></span><span class="lamp"></span></div>
@@ -390,43 +461,118 @@ footer a { color: #B9C6D2; }
   <div class="cap">EL HANA ELECTRIC</div>
 </div>
 
+<!-- ============ شريط علوي ============ -->
+<div class="util">
+  <div class="wrap util-in">
+    <a href="tel:+201050559450">
+      <svg viewBox="0 0 24 24"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.2 11 11 0 0 0 3.5.6 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11 11 0 0 0 .6 3.5 1 1 0 0 1-.3 1l-2.2 2.3Z"/></svg>
+      <span dir="ltr">010 5055 9450</span>
+    </a>
+    <a class="hide-s" href="mailto:elhanaelectric@gmail.com">
+      <svg viewBox="0 0 24 24"><path d="M3 5h18v14H3z" fill="none" stroke="currentColor" stroke-width="2"/><path d="m3 6 9 6 9-6" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+      elhanaelectric@gmail.com
+    </a>
+    <span class="sp"></span>
+    <span class="hide-s" data-ar>العاشر من رمضان، مصر</span><span class="hide-s" data-en-only>10th of Ramadan, Egypt</span>
+    <button id="lang" type="button"><span data-ar>English</span><span data-en-only>العربية</span></button>
+  </div>
+</div>
+
+<!-- ============ الترويسة ============ -->
 <header class="top" id="top">
   <div class="wrap top-in">
-    <img src="./img/logo.png" alt="شعار شركة الهنا اليكتريك">
-    <div class="name">شركة الهنا اليكتريك<small>EL HANA ELECTRIC</small></div>
-    <nav id="nav">
-      <a href="#products">المنتجات</a>
-      <a href="#flow">مراحل التنفيذ</a>
-      <a href="#work">من أعمالنا</a>
-      <a href="#why">لماذا نحن</a>
-      <a href="#quote">عرض سعر</a>
-      <a href="#contact">تواصل</a>
+    <a class="logo" href="#">
+      <img src="./img/logo.png" alt="شعار شركة الهنا اليكتريك">
+      <span class="name">
+        <span data-ar>شركة الهنا اليكتريك</span><span data-en-only>El Hana Electric</span>
+        <small>EL HANA ELECTRIC</small>
+      </span>
+    </a>
+
+    <nav class="main" id="nav">
+      <div class="has-menu" id="menu-products">
+        <button type="button" aria-expanded="false">
+          <span data-ar>المنتجات</span><span data-en-only>Products</span>
+          <svg class="caret" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="mega">
+          <div class="list">
+            <a href="#products"><span data-ar>لوحات التوزيع الرئيسية</span><span data-en-only>Main distribution</span></a>
+            <a href="#products"><span data-ar>لوحات التوزيع الفرعية</span><span data-en-only>Sub-distribution</span></a>
+            <a href="#products"><span data-ar>لوحات ATS</span><span data-en-only>ATS panels</span></a>
+            <a href="#products"><span data-ar>لوحات الإنارة</span><span data-en-only>Lighting panels</span></a>
+            <a href="#products"><span data-ar>لوحات التحكم</span><span data-en-only>Control panels</span></a>
+            <a href="#products"><span data-ar>تحسين معامل القدرة</span><span data-en-only>Power factor</span></a>
+            <a href="#products"><span data-ar>صناديق الرايزر</span><span data-en-only>Riser boxes</span></a>
+            <a href="#products"><span data-ar>حوامل الكابلات</span><span data-en-only>Cable trays</span></a>
+          </div>
+          <div class="side">
+            <h4><span data-ar>لست متأكدًا مما تحتاجه؟</span><span data-en-only>Not sure what you need?</span></h4>
+            <p>
+              <span data-ar>أرسل رسومات المشروع أو حمولته، ونحدد لك النوع والأمبيرية المناسبة.</span>
+              <span data-en-only>Send your drawings or load list and we will specify the right type and rating.</span>
+            </p>
+            <a class="btn btn-ink" href="#quote" style="padding:10px 16px;font-size:.87rem">
+              <span data-ar>اطلب عرض سعر</span><span data-en-only>Request a quote</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <a href="#sectors"><span data-ar>القطاعات</span><span data-en-only>Sectors</span></a>
+      <a href="#flow"><span data-ar>مراحل التنفيذ</span><span data-en-only>Process</span></a>
+      <a href="#work"><span data-ar>أعمالنا</span><span data-en-only>Our work</span></a>
+      <a href="#contact"><span data-ar>تواصل</span><span data-en-only>Contact</span></a>
     </nav>
+
+    <button id="burger" type="button" aria-label="القائمة">
+      <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
   </div>
   <div class="phases"><i></i><i></i><i></i></div>
   <div class="progress"><i id="bar-read"></i></div>
 </header>
 
+<!-- ============ قائمة الموبايل ============ -->
+<div id="drawer">
+  <div class="panel">
+    <button class="x" type="button" aria-label="إغلاق">✕</button>
+    <div class="grp" data-ar>المنتجات</div><div class="grp" data-en-only>PRODUCTS</div>
+    <a href="#products"><span data-ar>كل المنتجات</span><span data-en-only>All products</span></a>
+    <div class="grp" data-ar>الشركة</div><div class="grp" data-en-only>COMPANY</div>
+    <a href="#sectors"><span data-ar>القطاعات</span><span data-en-only>Sectors</span></a>
+    <a href="#flow"><span data-ar>مراحل التنفيذ</span><span data-en-only>Process</span></a>
+    <a href="#work"><span data-ar>أعمالنا</span><span data-en-only>Our work</span></a>
+    <a href="#why"><span data-ar>لماذا نحن</span><span data-en-only>Why us</span></a>
+    <a href="#quote"><span data-ar>اطلب عرض سعر</span><span data-en-only>Request a quote</span></a>
+    <a href="#contact"><span data-ar>تواصل معنا</span><span data-en-only>Contact us</span></a>
+  </div>
+</div>
+
 <!-- ============ الواجهة ============ -->
 <div class="hero">
   <div class="wrap hero-in">
     <div>
-      <div class="en rise">LOW &amp; MEDIUM VOLTAGE SWITCHGEAR</div>
-      <h1 class="rise">نصنع اللوحات الكهربائية التي يقوم عليها خط الإنتاج</h1>
+      <div class="en-kicker rise">LOW &amp; MEDIUM VOLTAGE SWITCHGEAR</div>
+      <h1 class="rise">
+        <span data-ar>نصنع اللوحات الكهربائية التي يقوم عليها خط الإنتاج</span>
+        <span data-en-only>We build the switchgear your production line runs on</span>
+      </h1>
       <div class="feed rise" aria-hidden="true"></div>
       <p class="lede rise">
-        لوحات التوزيع والتحكم والتغذية الاحتياطية، تُصنَّع وتُجمَّع في مصنعنا
-        بمدينة العاشر من رمضان — بمكوّنات معروفة المصدر، وتنفيذ يراجعه
-        مهندس قبل التسليم.
+        <span data-ar>لوحات التوزيع والتحكم والتغذية الاحتياطية، تُصنَّع وتُجمَّع في مصنعنا
+          بمدينة العاشر من رمضان — بمكوّنات معروفة المصدر، وتنفيذ يراجعه مهندس قبل التسليم.</span>
+        <span data-en-only>Distribution, control and transfer panels — built and assembled in our
+          own factory in 10th of Ramadan City, from named-brand components, engineer-checked
+          before delivery.</span>
       </p>
       <div class="cta-row rise">
-        <a class="btn btn-brass" href="#quote">اطلب عرض سعر</a>
-        <a class="btn btn-line" href="tel:+201050559450">اتصل بالمبيعات</a>
+        <a class="btn btn-brass" href="#quote"><span data-ar>اطلب عرض سعر</span><span data-en-only>Request a quote</span></a>
+        <a class="btn btn-line" href="tel:+201050559450"><span data-ar>اتصل بالمبيعات</span><span data-en-only>Call sales</span></a>
       </div>
     </div>
     <figure class="rise">
-      <img src="./img/panel-busbar.jpg"
-           alt="لوحة توزيع جهد منخفض أثناء التجميع، تظهر فيها قضبان التوزيع النحاسية وتوصيلات الأوجه الثلاثة">
+      <img src="./img/panel-busbar.jpg" alt="لوحة توزيع جهد منخفض أثناء التجميع">
     </figure>
   </div>
 </div>
@@ -435,204 +581,313 @@ footer a { color: #B9C6D2; }
 <!-- ============ المنتجات ============ -->
 <section id="products">
   <div class="wrap">
-    <div class="sec-head rise">
-      <h2>ما نصنعه</h2>
-      <p>كل لوحة تُنفَّذ بالأمبيرية والمقاس ودرجة الحماية التي يحددها المشروع، لا بمقاسات كتالوج جاهز.</p>
+    <div class="rail-head rise">
+      <div class="sec-head">
+        <div class="kick">PRODUCTS</div>
+        <h2><span data-ar>ما نصنعه</span><span data-en-only>What we build</span></h2>
+        <p>
+          <span data-ar>كل لوحة تُنفَّذ بالأمبيرية والمقاس ودرجة الحماية التي يحددها المشروع، لا بمقاسات كتالوج جاهز.</span>
+          <span data-en-only>Every panel is built to the rating, size and IP class the project calls for — not to a catalogue size.</span>
+        </p>
+      </div>
+      <div class="rail-nav">
+        <button type="button" data-rail="prev" aria-label="السابق"><svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg></button>
+        <button type="button" data-rail="next" aria-label="التالي"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+      </div>
     </div>
 
-    <div class="cat">
-      <article class="item rise">
+    <div class="rail" id="rail">
+      <article class="item">
         <div class="shot"><img src="./img/ph-mdp.svg" alt="لوحة توزيع رئيسية"></div>
         <div class="body">
-          <h3>لوحات التوزيع الرئيسية</h3>
-          <div class="tag">MAIN DISTRIBUTION PANEL</div>
-          <p>قلب الشبكة داخل المنشأة: قضبان نحاسية محسوبة على الحمل الكامل، وقواطع رئيسية وفرعية.</p>
+          <h3><span data-ar>لوحات التوزيع الرئيسية</span><span data-en-only>Main distribution panels</span></h3>
+          <div class="tag">MAIN DISTRIBUTION</div>
+          <p><span data-ar>قلب الشبكة داخل المنشأة: قضبان نحاسية محسوبة على الحمل الكامل، وقواطع رئيسية وفرعية.</span>
+             <span data-en-only>The heart of the site network: copper busbars sized for full load, with main and outgoing breakers.</span></p>
         </div>
       </article>
 
-      <article class="item rise">
+      <article class="item">
         <div class="shot"><img src="./img/ph-ats.svg" alt="لوحة تغذية احتياطية"></div>
         <div class="body">
-          <h3>لوحات التغذية الاحتياطية</h3>
-          <div class="tag">ATS PANELS</div>
-          <p>تحويل تلقائي بين الشبكة والمولّد، بزمن تحويل مضبوط على حساسية الحمل.</p>
+          <h3><span data-ar>لوحات التغذية الاحتياطية</span><span data-en-only>ATS panels</span></h3>
+          <div class="tag">AUTOMATIC TRANSFER</div>
+          <p><span data-ar>تحويل تلقائي بين الشبكة والمولّد، بزمن تحويل مضبوط على حساسية الحمل.</span>
+             <span data-en-only>Automatic transfer between grid and generator, timed to the sensitivity of the load.</span></p>
         </div>
       </article>
 
-      <article class="item rise">
+      <article class="item">
         <div class="shot"><img src="./img/panel-cabinet.jpg" alt="لوحة توزيع فرعية"></div>
         <div class="body">
-          <h3>لوحات التوزيع الفرعية</h3>
-          <div class="tag">DISTRIBUTION PANELS</div>
-          <p>لوحات الأدوار والأقسام، تتفرّع من اللوحة الرئيسية إلى دوائر الأحمال.</p>
+          <h3><span data-ar>لوحات التوزيع الفرعية</span><span data-en-only>Sub-distribution panels</span></h3>
+          <div class="tag">SUB-DISTRIBUTION</div>
+          <p><span data-ar>لوحات الأدوار والأقسام، تتفرّع من اللوحة الرئيسية إلى دوائر الأحمال.</span>
+             <span data-en-only>Floor and department boards, branching from the main panel to the load circuits.</span></p>
         </div>
       </article>
 
-      <article class="item rise">
+      <article class="item">
         <div class="shot"><img src="./img/ph-lighting.svg" alt="لوحة إنارة"></div>
         <div class="body">
-          <h3>لوحات الإنارة</h3>
-          <div class="tag">LIGHTING PANELS</div>
-          <p>توزيع دوائر الإنارة مع إمكانية التحكم بالمجموعات أو بمؤقّت.</p>
+          <h3><span data-ar>لوحات الإنارة</span><span data-en-only>Lighting panels</span></h3>
+          <div class="tag">LIGHTING</div>
+          <p><span data-ar>توزيع دوائر الإنارة مع إمكانية التحكم بالمجموعات أو بمؤقّت.</span>
+             <span data-en-only>Lighting circuit distribution, with group or timer control where needed.</span></p>
         </div>
       </article>
 
-      <article class="item rise">
+      <article class="item">
         <div class="shot"><img src="./img/ph-control.svg" alt="لوحة تحكم"></div>
         <div class="body">
-          <h3>لوحات التحكم</h3>
-          <div class="tag">CONTROL PANELS</div>
-          <p>تحكم في الماكينات والخطوط، بمنطق تقليدي أو عبر PLC حسب ما يطلبه المشروع.</p>
+          <h3><span data-ar>لوحات التحكم</span><span data-en-only>Control panels</span></h3>
+          <div class="tag">CONTROL</div>
+          <p><span data-ar>تحكم في الماكينات والخطوط، بمنطق تقليدي أو عبر PLC حسب ما يطلبه المشروع.</span>
+             <span data-en-only>Machine and line control, hard-wired logic or PLC-based as the project requires.</span></p>
         </div>
       </article>
 
-      <article class="item rise">
+      <article class="item">
         <div class="shot"><img src="./img/panel-busbar.jpg" alt="لوحة تحسين معامل القدرة"></div>
         <div class="body">
-          <h3>لوحات تحسين معامل القدرة</h3>
-          <div class="tag">POWER FACTOR CORRECTION</div>
-          <p>بنوك مكثفات بمراحل مُدارة، تخفض غرامة معامل القدرة في فاتورة المصنع.</p>
+          <h3><span data-ar>لوحات تحسين معامل القدرة</span><span data-en-only>Power factor correction</span></h3>
+          <div class="tag">POWER FACTOR</div>
+          <p><span data-ar>بنوك مكثفات بمراحل مُدارة، تخفض غرامة معامل القدرة في فاتورة المصنع.</span>
+             <span data-en-only>Staged capacitor banks that cut the power-factor penalty on the plant bill.</span></p>
         </div>
       </article>
 
-      <article class="item rise">
+      <article class="item">
         <div class="shot"><img src="./img/ph-riser.svg" alt="صندوق رايزر"></div>
         <div class="body">
-          <h3>صناديق الرايزر</h3>
+          <h3><span data-ar>صناديق الرايزر</span><span data-en-only>Riser boxes</span></h3>
           <div class="tag">RISER BOXES</div>
-          <p>صناديق التوزيع الرأسي في المباني، لتغذية الأدوار من خط صاعد واحد.</p>
+          <p><span data-ar>صناديق التوزيع الرأسي في المباني، لتغذية الأدوار من خط صاعد واحد.</span>
+             <span data-en-only>Vertical distribution boxes feeding building floors from a single riser.</span></p>
         </div>
       </article>
 
-      <article class="item rise">
+      <article class="item">
         <div class="shot"><img src="./img/ph-tray.svg" alt="حوامل كابلات"></div>
         <div class="body">
-          <h3>حوامل الكابلات</h3>
+          <h3><span data-ar>حوامل الكابلات</span><span data-en-only>Cable trays</span></h3>
           <div class="tag">CABLE TRAYS</div>
-          <p>مسارات الكابلات بالمقاسات المطلوبة، مجلفنة أو مدهونة حسب بيئة التركيب.</p>
+          <p><span data-ar>مسارات الكابلات بالمقاسات المطلوبة، مجلفنة أو مدهونة حسب بيئة التركيب.</span>
+             <span data-en-only>Cable routes in the required sizes, galvanised or painted to suit the environment.</span></p>
         </div>
       </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ القطاعات ============ -->
+<section class="alt" id="sectors">
+  <div class="wrap">
+    <div class="sec-head rise">
+      <div class="kick">SECTORS</div>
+      <h2><span data-ar>القطاعات التي نخدمها</span><span data-en-only>Sectors we serve</span></h2>
+      <p><span data-ar>لكل قطاع أولوية مختلفة — والاختيار داخل اللوحة يتبعها.</span>
+         <span data-en-only>Each sector has a different priority, and the choices inside the panel follow it.</span></p>
+    </div>
+
+    <div class="sectors">
+      <div class="sector rise">
+        <svg viewBox="0 0 24 24"><path d="M3 21h18M3 21V10l6 4V10l6 4V7l6 4v10"/><path d="M7 21v-4M13 21v-4M18 21v-4"/></svg>
+        <h3><span data-ar>المصانع</span><span data-en-only>Factories</span></h3>
+        <p><span data-ar>أحمال محرّكات كبيرة وبدء متكرر — التركيز على حماية المحرك واستمرارية الخط.</span>
+           <span data-en-only>Large motor loads and frequent starts — motor protection and line continuity come first.</span></p>
+      </div>
+
+      <div class="sector rise">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="5" rx="1"/><rect x="3" y="12" width="18" height="5" rx="1"/><path d="M7 6.5h.01M7 14.5h.01"/></svg>
+        <h3><span data-ar>مراكز البيانات</span><span data-en-only>Data centres</span></h3>
+        <p><span data-ar>لا تحتمل انقطاعًا — تغذية مزدوجة وزمن تحويل محسوب بالملّي ثانية.</span>
+           <span data-en-only>No downtime tolerated — dual feeds and transfer timed in milliseconds.</span></p>
+      </div>
+
+      <div class="sector rise">
+        <svg viewBox="0 0 24 24"><path d="M4 21V7l8-4 8 4v14"/><path d="M12 10v6M9 13h6"/></svg>
+        <h3><span data-ar>المستشفيات</span><span data-en-only>Hospitals</span></h3>
+        <p><span data-ar>دوائر حرجة تُفصل عن غيرها، وتغذية احتياطية تعمل دون تدخل بشري.</span>
+           <span data-en-only>Critical circuits separated from the rest, with backup that works without a human.</span></p>
+      </div>
+
+      <div class="sector rise">
+        <svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2"/><path d="M10 21v-3h4v3"/></svg>
+        <h3><span data-ar>المباني الإدارية</span><span data-en-only>Commercial buildings</span></h3>
+        <p><span data-ar>رايزر يغذّي الأدوار، ولوحات إنارة تُدار بالمجموعات أو بمؤقّت.</span>
+           <span data-en-only>Risers feeding floors, and lighting boards managed by group or timer.</span></p>
+      </div>
+
+      <div class="sector rise">
+        <svg viewBox="0 0 24 24"><path d="M6 21 12 3l6 18"/><path d="M8.4 13h7.2M7 17h10"/></svg>
+        <h3><span data-ar>محطات المحوّلات</span><span data-en-only>Substations</span></h3>
+        <p><span data-ar>خلايا وأكشاك جهد متوسط، ولوحات ربط مع شبكة التوزيع.</span>
+           <span data-en-only>MV cubicles and kiosks, and interface panels with the distribution network.</span></p>
+      </div>
+
+      <div class="sector rise">
+        <svg viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 10.5A6 6 0 0 1 6 13.5C6 9.5 12 3 12 3Z"/></svg>
+        <h3><span data-ar>محطات المياه</span><span data-en-only>Water plants</span></h3>
+        <p><span data-ar>طلمبات تعمل بالتناوب، ولوحات تتحمّل الرطوبة وبيئة التشغيل.</span>
+           <span data-en-only>Pumps running in rotation, in enclosures rated for humidity and site conditions.</span></p>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ============ مراحل التنفيذ ============ -->
-<section class="flow" id="flow">
+<section id="flow">
   <div class="wrap">
     <div class="sec-head rise">
-      <h2>كيف يمرّ المشروع عندنا</h2>
-      <p>خمس مراحل، وفي كل واحدة تعرف أين وصل طلبك.</p>
+      <div class="kick">PROCESS</div>
+      <h2><span data-ar>كيف يمرّ المشروع عندنا</span><span data-en-only>How a project runs with us</span></h2>
+      <p><span data-ar>خمس مراحل، وفي كل واحدة تعرف أين وصل طلبك.</span>
+         <span data-en-only>Five stages — at each one you know where your order stands.</span></p>
     </div>
 
     <div class="steps">
-      <div class="step rise"><div class="n">01</div><h3>التصميم</h3>
-        <p>دراسة الأحمال، واختيار الأمبيريات والمقاسات، ورسومات تنفيذية تُعتمد قبل القطع.</p></div>
-      <div class="step rise"><div class="n">02</div><h3>عرض السعر</h3>
-        <p>قائمة مكوّنات مكتوبة بالاسم والماركة، وسعر ومدة تنفيذ واضحين.</p></div>
-      <div class="step rise"><div class="n">03</div><h3>التصنيع</h3>
-        <p>تجهيز الحديد، وتجميع المكوّنات، وتوصيل القضبان والدوائر داخل المصنع.</p></div>
-      <div class="step rise"><div class="n">04</div><h3>الفحص</h3>
-        <p>مراجعة التوصيلات وإحكام الربط واختبار التشغيل قبل إغلاق الأبواب.</p></div>
-      <div class="step rise"><div class="n">05</div><h3>التسليم</h3>
-        <p>تسليم مع الرسومات، ودعم في التركيب والتشغيل بالموقع.</p></div>
+      <div class="step rise"><div class="n">01</div>
+        <h3><span data-ar>التصميم</span><span data-en-only>Design</span></h3>
+        <p><span data-ar>دراسة الأحمال، واختيار الأمبيريات والمقاسات، ورسومات تنفيذية تُعتمد قبل القطع.</span>
+           <span data-en-only>Load study, ratings and sizes selected, and shop drawings approved before any metal is cut.</span></p></div>
+      <div class="step rise"><div class="n">02</div>
+        <h3><span data-ar>عرض السعر</span><span data-en-only>Quotation</span></h3>
+        <p><span data-ar>قائمة مكوّنات مكتوبة بالاسم والماركة، وسعر ومدة تنفيذ واضحين.</span>
+           <span data-en-only>A bill of materials naming every brand, with a clear price and lead time.</span></p></div>
+      <div class="step rise"><div class="n">03</div>
+        <h3><span data-ar>التصنيع</span><span data-en-only>Manufacturing</span></h3>
+        <p><span data-ar>تجهيز الحديد، وتجميع المكوّنات، وتوصيل القضبان والدوائر داخل المصنع.</span>
+           <span data-en-only>Enclosure work, component assembly, busbar and circuit wiring — all in-house.</span></p></div>
+      <div class="step rise"><div class="n">04</div>
+        <h3><span data-ar>الفحص</span><span data-en-only>Testing</span></h3>
+        <p><span data-ar>مراجعة التوصيلات وإحكام الربط واختبار التشغيل قبل إغلاق الأبواب.</span>
+           <span data-en-only>Wiring check, torque check and functional test before the doors close.</span></p></div>
+      <div class="step rise"><div class="n">05</div>
+        <h3><span data-ar>التسليم</span><span data-en-only>Delivery</span></h3>
+        <p><span data-ar>تسليم مع الرسومات، ودعم في التركيب والتشغيل بالموقع.</span>
+           <span data-en-only>Delivered with drawings, plus support during installation and commissioning.</span></p></div>
     </div>
   </div>
 </section>
 
 <!-- ============ المكوّنات ============ -->
-<section id="brands">
+<section class="alt" id="brands">
   <div class="wrap">
     <div class="sec-head rise">
-      <h2>المكوّنات التي نبني بها</h2>
-      <p>الماركة تُذكر بالاسم في عرض السعر، فتعرف ما بداخل اللوحة قبل أن توافق عليها.</p>
+      <div class="kick">COMPONENTS</div>
+      <h2><span data-ar>المكوّنات التي نبني بها</span><span data-en-only>What we build with</span></h2>
+      <p><span data-ar>الماركة تُذكر بالاسم في عرض السعر، فتعرف ما بداخل اللوحة قبل أن توافق عليها.</span>
+         <span data-en-only>Every brand is named in the quotation, so you know what is inside before you approve it.</span></p>
     </div>
     <div class="brands rise">
       <span class="brand">ABB</span>
-      <!-- أضف هنا بقية الماركات المستخدمة فعلًا -->
+      <span class="brand">Schneider Electric</span>
+      <span class="brand">CHINT</span>
+      <!-- لإضافة ماركة: انسخ السطر التالي وغيّر الاسم بين الوسمين
+           <span class="brand">Siemens</span>
+           لا تُضف ماركة غير مستخدمة فعلًا: المشتري الصناعي يسأل عنها. -->
     </div>
+
+    <p class="rise" style="color:var(--mute);font-size:.9rem;margin-top:18px">
+      <span data-ar>ونستخدم غيرها حسب ما يحدده المشروع أو يطلبه الاستشاري — المواصفة
+        الواردة في عرض السعر هي المرجع.</span>
+      <span data-en-only>Other brands are used where the project or the consultant
+        specifies them — the quotation is the reference.</span>
+    </p>
   </div>
 </section>
-<div class="phases"><i></i><i></i><i></i></div>
 
-<!-- ============ من أعمالنا ============ -->
-<section class="work" id="work">
+<!-- ============ أعمالنا ============ -->
+<section id="work">
   <div class="wrap">
     <div class="sec-head rise">
-      <h2>من أعمالنا</h2>
-      <p>صور من داخل المصنع أثناء التجميع — اضغط أي صورة لتكبيرها.</p>
+      <div class="kick">OUR WORK</div>
+      <h2><span data-ar>من أعمالنا</span><span data-en-only>Our work</span></h2>
+      <p><span data-ar>صور من داخل المصنع أثناء التجميع — اضغط أي صورة لتكبيرها.</span>
+         <span data-en-only>Shots from the factory floor during assembly — tap any image to enlarge.</span></p>
     </div>
 
     <div class="gallery">
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/panel-busbar.jpg"
-                data-cap="توزيع على قضبان نحاسية بترميز الأوجه الثلاثة">
-          <img src="./img/panel-busbar.jpg" alt="قضبان توزيع نحاسية وتوصيلات الأوجه الثلاثة داخل لوحة جهد منخفض">
+        <button class="shot" type="button" data-full="./img/panel-busbar.jpg" data-cap="توزيع على قضبان نحاسية">
+          <img src="./img/panel-busbar.jpg" alt="قضبان توزيع نحاسية داخل لوحة جهد منخفض">
         </button>
-        <figcaption>توزيع على قضبان نحاسية بترميز الأوجه الثلاثة، ومفاتيح فرعية على جانبي البار الرئيسي.</figcaption>
+        <figcaption><span data-ar>توزيع على قضبان نحاسية بترميز الأوجه الثلاثة، ومفاتيح فرعية على جانبي البار الرئيسي.</span>
+          <span data-en-only>Copper busbar distribution with three-phase colour coding, outgoing breakers either side of the main bar.</span></figcaption>
       </figure>
 
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/panel-cabinet.jpg"
-                data-cap="بار رئيسي أفقي وقاطعان بأمبيرية مختلفة">
-          <img src="./img/panel-cabinet.jpg" alt="حديد لوحة جهد منخفض بقاطعين رئيسيين وبار نحاسي أفقي">
+        <button class="shot" type="button" data-full="./img/panel-cabinet.jpg" data-cap="بار رئيسي وقاطعان">
+          <img src="./img/panel-cabinet.jpg" alt="حديد لوحة جهد منخفض بقاطعين رئيسيين">
         </button>
-        <figcaption>بار رئيسي أفقي وقاطعان بأمبيرية مختلفة، مع بار أرضي أسفل الحديد.</figcaption>
+        <figcaption><span data-ar>بار رئيسي أفقي وقاطعان بأمبيرية مختلفة، مع بار أرضي أسفل الحديد.</span>
+          <span data-en-only>Horizontal main bar with two breakers of different ratings, and an earth bar along the base.</span></figcaption>
       </figure>
 
       <figure class="rise">
         <button class="shot" type="button" data-full="./img/ph-factory.svg" data-cap="داخل المصنع">
           <img src="./img/ph-factory.svg" alt="صورة داخل المصنع">
         </button>
-        <figcaption>صورة من داخل المصنع.</figcaption>
+        <figcaption><span data-ar>صورة من داخل المصنع.</span><span data-en-only>Inside the factory.</span></figcaption>
       </figure>
 
       <figure class="rise">
         <button class="shot" type="button" data-full="./img/ph-site.svg" data-cap="موقع تركيب">
           <img src="./img/ph-site.svg" alt="صورة من موقع تركيب">
         </button>
-        <figcaption>لوحة بعد التركيب والتشغيل في الموقع.</figcaption>
+        <figcaption><span data-ar>لوحة بعد التركيب والتشغيل في الموقع.</span><span data-en-only>A panel installed and commissioned on site.</span></figcaption>
       </figure>
     </div>
   </div>
 </section>
 
 <!-- ============ لماذا نحن ============ -->
-<section id="why">
+<section class="alt" id="why">
   <div class="wrap">
-    <div class="sec-head rise"><h2>لماذا الهنا اليكتريك</h2></div>
+    <div class="sec-head rise">
+      <div class="kick">WHY US</div>
+      <h2><span data-ar>لماذا الهنا اليكتريك</span><span data-en-only>Why El Hana Electric</span></h2>
+    </div>
 
     <div class="points">
       <div class="point rise">
-        <h3>تصنيع في مصنعنا</h3>
-        <p>الحديد والتجميع والتوصيل كلها عندنا في العاشر من رمضان — تقدر تزور وتشوف لوحتك وهي بتتعمل.</p>
+        <h3><span data-ar>تصنيع في مصنعنا</span><span data-en-only>Built in our own factory</span></h3>
+        <p><span data-ar>الحديد والتجميع والتوصيل كلها عندنا في العاشر من رمضان — تقدر تزور وتشوف لوحتك وهي بتتعمل.</span>
+           <span data-en-only>Enclosures, assembly and wiring are all in-house — you can visit and see your panel being built.</span></p>
       </div>
       <div class="point rise">
-        <h3>مكوّنات معروفة المصدر</h3>
-        <p>الماركات مكتوبة بالاسم في عرض السعر قبل الموافقة، فلا مفاجآت عند التسليم.</p>
+        <h3><span data-ar>مكوّنات معروفة المصدر</span><span data-en-only>Named-brand components</span></h3>
+        <p><span data-ar>الماركات مكتوبة بالاسم في عرض السعر قبل الموافقة، فلا مفاجآت عند التسليم.</span>
+           <span data-en-only>Brands are named in the quote before approval, so there are no surprises at delivery.</span></p>
       </div>
       <div class="point rise">
-        <h3>تنفيذ حسب المشروع</h3>
-        <p>الأمبيرية والمقاس ودرجة الحماية تتحدد من دراسة الأحمال، لا من كتالوج جاهز.</p>
+        <h3><span data-ar>تنفيذ حسب المشروع</span><span data-en-only>Built to the project</span></h3>
+        <p><span data-ar>الأمبيرية والمقاس ودرجة الحماية تتحدد من دراسة الأحمال، لا من كتالوج جاهز.</span>
+           <span data-en-only>Rating, size and IP class come from the load study, not from a catalogue.</span></p>
       </div>
       <div class="point rise">
-        <h3>متابعة بعد التسليم</h3>
-        <p>رسومات تنفيذية مع اللوحة، ودعم في التركيب والتشغيل وأي توسعة لاحقة.</p>
+        <h3><span data-ar>متابعة بعد التسليم</span><span data-en-only>Support after delivery</span></h3>
+        <p><span data-ar>رسومات تنفيذية مع اللوحة، ودعم في التركيب والتشغيل وأي توسعة لاحقة.</span>
+           <span data-en-only>Drawings supplied with the panel, plus support for installation, commissioning and later extensions.</span></p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ طلب عرض سعر ============ -->
+<!-- ============ عرض السعر ============ -->
 <section class="quote" id="quote">
   <div class="wrap">
     <div class="sec-head rise">
-      <h2>اطلب عرض سعر</h2>
-      <p>املأ ما تعرفه فقط — البيانات تتحوّل إلى رسالة واتساب جاهزة، وأنت من يضغط إرسال.</p>
+      <div class="kick">GET A QUOTE</div>
+      <h2><span data-ar>اطلب عرض سعر</span><span data-en-only>Request a quote</span></h2>
+      <p><span data-ar>املأ ما تعرفه فقط — البيانات تتحوّل إلى رسالة واتساب جاهزة، وأنت من يضغط إرسال.</span>
+         <span data-en-only>Fill in only what you know — it becomes a ready WhatsApp message, and you press send.</span></p>
     </div>
 
     <div class="form rise">
       <div class="field">
-        <label for="q-type">نوع اللوحة</label>
+        <label for="q-type"><span data-ar>نوع اللوحة</span><span data-en-only>Panel type</span></label>
         <select id="q-type">
           <option>لوحة توزيع رئيسية MDP</option>
           <option>لوحة توزيع فرعية</option>
@@ -642,119 +897,152 @@ footer a { color: #B9C6D2; }
           <option>لوحة تحسين معامل القدرة</option>
           <option>صناديق رايزر</option>
           <option>حوامل كابلات</option>
-          <option>غير محدد / أرفق الرسومات</option>
+          <option>غير محدد / سأرفق الرسومات</option>
         </select>
       </div>
-
       <div class="field">
-        <label for="q-amp">الأمبيرية</label>
-        <input id="q-amp" type="text" inputmode="numeric" placeholder="مثال: 1600A">
+        <label for="q-amp"><span data-ar>الأمبيرية</span><span data-en-only>Rating</span></label>
+        <input id="q-amp" type="text" placeholder="1600A">
       </div>
-
       <div class="field">
-        <label for="q-qty">العدد</label>
+        <label for="q-qty"><span data-ar>العدد</span><span data-en-only>Quantity</span></label>
         <input id="q-qty" type="number" min="1" placeholder="1">
       </div>
-
       <div class="field">
-        <label for="q-project">المشروع أو الجهة</label>
-        <input id="q-project" type="text" placeholder="مثال: مصنع أغذية — العاشر من رمضان">
+        <label for="q-project"><span data-ar>المشروع أو الجهة</span><span data-en-only>Project or company</span></label>
+        <input id="q-project" type="text" placeholder="—">
       </div>
-
       <div class="field">
-        <label for="q-name">اسمك</label>
-        <input id="q-name" type="text" placeholder="الاسم">
+        <label for="q-name"><span data-ar>اسمك</span><span data-en-only>Your name</span></label>
+        <input id="q-name" type="text" placeholder="—">
       </div>
-
       <div class="field">
-        <label for="q-phone">رقمك</label>
-        <input id="q-phone" type="tel" inputmode="tel" placeholder="01xxxxxxxxx">
+        <label for="q-phone"><span data-ar>رقمك</span><span data-en-only>Your number</span></label>
+        <input id="q-phone" type="tel" placeholder="01xxxxxxxxx">
       </div>
-
       <div class="field wide">
-        <label for="q-notes">تفاصيل إضافية</label>
-        <textarea id="q-notes" placeholder="درجة الحماية، مكان التركيب، مدة التنفيذ المطلوبة، أي ملاحظات..."></textarea>
+        <label for="q-notes"><span data-ar>تفاصيل إضافية</span><span data-en-only>Further details</span></label>
+        <textarea id="q-notes"></textarea>
       </div>
 
       <div class="form-foot">
         <button class="btn btn-brass" type="button" id="q-send">
           <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.7 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2s-1.2.3-4-1.2-4.3-4.3-4.5-4.5-1.2-1.6-1.2-3 .8-2.1 1-2.4a1 1 0 0 1 .8-.4h.6c.2 0 .4 0 .6.5l.9 2c.1.2.1.4 0 .6l-.4.6-.3.3c-.1.2-.3.3-.1.6a9 9 0 0 0 1.6 2 8 8 0 0 0 2.3 1.4c.3.2.5.1.6 0l.9-1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3a2 2 0 0 1-.1 1.1Z"/></svg>
-          أرسل على واتساب
+          <span data-ar>أرسل على واتساب</span><span data-en-only>Send on WhatsApp</span>
         </button>
-        <p class="note">لا تُحفظ بياناتك في أي مكان — الصفحة تفتح واتساب بالرسالة مكتوبة فقط.</p>
+        <p class="note"><span data-ar>لا تُحفظ بياناتك في أي مكان — الصفحة تفتح واتساب بالرسالة مكتوبة فقط.</span>
+          <span data-en-only>Nothing is stored anywhere — the page only opens WhatsApp with the message written.</span></p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ============ التواصل ============ -->
-<section class="contact" id="contact">
+<section id="contact">
   <div class="wrap">
-    <div class="sec-head rise"><h2>تواصل معنا</h2></div>
+    <div class="sec-head rise">
+      <div class="kick">CONTACT</div>
+      <h2><span data-ar>تواصل معنا</span><span data-en-only>Contact us</span></h2>
+    </div>
 
     <div class="lines">
       <div class="line rise">
-        <div class="k">المهندس أحمد التوني</div>
+        <div class="k"><span data-ar>المهندس أحمد التوني</span><span data-en-only>Eng. Ahmed El-Tony</span></div>
         <div class="v num"><a href="https://wa.me/201003769727" target="_blank" rel="noopener">+20 100 376 9727</a></div>
       </div>
-
       <div class="line rise">
-        <div class="k">المبيعات</div>
-        <div class="v num">
-          <a href="tel:+201050559450">010 5055 9450</a><br>
-          <a href="tel:+201050559451">010 5055 9451</a>
-        </div>
+        <div class="k"><span data-ar>المبيعات</span><span data-en-only>Sales</span></div>
+        <div class="v num"><a href="tel:+201050559450">010 5055 9450</a><br><a href="tel:+201050559451">010 5055 9451</a></div>
       </div>
-
       <div class="line rise">
-        <div class="k">البريد الإلكتروني</div>
+        <div class="k"><span data-ar>البريد الإلكتروني</span><span data-en-only>Email</span></div>
         <div class="v"><a href="mailto:elhanaelectric@gmail.com">elhanaelectric@gmail.com</a></div>
       </div>
-
       <div class="line rise">
-        <div class="k">العنوان</div>
-        <div class="v">مصنع رقم ١٦٤ – ١٦٥ – ١٦٨<br>منطقة الـ٦ مليون، مدينة العاشر من رمضان، الشرقية</div>
+        <div class="k"><span data-ar>العنوان</span><span data-en-only>Address</span></div>
+        <div class="v"><span data-ar>مصنع رقم ١٦٤ – ١٦٥ – ١٦٨<br>منطقة الـ٦ مليون، مدينة العاشر من رمضان، الشرقية</span>
+          <span data-en-only>Factory 164 – 165 – 168<br>6 Million Zone, 10th of Ramadan City, Sharqia</span></div>
       </div>
-
       <div class="line rise">
-        <div class="k">فيسبوك</div>
-        <div class="v"><a href="https://www.facebook.com/share/1bNzbZugSe/" target="_blank" rel="noopener">صفحة الشركة</a></div>
+        <div class="k"><span data-ar>فيسبوك</span><span data-en-only>Facebook</span></div>
+        <div class="v"><a href="https://www.facebook.com/share/1bNzbZugSe/" target="_blank" rel="noopener">
+          <span data-ar>صفحة الشركة</span><span data-en-only>Company page</span></a></div>
       </div>
-
       <div class="line rise">
-        <div class="k">مواعيد العمل</div>
-        <div class="v">السبت – الخميس، من ٩ صباحًا حتى ٥ مساءً</div>
+        <div class="k"><span data-ar>مواعيد العمل</span><span data-en-only>Working hours</span></div>
+        <div class="v"><span data-ar>السبت – الخميس، من ٩ صباحًا حتى ٥ مساءً</span>
+          <span data-en-only>Saturday – Thursday, 9:00 to 17:00</span></div>
       </div>
     </div>
   </div>
 </section>
 
-<div class="phases"><i></i><i></i><i></i></div>
-
+<!-- ============ التذييل ============ -->
 <footer>
-  <div class="wrap foot-in">
-    <span>شركة الهنا اليكتريك — تصنيع اللوحات الكهربائية والأعمال الهندسية</span>
-    <span><a href="tel:+201050559450">010 5055 9450</a></span>
+  <div class="wrap foot-grid">
+    <div class="foot-about">
+      <img src="./img/logo.png" alt="">
+      <div>
+        <div class="nm"><span data-ar>شركة الهنا اليكتريك</span><span data-en-only>El Hana Electric</span></div>
+        <p><span data-ar>تصنيع لوحات الجهد المنخفض والمتوسط والأعمال الهندسية — مدينة العاشر من رمضان، مصر.</span>
+           <span data-en-only>Low and medium voltage switchgear manufacturing and engineering works — 10th of Ramadan City, Egypt.</span></p>
+      </div>
+    </div>
+
+    <div>
+      <h4><span data-ar>المنتجات</span><span data-en-only>PRODUCTS</span></h4>
+      <ul>
+        <li><a href="#products"><span data-ar>لوحات التوزيع الرئيسية</span><span data-en-only>Main distribution</span></a></li>
+        <li><a href="#products"><span data-ar>لوحات ATS</span><span data-en-only>ATS panels</span></a></li>
+        <li><a href="#products"><span data-ar>لوحات التحكم</span><span data-en-only>Control panels</span></a></li>
+        <li><a href="#products"><span data-ar>تحسين معامل القدرة</span><span data-en-only>Power factor</span></a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4><span data-ar>الشركة</span><span data-en-only>COMPANY</span></h4>
+      <ul>
+        <li><a href="#sectors"><span data-ar>القطاعات</span><span data-en-only>Sectors</span></a></li>
+        <li><a href="#flow"><span data-ar>مراحل التنفيذ</span><span data-en-only>Process</span></a></li>
+        <li><a href="#work"><span data-ar>أعمالنا</span><span data-en-only>Our work</span></a></li>
+        <li><a href="#why"><span data-ar>لماذا نحن</span><span data-en-only>Why us</span></a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4><span data-ar>تواصل</span><span data-en-only>CONTACT</span></h4>
+      <ul>
+        <li><a href="tel:+201050559450" dir="ltr">010 5055 9450</a></li>
+        <li><a href="tel:+201050559451" dir="ltr">010 5055 9451</a></li>
+        <li><a href="mailto:elhanaelectric@gmail.com">elhanaelectric@gmail.com</a></li>
+        <li><a href="https://www.facebook.com/share/1bNzbZugSe/" target="_blank" rel="noopener">Facebook</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="wrap foot-bar">
+    <span>© <span id="yr">2026</span> <span data-ar>شركة الهنا اليكتريك</span><span data-en-only>El Hana Electric</span></span>
+    <span data-ar>مصنع ١٦٤ – ١٦٥ – ١٦٨، منطقة الـ٦ مليون، العاشر من رمضان</span>
+    <span data-en-only>Factory 164 – 165 – 168, 6 Million Zone, 10th of Ramadan</span>
   </div>
 </footer>
 
-<!-- ============ عناصر طافية ============ -->
-<a class="wa" href="https://wa.me/201003769727" target="_blank" rel="noopener" aria-label="تواصل على واتساب">
+<a class="wa" href="https://wa.me/201003769727" target="_blank" rel="noopener" aria-label="واتساب">
   <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.7 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2s-1.2.3-4-1.2-4.3-4.3-4.5-4.5-1.2-1.6-1.2-3 .8-2.1 1-2.4a1 1 0 0 1 .8-.4h.6c.2 0 .4 0 .6.5l.9 2c.1.2.1.4 0 .6l-.4.6-.3.3c-.1.2-.3.3-.1.6a9 9 0 0 0 1.6 2 8 8 0 0 0 2.3 1.4c.3.2.5.1.6 0l.9-1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3a2 2 0 0 1-.1 1.1Z"/></svg>
 </a>
 
-<button id="toTop" type="button" aria-label="العودة لأعلى">
+<button id="toTop" type="button" aria-label="أعلى">
   <svg viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"/></svg>
 </button>
 
 <div id="bar">
   <a class="call" href="tel:+201050559450">
     <svg viewBox="0 0 24 24"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.2 11 11 0 0 0 3.5.6 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11 11 0 0 0 .6 3.5 1 1 0 0 1-.3 1l-2.2 2.3Z"/></svg>
-    اتصل
+    <span data-ar>اتصل</span><span data-en-only>Call</span>
   </a>
   <a class="msg" href="https://wa.me/201003769727" target="_blank" rel="noopener">
     <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.7 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2s-1.2.3-4-1.2-4.3-4.3-4.5-4.5-1.2-1.6-1.2-3 .8-2.1 1-2.4a1 1 0 0 1 .8-.4h.6c.2 0 .4 0 .6.5l.9 2c.1.2.1.4 0 .6l-.4.6-.3.3c-.1.2-.3.3-.1.6a9 9 0 0 0 1.6 2 8 8 0 0 0 2.3 1.4c.3.2.5.1.6 0l.9-1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3a2 2 0 0 1-.1 1.1Z"/></svg>
-    واتساب
+    <span data-ar>واتساب</span><span data-en-only>WhatsApp</span>
   </a>
 </div>
 
@@ -768,110 +1056,150 @@ footer a { color: #B9C6D2; }
 (function () {
   "use strict";
 
-  var SALES = "201003769727";                 // رقم واتساب المبيعات
+  var SALES = "201003769727";
   var still = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* --------------------------------------------------------
-     شاشة التحميل
-
-     تختفي عند اكتمال التحميل، وبحدّ أقصى 2.2 ثانية مهما حدث.
-     مقدّمة جميلة تحبس الزائر خلف شاشة سوداء على شبكة بطيئة
-     ليست جميلة — هي عائق.
-     -------------------------------------------------------- */
+  /* ---------- شاشة التشغيل ---------- */
   var boot = document.getElementById("boot");
-
   function dropBoot() {
     if (!boot || boot.classList.contains("done")) return;
     boot.classList.add("done");
     document.body.classList.remove("loading");
     setTimeout(function () { if (boot.parentNode) boot.remove(); }, 600);
   }
-
-  if (still || !boot) {
-    dropBoot();
-  } else {
-    var lamps = boot.querySelectorAll(".lamp");
+  if (still || !boot) { dropBoot(); }
+  else {
     boot.classList.add("run");
-    lamps.forEach(function (l, i) { setTimeout(function () { l.classList.add("on"); }, 120 + i * 170); });
-
-    var min = new Promise(function (r) { setTimeout(r, 1250); });
+    boot.querySelectorAll(".lamp").forEach(function (l, i) {
+      setTimeout(function () { l.classList.add("on"); }, 110 + i * 165);
+    });
+    var min = new Promise(function (r) { setTimeout(r, 1200); });
     var load = new Promise(function (r) {
       if (document.readyState === "complete") r();
-      else window.addEventListener("load", r, { once: true });
+      else addEventListener("load", r, { once: true });
     });
     Promise.all([min, load]).then(dropBoot);
-    setTimeout(dropBoot, 2200);   // شبكة بطيئة: لا ننتظر إلى ما لا نهاية
+    setTimeout(dropBoot, 2200);          // شبكة بطيئة: لا ننتظر بلا حدّ
   }
 
-  /* --------------------------------------------------------
-     الظهور عند التمرير — حركة واحدة موحّدة، بتدرّج داخل المجموعة
-     -------------------------------------------------------- */
-  var rises = document.querySelectorAll(".rise");
+  /* ----------------------------------------------------------
+     اللغة
 
+     كل نص موجود بالعربية والإنجليزية داخل الصفحة، وclass على html
+     يقرّر أيهما يُعرض. لا طلب شبكة ولا ومضة عند التبديل، والصفحة
+     تعمل كاملة بلا JavaScript في اللغة الافتراضية.
+     ---------------------------------------------------------- */
+  var LS = "elhana.lang";
+  var langBtn = document.getElementById("lang");
+
+  function setLang(code) {
+    var en = code === "en";
+    document.documentElement.classList.toggle("en", en);
+    document.documentElement.setAttribute("lang", en ? "en" : "ar");
+    document.documentElement.setAttribute("dir", en ? "ltr" : "rtl");
+    try { localStorage.setItem(LS, en ? "en" : "ar"); } catch (e) {}
+  }
+
+  try { setLang(localStorage.getItem(LS) || "ar"); } catch (e) { setLang("ar"); }
+  langBtn.addEventListener("click", function () {
+    setLang(document.documentElement.classList.contains("en") ? "ar" : "en");
+  });
+
+  /* ---------- الظهور عند التمرير ---------- */
+  var rises = document.querySelectorAll(".rise");
   if (still || !("IntersectionObserver" in window)) {
     rises.forEach(function (el) { el.classList.add("in"); });
   } else {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (e) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
         if (!e.isIntersecting) return;
         var sibs = [].slice.call(e.target.parentNode.children).filter(function (n) {
           return n.classList && n.classList.contains("rise");
         });
-        var i = sibs.indexOf(e.target);
-        // سقف 5: صف من عشرة عناصر لا يجوز أن ينتظر آخره ثانية كاملة
-        e.target.style.transitionDelay = (Math.min(i, 5) * 70) + "ms";
+        // سقف على التدرّج: صف طويل لا يجوز أن ينتظر آخره ثانية كاملة
+        e.target.style.transitionDelay = (Math.min(sibs.indexOf(e.target), 5) * 70) + "ms";
         e.target.classList.add("in");
         io.unobserve(e.target);
       });
     }, { rootMargin: "0px 0px -8% 0px", threshold: .12 });
-
     rises.forEach(function (el) { io.observe(el); });
   }
 
-  /* --------------------------------------------------------
-     الترويسة: ظل عند التمرير، وشريط تقدّم القراءة،
-     وتمييز القسم الحالي في القائمة
-     -------------------------------------------------------- */
+  /* ---------- القائمة المنسدلة ---------- */
+  var pm = document.getElementById("menu-products");
+  var pmBtn = pm.querySelector("button");
+
+  function closeMega() {
+    pm.classList.remove("open");
+    pmBtn.setAttribute("aria-expanded", "false");
+  }
+  pmBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    var open = pm.classList.toggle("open");
+    pmBtn.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  document.addEventListener("click", function (e) { if (!pm.contains(e.target)) closeMega(); });
+  addEventListener("keydown", function (e) { if (e.key === "Escape") closeMega(); });
+  pm.querySelectorAll(".mega a").forEach(function (a) { a.addEventListener("click", closeMega); });
+
+  /* ---------- قائمة الموبايل ---------- */
+  var drawer = document.getElementById("drawer");
+  document.getElementById("burger").addEventListener("click", function () {
+    drawer.classList.add("open");
+    document.body.classList.add("locked");
+  });
+  function closeDrawer() {
+    drawer.classList.remove("open");
+    document.body.classList.remove("locked");
+  }
+  drawer.querySelector(".x").addEventListener("click", closeDrawer);
+  drawer.addEventListener("click", function (e) { if (e.target === drawer) closeDrawer(); });
+  drawer.querySelectorAll("a").forEach(function (a) { a.addEventListener("click", closeDrawer); });
+
+  /* ---------- شريط المنتجات ---------- */
+  var rail = document.getElementById("rail");
+  document.querySelectorAll("[data-rail]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      // في RTL يكون scrollLeft سالبًا، فنعتمد على اتجاه الصفحة لا على الإشارة
+      var rtl = !document.documentElement.classList.contains("en");
+      var step = rail.clientWidth * .8;
+      var dir = b.dataset.rail === "next" ? 1 : -1;
+      rail.scrollBy({ left: (rtl ? -dir : dir) * step, behavior: still ? "auto" : "smooth" });
+    });
+  });
+
+  /* ---------- الترويسة والتمرير ---------- */
   var top = document.getElementById("top");
   var read = document.getElementById("bar-read");
   var toTop = document.getElementById("toTop");
-  var links = [].slice.call(document.querySelectorAll("#nav a"));
+  var links = [].slice.call(document.querySelectorAll('nav.main > a[href^="#"]'));
   var secs = links.map(function (a) { return document.querySelector(a.getAttribute("href")); });
-  var ticking = false;
+  var tick = false;
 
   function onScroll() {
-    var y = window.scrollY;
-    var h = document.documentElement.scrollHeight - window.innerHeight;
-
+    var y = scrollY, h = document.documentElement.scrollHeight - innerHeight;
     top.classList.toggle("stuck", y > 8);
     if (read) read.style.width = (h > 0 ? (y / h) * 100 : 0) + "%";
     toTop.classList.toggle("show", y > 700);
-
-    var active = -1;
-    secs.forEach(function (s, i) {
-      if (s && s.getBoundingClientRect().top <= 140) active = i;
-    });
-    links.forEach(function (a, i) { a.classList.toggle("here", i === active); });
-
-    ticking = false;
+    var act = -1;
+    secs.forEach(function (s, i) { if (s && s.getBoundingClientRect().top <= 150) act = i; });
+    links.forEach(function (a, i) { a.classList.toggle("here", i === act); });
+    tick = false;
   }
-
   addEventListener("scroll", function () {
-    if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
+    if (!tick) { tick = true; requestAnimationFrame(onScroll); }
   }, { passive: true });
   onScroll();
 
   toTop.addEventListener("click", function () {
-    window.scrollTo({ top: 0, behavior: still ? "auto" : "smooth" });
+    scrollTo({ top: 0, behavior: still ? "auto" : "smooth" });
   });
 
-  /* --------------------------------------------------------
-     عارض الصور
-     -------------------------------------------------------- */
-  var lb = document.getElementById("lb");
-  var lbImg = document.getElementById("lb-img");
-  var lbCap = document.getElementById("lb-cap");
-  var opener = null;
+  /* ---------- عارض الصور ---------- */
+  var lb = document.getElementById("lb"),
+      lbImg = document.getElementById("lb-img"),
+      lbCap = document.getElementById("lb-cap"),
+      opener = null;
 
   document.querySelectorAll(".gallery button.shot").forEach(function (b) {
     b.addEventListener("click", function () {
@@ -880,56 +1208,44 @@ footer a { color: #B9C6D2; }
       lbImg.alt = b.querySelector("img").alt;
       lbCap.textContent = b.dataset.cap || "";
       lb.classList.add("open");
-      document.body.style.overflow = "hidden";
+      document.body.classList.add("locked");
       lb.querySelector(".close").focus();
     });
   });
-
   function closeLb() {
     lb.classList.remove("open");
-    document.body.style.overflow = "";
+    document.body.classList.remove("locked");
     lbImg.src = "";
-    if (opener) { opener.focus(); opener = null; }   // يعود التركيز لمكانه
+    if (opener) { opener.focus(); opener = null; }
   }
-
   lb.querySelector(".close").addEventListener("click", closeLb);
   lb.addEventListener("click", function (e) { if (e.target === lb) closeLb(); });
   addEventListener("keydown", function (e) {
     if (e.key === "Escape" && lb.classList.contains("open")) closeLb();
   });
 
-  /* --------------------------------------------------------
-     طلب عرض السعر → رسالة واتساب
-
-     لا خادم ولا قاعدة بيانات: النموذج يرتّب ما كتبه الزائر في
-     رسالة ويفتح واتساب بها. الزائر هو من يضغط إرسال، فلا تُرسل
-     بياناته دون علمه، ويصل الطلب مرتّبًا بدل "عايز عرض سعر".
-     -------------------------------------------------------- */
-  var send = document.getElementById("q-send");
-
+  /* ---------- عرض السعر → واتساب ---------- */
   function val(id) { return (document.getElementById(id).value || "").trim(); }
 
-  send.addEventListener("click", function () {
-    var rows = [
-      ["نوع اللوحة", val("q-type")],
-      ["الأمبيرية", val("q-amp")],
-      ["العدد", val("q-qty")],
-      ["المشروع / الجهة", val("q-project")],
-      ["الاسم", val("q-name")],
-      ["رقم التواصل", val("q-phone")],
-      ["تفاصيل", val("q-notes")]
-    ];
+  document.getElementById("q-send").addEventListener("click", function () {
+    var en = document.documentElement.classList.contains("en");
+    var L = en
+      ? ["Panel type", "Rating", "Quantity", "Project / company", "Name", "Phone", "Details"]
+      : ["نوع اللوحة", "الأمبيرية", "العدد", "المشروع / الجهة", "الاسم", "رقم التواصل", "تفاصيل"];
+    var v = [val("q-type"), val("q-amp"), val("q-qty"), val("q-project"),
+             val("q-name"), val("q-phone"), val("q-notes")];
 
-    var body = rows
-      .filter(function (r) { return r[1]; })      // الحقول الفارغة لا تُرسل
-      .map(function (r) { return r[0] + ": " + r[1]; })
-      .join("\n");
+    var body = L.map(function (k, i) { return v[i] ? k + ": " + v[i] : null; })
+                .filter(Boolean).join("\n");
 
-    var text = "طلب عرض سعر — من موقع الهنا اليكتريك\n\n" +
-               (body || "أرغب في عرض سعر، وسأرسل التفاصيل.");
+    var head = en ? "Quote request — from the El Hana Electric website"
+                  : "طلب عرض سعر — من موقع الهنا اليكتريك";
 
-    window.open("https://wa.me/" + SALES + "?text=" + encodeURIComponent(text), "_blank", "noopener");
+    open("https://wa.me/" + SALES + "?text=" + encodeURIComponent(head + "\n\n" + body),
+         "_blank", "noopener");
   });
+
+  document.getElementById("yr").textContent = new Date().getFullYear();
 })();
 </script>
 
