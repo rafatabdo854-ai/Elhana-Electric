@@ -274,10 +274,10 @@ html:not(.en) .hero .en-kicker { text-align: right; }
 .hero figure { margin: 0; align-self: end; }
 /* صورة رأسية في عمود نصف الشاشة تطول أكثر من اللازم وتدفع النص لأعلى،
    فنقيّد ارتفاعها ونُظهر أهم جزء منها: القضبان والقواطع أعلى اللوحة. */
-.hero figure img { width: 100%; display: block; border-radius: 3px 3px 0 0;
+.hero figure img { width: 100%; height: 520px; display: block; border-radius: 3px 3px 0 0;
                    border: 1px solid rgba(255,255,255,.14); border-bottom: 0;
-                   max-height: 560px; object-fit: cover; object-position: center 18%; }
-@media (max-width: 900px) { .hero figure img { max-height: 380px; } }
+                   object-fit: cover; object-position: center 18%; }
+@media (max-width: 900px) { .hero figure img { height: 360px; } }
 @media (max-width: 900px) {
   .hero-in { grid-template-columns: 1fr; gap: 28px; padding-block: 50px 0; }
   .hero figure { max-width: 430px; margin-inline: auto; }
@@ -325,7 +325,7 @@ section { padding-block: 72px; }
 .rail-nav svg { width: 17px; height: 17px; fill: none; stroke: var(--ink); stroke-width: 2.2; }
 @media (max-width: 720px) { .rail-nav { display: none; } }
 
-.rail { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(266px, 1fr);
+.rail { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(280px, 320px);
         gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory;
         scrollbar-width: none; padding-bottom: 6px; }
 .rail::-webkit-scrollbar { display: none; }
@@ -338,8 +338,9 @@ section { padding-block: 72px; }
 /* اللوحة الكهربائية جسم رأسي. الإطار العرضي 4/3 كان يقصّ منها شريحة
    عشوائية — ركن حديد أو قاع كابينة — وتختفي اللوحة نفسها.
    الإطار هنا رأسي، والقصّ من أعلى حيث القضبان والقواطع. */
-.item img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: center 22%;
-            display: block; transition: transform .5s var(--ease); }
+.item img { width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover;
+            object-position: center 22%; display: block;
+            transition: transform .5s var(--ease); }
 .item:hover img { transform: scale(1.045); }
 .item .body { padding: 15px 17px 18px; border-top: 3px solid var(--copper); flex: 1; }
 
@@ -415,12 +416,14 @@ html:not(.en) .step .n { text-align: right; }
 .brand:hover { border-color: var(--copper); color: var(--copper); }
 
 /* الأعمال */
-.gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(268px, 1fr)); gap: 20px; }
+.gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(268px, 1fr));
+           gap: 20px; align-items: start; }
 .gallery figure { margin: 0; background: #fff; border: 1px solid var(--line); overflow: hidden; }
 .gallery button.shot { display: block; width: 100%; padding: 0; border: 0;
                        background: var(--shell-2); cursor: zoom-in; overflow: hidden; }
-.gallery img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: center 22%;
-               display: block; transition: transform .5s var(--ease); }
+.gallery img { width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover;
+               object-position: center 22%; display: block;
+               transition: transform .5s var(--ease); }
 .gallery button.shot:hover img { transform: scale(1.05); }
 .gallery figcaption { padding: 14px 16px; font-size: .88rem; color: var(--mute);
                       border-top: 3px solid var(--copper); }
