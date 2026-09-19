@@ -379,6 +379,65 @@ html:not(.en) .picker .ab { text-align: right; }
                          letter-spacing: .08em; color: var(--copper); margin-bottom: 2px; }
 }
 
+
+/* ============================================================
+   مستكشف اللوحة — إنفوجرافيك تفاعلي على صورة حقيقية
+
+   الفكرة من المقال (إنفوجرافيك تفاعلي)، والتطبيق من الصنعة:
+   بدل رسم توضيحي مخترَع، نضع النقاط على لوحة صنعناها فعلًا.
+   الزائر يتعلّم ما بداخل اللوحة، ويرى في الوقت نفسه أننا نعرف
+   كل قطعة فيها بالاسم — وهذا ما يقنع الاستشاري.
+   ============================================================ */
+.explorer { display: grid; grid-template-columns: 1fr 1fr; gap: 34px; align-items: start; }
+@media (max-width: 900px) { .explorer { grid-template-columns: 1fr; gap: 22px; } }
+
+.xview { position: relative; border: 1px solid var(--line); background: #000; line-height: 0; }
+.xview img { width: 100%; height: auto; display: block; opacity: .92; }
+
+.hot { position: absolute; width: 34px; height: 34px; margin: -17px; padding: 0;
+       border-radius: 50%; cursor: pointer; border: 2px solid #fff;
+       background: rgba(224,165,38,.92); display: grid; place-items: center;
+       font-family: var(--display); font-weight: 700; font-size: .82rem; color: #1A1200;
+       box-shadow: 0 2px 10px rgba(0,0,0,.4); transition: transform .2s var(--ease); }
+.hot::after { content: ""; position: absolute; inset: -8px; border-radius: 50%;
+              border: 2px solid rgba(224,165,38,.6); animation: ping 2.4s var(--ease) infinite; }
+@keyframes ping { 0% { transform: scale(.7); opacity: .9; } 100% { transform: scale(1.5); opacity: 0; } }
+.hot:hover, .hot.on { transform: scale(1.18); background: #fff; }
+.hot.on::after { animation: none; border-color: #fff; }
+
+.xinfo { border: 1px solid var(--line); background: #fff; padding: 24px; }
+.xinfo .n { font-family: var(--display); font-weight: 700; font-size: .78rem;
+            letter-spacing: .14em; color: var(--copper); }
+.xinfo h3 { font-size: 1.22rem; font-weight: 600; margin-block: 8px 4px; }
+.xinfo .lat { font-family: var(--display); font-weight: 300; font-size: .74rem;
+              letter-spacing: .12em; color: var(--steel); direction: ltr; }
+html:not(.en) .xinfo .lat { text-align: right; }
+.xinfo p { font-size: .95rem; color: var(--mute); margin-block: 14px 0; }
+.xhint { font-size: .86rem; color: var(--mute); margin-top: 14px; }
+
+/* ============================================================
+   محدّد نوع اللوحة — ثلاثة أسئلة تنتهي بتوصية
+   ============================================================ */
+.quiz-box { border: 1px solid var(--line); background: #fff; }
+.qstep { padding: 26px 24px; border-bottom: 1px solid var(--line); }
+.qstep:last-child { border-bottom: 0; }
+.qstep .q { font-family: var(--display); font-weight: 600; font-size: 1.04rem; margin-bottom: 14px; }
+.qstep .q i { font-style: normal; color: var(--copper); margin-inline-end: 8px;
+              font-weight: 700; direction: ltr; }
+.opts { display: flex; flex-wrap: wrap; gap: 10px; }
+.opt { border: 1px solid var(--line); background: #fff; border-radius: 3px;
+       padding: 11px 17px; cursor: pointer; font-size: .93rem;
+       transition: border-color .18s, background .18s, color .18s; }
+.opt:hover { border-color: var(--steel); }
+.opt.on { border-color: var(--ink); background: var(--ink); color: #fff; }
+
+.qres { background: var(--ink); color: #fff; padding: 26px 24px; display: none; }
+.qres.show { display: block; }
+.qres .lead { font-size: .84rem; color: var(--brass); font-family: var(--display);
+              font-weight: 300; letter-spacing: .12em; }
+.qres h3 { font-size: 1.4rem; font-weight: 600; margin-block: 8px 6px; }
+.qres p { color: #C9D6E2; font-size: .95rem; margin-block: 10px 18px; }
+
 /* شريط الأرقام */
 .stats { background: var(--ink); color: #fff; }
 .stats .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
@@ -666,7 +725,8 @@ footer { background: var(--carbon); color: #93A0AD; font-size: .88rem; }
         </div>
       </div>
 
-      <a href="#picker"><span data-ar>أي لوحة تحتاج؟</span><span data-en-only>Which panel</span></a>
+      <a href="#explorer"><span data-ar>داخل اللوحة</span><span data-en-only>Inside</span></a>
+      <a href="#selector"><span data-ar>حدّد لوحتك</span><span data-en-only>Find yours</span></a>
       <a href="#sectors"><span data-ar>القطاعات</span><span data-en-only>Sectors</span></a>
       <a href="#flow"><span data-ar>مراحل التنفيذ</span><span data-en-only>Process</span></a>
       <a href="#work"><span data-ar>أعمالنا</span><span data-en-only>Our work</span></a>
@@ -688,6 +748,8 @@ footer { background: var(--carbon); color: #93A0AD; font-size: .88rem; }
     <div class="grp" data-ar>المنتجات</div><div class="grp" data-en-only>PRODUCTS</div>
     <a href="#products"><span data-ar>كل المنتجات</span><span data-en-only>All products</span></a>
     <div class="grp" data-ar>الشركة</div><div class="grp" data-en-only>COMPANY</div>
+    <a href="#explorer"><span data-ar>داخل اللوحة</span><span data-en-only>Inside the panel</span></a>
+    <a href="#selector"><span data-ar>حدّد لوحتك</span><span data-en-only>Find your panel</span></a>
     <a href="#sectors"><span data-ar>القطاعات</span><span data-en-only>Sectors</span></a>
     <a href="#flow"><span data-ar>مراحل التنفيذ</span><span data-en-only>Process</span></a>
     <a href="#work"><span data-ar>أعمالنا</span><span data-en-only>Our work</span></a>
@@ -866,6 +928,122 @@ footer { background: var(--carbon); color: #93A0AD; font-size: .88rem; }
              <span data-en-only>Cable routes in the required sizes, galvanised or painted to suit the environment.</span></p>
         </div>
       </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     ✏️  مستكشف اللوحة
+
+     النقاط موضوعة بالنسبة المئوية على الصورة، فتتحرك معها مهما
+     تغيّر حجم الشاشة. لتحريك نقطة: غيّر قيمتَي top و right في
+     خاصية style. لإضافة نقطة: انسخ زرًّا وأضف عنصره في القائمة
+     بنفس data-x.
+     لتبديل الصورة: بدّل src، ثم أعد ضبط النسب لتناسبها.
+     ═══════════════════════════════════════════════════════════ -->
+<section class="alt" id="explorer">
+  <div class="wrap">
+    <div class="sec-head rise">
+      <div class="kick">INSIDE THE PANEL</div>
+      <h2><span data-ar>ماذا يوجد داخل اللوحة؟</span><span data-en-only>What is inside the panel?</span></h2>
+      <p><span data-ar>لوحة من إنتاجنا. اضغط أي نقطة لتعرف ما هي القطعة ووظيفتها.</span>
+         <span data-en-only>A panel we built. Tap any point to see what the part is and what it does.</span></p>
+    </div>
+
+    <div class="explorer rise">
+      <div class="xview">
+        <img src="./img/panel-mdb.jpg" width="1200" height="1600"
+             alt="لوحة توزيع رئيسية من إنتاج الهنا اليكتريك، وعليها نقاط تفاعلية">
+
+        <button class="hot on" data-x="1" style="top:17%;right:50%" aria-label="القضبان الرئيسية">1</button>
+        <button class="hot"    data-x="2" style="top:22%;right:26%" aria-label="القواطع الخارجة">2</button>
+        <button class="hot"    data-x="3" style="top:46%;right:50%" aria-label="الخوارج">3</button>
+        <button class="hot"    data-x="4" style="top:74%;right:44%" aria-label="محوّلات التيار">4</button>
+        <button class="hot"    data-x="5" style="top:84%;right:47%" aria-label="القاطع الرئيسي">5</button>
+        <button class="hot"    data-x="6" style="top:93%;right:45%" aria-label="بار الأرضي">6</button>
+      </div>
+
+      <div>
+        <div class="xinfo" id="xinfo">
+          <div class="n" id="x-n">01</div>
+          <h3 id="x-t">القضبان الرئيسية</h3>
+          <div class="lat" id="x-l">MAIN BUSBAR</div>
+          <p id="x-p">قضبان نحاسية تحمل التيار الكامل للوحة، ومقطعها يُحسب على أقصى حمل
+            مع هامش حراري — لا يُختار من مقاس جاهز.</p>
+        </div>
+        <p class="xhint">
+          <span data-ar>الأرقام على الصورة قابلة للضغط — كل واحدة تشرح قطعة.</span>
+          <span data-en-only>The numbers on the image are clickable — each explains one part.</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     ✏️  محدّد نوع اللوحة
+
+     ثلاثة أسئلة تنتهي بتوصية تملأ نموذج عرض السعر تلقائيًا.
+     المنطق في السكربت أسفل الملف داخل قسم "محدّد نوع اللوحة".
+     ═══════════════════════════════════════════════════════════ -->
+<section id="selector">
+  <div class="wrap">
+    <div class="sec-head rise">
+      <div class="kick">PANEL SELECTOR</div>
+      <h2><span data-ar>حدّد لوحتك في ثلاث خطوات</span><span data-en-only>Find your panel in three steps</span></h2>
+      <p><span data-ar>إجابات سريعة تنتهي بتوصية مبدئية — ليست بديلًا عن دراسة الأحمال،
+        لكنها تكفي لبدء الحديث.</span>
+         <span data-en-only>Quick answers ending in an initial recommendation — not a substitute
+        for a load study, but enough to start the conversation.</span></p>
+    </div>
+
+    <div class="quiz-box rise">
+      <div class="qstep">
+        <div class="q"><i>01</i><span data-ar>أين ستُركَّب اللوحة؟</span>
+          <span data-en-only>Where will the panel sit?</span></div>
+        <div class="opts" data-q="place">
+          <button class="opt" type="button" data-v="main"><span data-ar>بعد المحوّل أو العدّاد مباشرة</span>
+            <span data-en-only>Right after the transformer or meter</span></button>
+          <button class="opt" type="button" data-v="sub"><span data-ar>تغذّي دورًا أو قسمًا</span>
+            <span data-en-only>Feeding a floor or department</span></button>
+          <button class="opt" type="button" data-v="machine"><span data-ar>عند ماكينة أو خط إنتاج</span>
+            <span data-en-only>At a machine or production line</span></button>
+          <button class="opt" type="button" data-v="light"><span data-ar>دوائر إنارة فقط</span>
+            <span data-en-only>Lighting circuits only</span></button>
+        </div>
+      </div>
+
+      <div class="qstep">
+        <div class="q"><i>02</i><span data-ar>هل عندك مولّد احتياطي؟</span>
+          <span data-en-only>Do you have a standby generator?</span></div>
+        <div class="opts" data-q="gen">
+          <button class="opt" type="button" data-v="yes"><span data-ar>نعم، والتحويل يجب أن يكون تلقائيًا</span>
+            <span data-en-only>Yes, and transfer must be automatic</span></button>
+          <button class="opt" type="button" data-v="manual"><span data-ar>نعم، والتحويل يدوي يكفي</span>
+            <span data-en-only>Yes, manual transfer is enough</span></button>
+          <button class="opt" type="button" data-v="no"><span data-ar>لا</span>
+            <span data-en-only>No</span></button>
+        </div>
+      </div>
+
+      <div class="qstep">
+        <div class="q"><i>03</i><span data-ar>هل في فاتورة الكهرباء غرامة معامل قدرة؟</span>
+          <span data-en-only>Is there a power-factor penalty on your bill?</span></div>
+        <div class="opts" data-q="pf">
+          <button class="opt" type="button" data-v="yes"><span data-ar>نعم</span><span data-en-only>Yes</span></button>
+          <button class="opt" type="button" data-v="no"><span data-ar>لا</span><span data-en-only>No</span></button>
+          <button class="opt" type="button" data-v="idk"><span data-ar>لا أعرف</span><span data-en-only>Not sure</span></button>
+        </div>
+      </div>
+
+      <div class="qres" id="qres">
+        <div class="lead"><span data-ar>التوصية المبدئية</span><span data-en-only>Initial recommendation</span></div>
+        <h3 id="qres-t"></h3>
+        <p id="qres-p"></p>
+        <button class="btn btn-brass" type="button" id="qres-go">
+          <span data-ar>اطلب عرض سعر لهذه اللوحة</span><span data-en-only>Request a quote for this panel</span>
+        </button>
+      </div>
     </div>
   </div>
 </section>
@@ -1553,6 +1731,145 @@ footer { background: var(--carbon); color: #93A0AD; font-size: .88rem; }
   lb.addEventListener("click", function (e) { if (e.target === lb) closeLb(); });
   addEventListener("keydown", function (e) {
     if (e.key === "Escape" && lb.classList.contains("open")) closeLb();
+  });
+
+
+  /* ----------------------------------------------------------
+     مستكشف اللوحة
+
+     الشروح هنا في JavaScript لا في HTML لأنها تتبدّل في مكان
+     واحد بالضغط. أضف عنصرًا للمصفوفة وزرًّا في الصورة بنفس الرقم.
+     ---------------------------------------------------------- */
+  var PARTS = {
+    "1": {
+      ar: ["القضبان الرئيسية", "MAIN BUSBAR",
+           "قضبان نحاسية تحمل التيار الكامل للوحة، ومقطعها يُحسب على أقصى حمل مع هامش حراري — لا يُختار من مقاس جاهز."],
+      en: ["Main busbar", "MAIN BUSBAR",
+           "Copper bars carrying the full current of the panel. The cross-section is calculated from peak load with a thermal margin — never picked off a shelf."]
+    },
+    "2": {
+      ar: ["القواطع الخارجة", "OUTGOING BREAKERS",
+           "كل قاطع يغذّي دائرة أو لوحة فرعية، وأمبيريته تُختار لتفصل قبل الكابل الذي يحميه."],
+      en: ["Outgoing breakers", "OUTGOING BREAKERS",
+           "Each breaker feeds a circuit or a sub-board, rated to trip before the cable it protects."]
+    },
+    "3": {
+      ar: ["الخوارج وترميز الأوجه", "PHASE-CODED LINKS",
+           "أحمر وأصفر وأزرق: ترميز الأوجه الثلاثة. توزيع الأحمال عليها بالتساوي يمنع تحميل وجه أكثر من غيره."],
+      en: ["Phase-coded links", "PHASE-CODED LINKS",
+           "Red, yellow and blue mark the three phases. Balancing loads across them keeps one phase from carrying more than its share."]
+    },
+    "4": {
+      ar: ["محوّلات التيار", "CURRENT TRANSFORMERS",
+           "تقيس التيار المار وتغذّي أجهزة القياس على الباب. بدونها لا تعرف حملك الحقيقي، ولا تُحسب غرامة معامل القدرة."],
+      en: ["Current transformers", "CURRENT TRANSFORMERS",
+           "They measure the passing current and feed the meters on the door. Without them you cannot know your real load."]
+    },
+    "5": {
+      ar: ["القاطع الرئيسي", "MAIN BREAKER",
+           "يفصل اللوحة كلها. أمبيريته وقدرته على القطع تُحسبان من تيار القصر المتوقّع في هذه النقطة من الشبكة."],
+      en: ["Main breaker", "MAIN BREAKER",
+           "Isolates the whole panel. Its rating and breaking capacity come from the prospective short-circuit current at this point."]
+    },
+    "6": {
+      ar: ["بار الأرضي", "EARTH BAR",
+           "يربط جسم اللوحة وكل الأجزاء المعدنية بالأرضي. هو ما يجعل لمس اللوحة آمنًا عند حدوث عطل."],
+      en: ["Earth bar", "EARTH BAR",
+           "Bonds the enclosure and every metal part to earth. It is what makes touching the panel safe when a fault occurs."]
+    }
+  };
+
+  var hots = document.querySelectorAll(".hot");
+  var xn = document.getElementById("x-n"), xt = document.getElementById("x-t"),
+      xl = document.getElementById("x-l"), xp = document.getElementById("x-p");
+
+  function showPart(k) {
+    var en = document.documentElement.classList.contains("en");
+    var d = PARTS[k][en ? "en" : "ar"];
+    xn.textContent = "0" + k;
+    xt.textContent = d[0]; xl.textContent = d[1]; xp.textContent = d[2];
+    hots.forEach(function (h) { h.classList.toggle("on", h.dataset.x === k); });
+  }
+  hots.forEach(function (h) { h.addEventListener("click", function () { showPart(h.dataset.x); }); });
+  showPart("1");
+
+  /* ----------------------------------------------------------
+     محدّد نوع اللوحة
+
+     المنطق مرتّب بالأولوية: الحاجة الأشد إلحاحًا تُقترح أولًا.
+     المولّد يسبق كل شيء لأن غيابه يوقف الإنتاج، ثم موقع اللوحة،
+     ثم تحسين معامل القدرة كإضافة لا كبديل.
+     ---------------------------------------------------------- */
+  var pick = { place: null, gen: null, pf: null };
+
+  var RESULT = {
+    ats:   { ar: ["لوحة تغذية احتياطية ATS", "عندك مولّد والتحويل يجب أن يكون تلقائيًا — هذه اللوحة تنقل الحمل بين الشبكة والمولّد دون تدخل. تُركَّب قبل لوحة التوزيع الرئيسية أو بجوارها."],
+             en: ["ATS panel", "You have a generator and transfer must be automatic — this panel moves the load between grid and generator with no human involved. It sits before or beside the main board."],
+             opt: "لوحة تغذية احتياطية ATS" },
+    main:  { ar: ["لوحة توزيع رئيسية MDB", "اللوحة الأولى بعد المحوّل أو العدّاد، ومنها تتفرّع الشبكة كلها. مقطع القضبان وأمبيرية القاطع الرئيسي يُحسبان من إجمالي الحمل."],
+             en: ["Main distribution panel (MDB)", "The first board after the transformer or meter; the whole network branches from it. Busbar section and main breaker rating come from total load."],
+             opt: "لوحة توزيع رئيسية MDP" },
+    sub:   { ar: ["لوحة توزيع فرعية SMDB", "تغذّي دورًا أو قسمًا وتتفرّع من اللوحة الرئيسية. تعزل عطل القسم عن باقي المنشأة."],
+             en: ["Sub-distribution panel (SMDB)", "Feeds a floor or department from the main board, and isolates a fault in that area from the rest of the site."],
+             opt: "لوحة توزيع فرعية" },
+    ctrl:  { ar: ["لوحة تحكم", "تدير تشغيل الماكينة أو الخط وتوقيته وحمايته، بمنطق تقليدي أو عبر PLC حسب ما يطلبه التشغيل."],
+             en: ["Control panel", "Runs the machine or line — its sequencing, timing and protection — hard-wired or PLC-based as operation requires."],
+             opt: "لوحة تحكم" },
+    light: { ar: ["لوحة إنارة", "توزّع دوائر الإنارة، مع تحكم بالمجموعات أو بمؤقّت عند الحاجة."],
+             en: ["Lighting panel", "Distributes lighting circuits, with group or timer control where needed."],
+             opt: "لوحة إنارة" }
+  };
+
+  var PF_NOTE = {
+    ar: " وبما أن فاتورتك بها غرامة معامل قدرة، ننصح بلوحة تحسين معامل قدرة بجوارها — غالبًا تسترد تكلفتها من وفر الفاتورة.",
+    en: " Since your bill carries a power-factor penalty, we also suggest a correction panel alongside it — it usually pays for itself from the bill saving."
+  };
+
+  var qres = document.getElementById("qres"),
+      qresT = document.getElementById("qres-t"),
+      qresP = document.getElementById("qres-p");
+  var chosen = null;
+
+  function decide() {
+    if (!pick.place || !pick.gen || !pick.pf) return;   // لا نوصي قبل اكتمال الصورة
+
+    var key;
+    if (pick.gen === "yes" && (pick.place === "main" || pick.place === "sub")) key = "ats";
+    else if (pick.place === "main") key = "main";
+    else if (pick.place === "sub") key = "sub";
+    else if (pick.place === "machine") key = "ctrl";
+    else key = "light";
+
+    chosen = RESULT[key];
+    var en = document.documentElement.classList.contains("en");
+    var d = chosen[en ? "en" : "ar"];
+
+    qresT.textContent = d[0];
+    qresP.textContent = d[1] + (pick.pf === "yes" ? PF_NOTE[en ? "en" : "ar"] : "");
+    qres.classList.add("show");
+    qres.scrollIntoView({ behavior: still ? "auto" : "smooth", block: "nearest" });
+  }
+
+  document.querySelectorAll(".opts").forEach(function (group) {
+    group.querySelectorAll(".opt").forEach(function (b) {
+      b.addEventListener("click", function () {
+        group.querySelectorAll(".opt").forEach(function (o) { o.classList.remove("on"); });
+        b.classList.add("on");
+        pick[group.dataset.q] = b.dataset.v;
+        decide();
+      });
+    });
+  });
+
+  // التوصية تملأ النموذج: الزائر لا يعيد كتابة ما اختاره للتوّ
+  document.getElementById("qres-go").addEventListener("click", function () {
+    if (chosen) {
+      var sel = document.getElementById("q-type");
+      for (var i = 0; i < sel.options.length; i++) {
+        if (sel.options[i].text === chosen.opt) { sel.selectedIndex = i; break; }
+      }
+    }
+    document.getElementById("quote").scrollIntoView({ behavior: still ? "auto" : "smooth" });
   });
 
   /* ---------- عرض السعر → واتساب ---------- */
