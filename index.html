@@ -540,6 +540,23 @@ html:not(.en) .step .n { text-align: right; }
          letter-spacing: .04em; direction: ltr; transition: border-color .2s, color .2s; }
 .brand:hover { border-color: var(--copper); color: var(--copper); }
 
+/* العملاء — شريط متحرك تلقائيًا، يتوقف عند تمرير الفأرة أو اللمس */
+.marquee { position: relative; overflow: hidden; width: 100%;
+           -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+           mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+.marquee-track { display: flex; align-items: center; gap: 14px; width: max-content;
+                 animation: scrollX 34s linear infinite; }
+.marquee:hover .marquee-track, .marquee:focus-within .marquee-track { animation-play-state: paused; }
+@keyframes scrollX { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.client { flex: none; border: 1px solid var(--line); background: #fff; padding: 13px 26px;
+          font-family: var(--display); font-weight: 500; font-size: .92rem; color: var(--ink); white-space: nowrap; }
+.client small { display: block; font-weight: 300; font-size: .72rem; color: var(--mute); margin-top: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  .marquee { overflow-x: auto; }
+  .marquee-track { animation: none; width: auto; flex-wrap: wrap; }
+  .marquee-track [aria-hidden="true"] { display: none; }
+}
+
 /* الأعمال */
 .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(268px, 1fr));
            gap: 20px; align-items: start; }
@@ -1649,6 +1666,49 @@ setTimeout(function () {
         <p><span data-ar>رسومات تنفيذية مع اللوحة، ودعم في التركيب والتشغيل وأي توسعة لاحقة.</span>
            <span data-en-only>Drawings supplied with the panel, plus support for installation, commissioning and later extensions.</span></p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     ✏️  عملاؤنا — شريط متحرك تلقائيًا
+
+     كل اسم داخل <span class="client">. القائمة مكرّرة مرتين
+     بالظبط (نفس الترتيب) عشان الحركة تلف من غير قطعة — لو
+     أضفت اسمًا، أضفه في المجموعتين معًا وبنفس الترتيب.
+     المجموعة الثانية عليها aria-hidden="true" لأنها تكرار
+     بصري فقط، وقارئ الشاشة يكتفي بالأولى.
+     ═══════════════════════════════════════════════════════════ -->
+<!-- ============ العملاء ============ -->
+<section id="clients">
+  <div class="wrap">
+    <div class="sec-head rise">
+      <div class="kick">TRUSTED BY</div>
+      <h2><span data-ar>من عملائنا</span><span data-en-only>Companies that work with us</span></h2>
+      <p><span data-ar>من بين عملاء تعاملنا معهم على مدى السنوات الماضية.</span>
+         <span data-en-only>Among the companies we have worked with over the years.</span></p>
+    </div>
+  </div>
+  <div class="marquee rise">
+    <div class="marquee-track">
+      <span class="client">حسن علام<small>مشروع الضبعة النووي</small></span>
+      <span class="client">السويدي للأدوات الصحية<small>ريتزي</small></span>
+      <span class="client">محمود محمد فريد رستم وشركاه<small>كليك ATS</small></span>
+      <span class="client">سيراميكا روندي<small>بني سويف</small></span>
+      <span class="client">السونيا تكس</span>
+      <span class="client">فايبر ون</span>
+      <span class="client">اغابي لصناعة الكرتون</span>
+      <span class="client">ماستر لاين للمنسوجات</span>
+      <span class="client">قطونيل</span>
+      <span class="client" aria-hidden="true">حسن علام<small>مشروع الضبعة النووي</small></span>
+      <span class="client" aria-hidden="true">السويدي للأدوات الصحية<small>ريتزي</small></span>
+      <span class="client" aria-hidden="true">محمود محمد فريد رستم وشركاه<small>كليك ATS</small></span>
+      <span class="client" aria-hidden="true">سيراميكا روندي<small>بني سويف</small></span>
+      <span class="client" aria-hidden="true">السونيا تكس</span>
+      <span class="client" aria-hidden="true">فايبر ون</span>
+      <span class="client" aria-hidden="true">اغابي لصناعة الكرتون</span>
+      <span class="client" aria-hidden="true">ماستر لاين للمنسوجات</span>
+      <span class="client" aria-hidden="true">قطونيل</span>
     </div>
   </div>
 </section>
