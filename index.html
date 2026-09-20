@@ -319,6 +319,17 @@ html:not(.en) #drawer .panel { transform: translateX(100%); }
   mask-image: radial-gradient(ellipse 80% 70% at 70% 30%, #000 30%, transparent 78%); }
 .hero-in { position: relative; display: grid; grid-template-columns: 1.02fr .98fr;
            gap: 48px; align-items: center; padding-block: 78px 0; }
+
+/* القسم مالوش مسافة سفلية عن قصد: الصورة بتلزق في حافته. لكن عمود
+   النص لو طال أكتر من الصورة — وده بيحصل في النسخة الإنجليزية لأن
+   العنوان بيتلف على أربع سطور — الأزرار بتلزق في الحافة وتتقصّ.
+   فالمسافة السفلية دي على عمود النص وحده، والصورة تفضل ملزوقة. */
+.hero-in > div:first-child { padding-bottom: 46px; }
+@media (max-width: 900px) { .hero-in > div:first-child { padding-bottom: 0; } }
+
+/* الإنجليزية أطول من العربية في نفس المساحة، فنخفّض سقف حجم العنوان
+   شوية عشان يفضل في حدود سطرين أو تلاتة */
+html.en .hero h1 { font-size: clamp(1.85rem, 4.2vw, 2.7rem); }
 .hero h1 { font-size: clamp(1.95rem, 5vw, 3.15rem); font-weight: 600; letter-spacing: -.01em; }
 .hero .lede { font-size: clamp(1rem, 2.3vw, 1.13rem); font-weight: 300; color: #C9D6E2;
               margin-block: 18px 28px; max-width: 46ch; }
