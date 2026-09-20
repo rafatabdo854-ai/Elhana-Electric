@@ -78,8 +78,10 @@
      يترك فراغًا في أعلى الصفحة -->
 <link rel="preload" as="image" href="./img/panel-busbar.jpg" fetchpriority="high">
 
-<link rel="icon" href="./img/logo.png">
-<link rel="apple-touch-icon" href="./img/logo.png">
+<link rel="icon" href="./img/logo.png"><link rel="apple-touch-icon" href="./img/logo.png">
+
+<!-- لو الجافاسكربت متوقّف في متصفح الزائر، شاشة التشغيل متظهرش أصلًا -->
+<noscript><style>#boot { display: none !important; } body.loading { overflow: auto !important; }</style></noscript>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -723,6 +725,22 @@ footer { background: var(--carbon); color: #93A0AD; font-size: .88rem; }
   <div class="bus"><span></span></div>
   <div class="cap">EL HANA ELECTRIC</div>
 </div>
+
+<script>
+/* شبكة أمان مستقلة لشاشة التشغيل.
+
+   السكربت الرئيسي أسفل الصفحة بيشيل الشاشة دي بعد ما الصفحة تحمّل.
+   لكن لو حصل أي خطأ فيه، أو اتأخر تحميل مورد خارجي (الخطوط مثلًا،
+   وبعض المتصفحات بتحجبها)، الشاشة بتفضل واقفة والزائر ميشوفش حاجة.
+
+   الكود ده منفصل تمامًا عن السكربت الرئيسي، فحتى لو ده وقع، الشاشة
+   بتختفي بعد ثانيتين ونصف على أقصى تقدير. متمسحوش. */
+setTimeout(function () {
+  var b = document.getElementById("boot");
+  if (b) { b.classList.add("done"); }
+  document.body.classList.remove("loading");
+}, 2500);
+</script>
 
 <!-- ============ شريط علوي ============ -->
 <!-- ═══════════════════════════════════════════════════════════
@@ -1864,15 +1882,4 @@ footer { background: var(--carbon); color: #93A0AD; font-size: .88rem; }
   showPart("1");
 
   /* ----------------------------------------------------------
-     محدّد نوع اللوحة
-
-     المنطق مرتّب بالأولوية: الحاجة الأشد إلحاحًا تُقترح أولًا.
-     المولّد يسبق كل شيء لأن غيابه يوقف الإنتاج، ثم موقع اللوحة،
-     ثم تحسين معامل القدرة كإضافة لا كبديل.
-     ---------------------------------------------------------- */
-  var pick = { place: null, gen: null, pf: null };
-
-  var RESULT = {
-    ats:   { ar: ["لوحة تغذية احتياطية ATS", "عندك مولّد والتحويل يجب أن يكون تلقائيًا — هذه اللوحة تنقل الحمل بين الشبكة والمولّد دون تدخل. تُركَّب قبل لوحة التوزيع الرئيسية أو بجوارها."],
-             en: ["ATS panel", "You have a generator and transfer must be automatic — this panel moves the load between grid and generator with no human involved. It sits before or beside the main board."],
-      
+ 
