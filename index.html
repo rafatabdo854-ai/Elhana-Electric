@@ -34,6 +34,46 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
+
+<!-- ✏️  مُبلّغ الأخطاء — أداة تشخيص مؤقتة
+
+     مش بيشتغل إلا لو فتحت الرابط كده:
+       https://elhana.pages.dev/?debug=1
+
+     ساعتها لو في خطأ جافاسكربت أو مورد خارجي متحجوب، هيظهر شريط
+     أحمر فوق الصفحة مكتوب فيه الخطأ ورقم السطر. الزائر العادي
+     عمره ما يشوفه. تقدر تمسح الكتلة دي كلها بعد ما نخلص تشخيص. -->
+<script>
+(function () {
+  if (location.search.indexOf("debug=1") < 0) return;
+  var box;
+  function say(t) {
+    if (!box) {
+      box = document.createElement("div");
+      box.setAttribute("style", "position:fixed;left:0;right:0;top:0;z-index:99999;" +
+        "background:#B00020;color:#fff;font:12px/1.5 monospace;padding:10px;" +
+        "direction:ltr;text-align:left;white-space:pre-wrap;max-height:60vh;overflow:auto");
+      (document.body || document.documentElement).appendChild(box);
+    }
+    box.textContent += t + "\n\n";
+  }
+  addEventListener("error", function (e) {
+    var el = e.target;
+    if (el && el !== window && (el.src || el.href)) {
+      say("BLOCKED / FAILED RESOURCE:\n" + (el.src || el.href));
+    } else {
+      say("JS ERROR: " + (e.message || "") + "\nline " + (e.lineno || "?") +
+          " col " + (e.colno || "?") + "\n" + (e.filename || ""));
+    }
+  }, true);
+  addEventListener("unhandledrejection", function (e) { say("PROMISE ERROR: " + e.reason); });
+  addEventListener("DOMContentLoaded", function () {
+    say("reduced-motion = " + matchMedia("(prefers-reduced-motion: reduce)").matches +
+        "\nlocalStorage = " + (function () { try { localStorage.setItem("t", "1"); return "ok"; }
+                                            catch (e) { return "BLOCKED"; } })());
+  });
+})();
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>شركة الهنا اليكتريك | تصنيع اللوحات الكهربائية — العاشر من رمضان</title>
 
@@ -43,11 +83,11 @@
 <!-- ✏️  توجيه محرّكات البحث: فهرسة كاملة + السماح بصورة كبيرة في النتيجة -->
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
-<link rel="canonical" href="https://elhana-electric.pages.dev/">
+<link rel="canonical" href="https://elhana.pages.dev/">
 
 <!-- ✏️  إثبات ملكية الموقع في Google Search Console
      ادخل search.google.com/search-console ← أضف موقع ← اختر
-     URL prefix وحط https://elhana-electric.pages.dev/ ← اختر طريقة
+     URL prefix وحط https://elhana.pages.dev/ ← اختر طريقة
      "HTML tag" ← جوجل هيديك سطر زي اللي تحت بالظبط.
      احذف علامتي التعليق من حول السطر التالي، وحط الكود اللي
      جوجل أداهولك مكان الكلام اللي بين علامتي التنصيص. -->
@@ -59,11 +99,11 @@
      مثل ./img/... لا تقرأه واتساب ولا فيسبوك، فتظهر البطاقة
      بلا صورة. لو غيّرت رابط الموقع، غيّر العنوانين أدناه. -->
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://elhana-electric.pages.dev/">
+<meta property="og:url" content="https://elhana.pages.dev/">
 <meta property="og:site_name" content="El Hana Electric">
 <meta property="og:title" content="شركة الهنا اليكتريك — تصنيع اللوحات الكهربائية">
 <meta property="og:description" content="لوحات التوزيع والتحكم والتغذية الاحتياطية للجهد المنخفض والمتوسط — مصنع بمدينة العاشر من رمضان.">
-<meta property="og:image" content="https://elhana-electric.pages.dev/img/panel-busbar.jpg">
+<meta property="og:image" content="https://elhana.pages.dev/img/panel-busbar.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="1600">
 <meta property="og:locale" content="ar_EG">
@@ -72,7 +112,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="شركة الهنا اليكتريك">
 <meta name="twitter:description" content="تصنيع اللوحات الكهربائية والأعمال الهندسية.">
-<meta name="twitter:image" content="https://elhana-electric.pages.dev/img/panel-busbar.jpg">
+<meta name="twitter:image" content="https://elhana.pages.dev/img/panel-busbar.jpg">
 
 <!-- صورة الواجهة تُحمَّل أولًا: هي أول ما يُرى، وتحميلها المتأخر
      يترك فراغًا في أعلى الصفحة -->
@@ -633,7 +673,7 @@ footer { background: var(--carbon); color: #93A0AD; font-size: .88rem; }
 {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "@id": "https://elhana-electric.pages.dev/#business",
+  "@id": "https://elhana.pages.dev/#business",
   "name": "شركة الهنا اليكتريك",
   "alternateName": [
     "الهنا اليكتريك",
@@ -647,9 +687,9 @@ footer { background: var(--carbon); color: #93A0AD; font-size: .88rem; }
   ],
   "legalName": "شركة الهنا اليكتريك لتصنيع اللوحات الكهربائية والأعمال الهندسية",
   "description": "تصنيع لوحات التوزيع والتحكم والتغذية الاحتياطية للجهد المنخفض والمتوسط، والأعمال الهندسية.",
-  "url": "https://elhana-electric.pages.dev/",
-  "logo": "https://elhana-electric.pages.dev/img/logo.png",
-  "image": "https://elhana-electric.pages.dev/img/panel-busbar.jpg",
+  "url": "https://elhana.pages.dev/",
+  "logo": "https://elhana.pages.dev/img/logo.png",
+  "image": "https://elhana.pages.dev/img/panel-busbar.jpg",
   "email": "elhanaelectric@gmail.com",
   "telephone": "+201050559450",
   "address": {
@@ -697,7 +737,7 @@ footer { background: var(--carbon); color: #93A0AD; font-size: .88rem; }
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@id": "https://elhana-electric.pages.dev/#business",
+  "@id": "https://elhana.pages.dev/#business",
   "geo": { "@type": "GeoCoordinates", "latitude": "0.000000", "longitude": "0.000000" }
 }
 </script>
@@ -708,12 +748,12 @@ footer { background: var(--carbon); color: #93A0AD; font-size: .88rem; }
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "@id": "https://elhana-electric.pages.dev/#website",
-  "url": "https://elhana-electric.pages.dev/",
+  "@id": "https://elhana.pages.dev/#website",
+  "url": "https://elhana.pages.dev/",
   "name": "شركة الهنا اليكتريك",
   "alternateName": ["El Hana Electric", "الهنا إليكتريك"],
   "inLanguage": "ar-EG",
-  "publisher": { "@id": "https://elhana-electric.pages.dev/#business" }
+  "publisher": { "@id": "https://elhana.pages.dev/#business" }
 }
 </script>
 </head>
@@ -1854,33 +1894,4 @@ setTimeout(function () {
     "3": {
       ar: ["الخوارج وترميز الأوجه", "PHASE-CODED LINKS",
            "أحمر وأصفر وأزرق: ترميز الأوجه الثلاثة. توزيع الأحمال عليها بالتساوي يمنع تحميل وجه أكثر من غيره."],
-      en: ["Phase-coded links", "PHASE-CODED LINKS",
-           "Red, yellow and blue mark the three phases. Balancing loads across them keeps one phase from carrying more than its share."]
-    },
-    "4": {
-      ar: ["محوّلات التيار", "CURRENT TRANSFORMERS",
-           "تقيس التيار المار وتغذّي أجهزة القياس على الباب. بدونها لا تعرف حملك الحقيقي، ولا تُحسب غرامة معامل القدرة."],
-      en: ["Current transformers", "CURRENT TRANSFORMERS",
-           "They measure the passing current and feed the meters on the door. Without them you cannot know your real load."]
-    },
-    "5": {
-      ar: ["القاطع الرئيسي", "MAIN BREAKER",
-           "يفصل اللوحة كلها. أمبيريته وقدرته على القطع تُحسبان من تيار القصر المتوقّع في هذه النقطة من الشبكة."],
-      en: ["Main breaker", "MAIN BREAKER",
-           "Isolates the whole panel. Its rating and breaking capacity come from the prospective short-circuit current at this point."]
-    },
-    "6": {
-      ar: ["بار الأرضي", "EARTH BAR",
-           "يربط جسم اللوحة وكل الأجزاء المعدنية بالأرضي. هو ما يجعل لمس اللوحة آمنًا عند حدوث عطل."],
-      en: ["Earth bar", "EARTH BAR",
-           "Bonds the enclosure and every metal part to earth. It is what makes touching the panel safe when a fault occurs."]
-    }
-  };
-
-  var hots = document.querySelectorAll(".hot");
-  var xn = document.getElementById("x-n"), xt = document.getElementById("x-t"),
-      xl = document.getElementById("x-l"), xp = document.getElementById("x-p");
-
-  function showPart(k) {
-    var en = document.documentElement.classList.contains("en");
-    va
+      en: ["Phase-co
