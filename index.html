@@ -199,15 +199,23 @@ html:not(.en) [data-en-only] { display: none; }
 #boot .lamps { display: flex; gap: 15px; }
 #boot .lamp { width: 14px; height: 14px; border-radius: 50%;
               background: rgba(255,255,255,.14); box-shadow: inset 0 0 0 1px rgba(255,255,255,.2); }
-#boot .lamp.on { animation: lampOn .45s var(--ease) forwards; }
-#boot .lamp:nth-child(1).on { --c: var(--phase-r); }
-#boot .lamp:nth-child(2).on { --c: var(--phase-y); }
-#boot .lamp:nth-child(3).on { --c: var(--phase-b); }
-@keyframes lampOn { to { background: var(--c); box-shadow: 0 0 16px var(--c), inset 0 0 0 1px var(--c); } }
+
+/* ✏️  لمبات شاشة التشغيل — ترمز لأوجه الكهرباء الثلاثة: أحمر وأصفر وأزرق.
+
+       الحركة هنا CSS خالص: كل لمبة لها keyframes بلون صريح وتأخير خاص
+       بيها، من غير سكربت ومن غير متغيّرات. لتغيير سرعة التتابع غيّر
+       أرقام التأخير (.16s / .36s / .56s) — وخلي بالك إن شاشة التشغيل
+       بتقفل بعد 1700 مللي، فالتتابع لازم يخلص قبلها. */
+#boot .lamp:nth-child(1) { animation: lampR .45s cubic-bezier(.22,.61,.36,1) .16s forwards; }
+#boot .lamp:nth-child(2) { animation: lampY .45s cubic-bezier(.22,.61,.36,1) .36s forwards; }
+#boot .lamp:nth-child(3) { animation: lampB .45s cubic-bezier(.22,.61,.36,1) .56s forwards; }
+@keyframes lampR { to { background: #C8342B; box-shadow: 0 0 16px #C8342B, inset 0 0 0 1px #C8342B; } }
+@keyframes lampY { to { background: #E3B23C; box-shadow: 0 0 16px #E3B23C, inset 0 0 0 1px #E3B23C; } }
+@keyframes lampB { to { background: #2E5FA3; box-shadow: 0 0 16px #2E5FA3, inset 0 0 0 1px #2E5FA3; } }
 #boot .bus { width: min(230px, 58vw); height: 3px; background: rgba(255,255,255,.14); overflow: hidden; }
 #boot .bus span { display: block; height: 100%; width: 0;
                   background: linear-gradient(90deg, var(--copper), #C98046, var(--brass)); }
-#boot.run .bus span { animation: busFill .9s .3s var(--ease) forwards; }
+#boot .bus span { animation: busFill .9s .3s cubic-bezier(.22,.61,.36,1) forwards; }
 @keyframes busFill { to { width: 100%; } }
 #boot .cap { font-family: var(--display); font-weight: 300; font-size: .72rem;
              letter-spacing: .3em; color: #8FA6BB; direction: ltr; }
@@ -1895,4 +1903,151 @@ setTimeout(function () {
       ar: ["القواطع الخارجة", "OUTGOING BREAKERS",
            "كل قاطع يغذّي دائرة أو لوحة فرعية، وأمبيريته تُختار لتفصل قبل الكابل الذي يحميه."],
       en: ["Outgoing breakers", "OUTGOING BREAKERS",
-           
+           "Each breaker feeds a circuit or a sub-board, rated to trip before the cable it protects."]
+    },
+    "3": {
+      ar: ["الخوارج وترميز الأوجه", "PHASE-CODED LINKS",
+           "أحمر وأصفر وأزرق: ترميز الأوجه الثلاثة. توزيع الأحمال عليها بالتساوي يمنع تحميل وجه أكثر من غيره."],
+      en: ["Phase-coded links", "PHASE-CODED LINKS",
+           "Red, yellow and blue mark the three phases. Balancing loads across them keeps one phase from carrying more than its share."]
+    },
+    "4": {
+      ar: ["محوّلات التيار", "CURRENT TRANSFORMERS",
+           "تقيس التيار المار وتغذّي أجهزة القياس على الباب. بدونها لا تعرف حملك الحقيقي، ولا تُحسب غرامة معامل القدرة."],
+      en: ["Current transformers", "CURRENT TRANSFORMERS",
+           "They measure the passing current and feed the meters on the door. Without them you cannot know your real load."]
+    },
+    "5": {
+      ar: ["القاطع الرئيسي", "MAIN BREAKER",
+           "يفصل اللوحة كلها. أمبيريته وقدرته على القطع تُحسبان من تيار القصر المتوقّع في هذه النقطة من الشبكة."],
+      en: ["Main breaker", "MAIN BREAKER",
+           "Isolates the whole panel. Its rating and breaking capacity come from the prospective short-circuit current at this point."]
+    },
+    "6": {
+      ar: ["بار الأرضي", "EARTH BAR",
+           "يربط جسم اللوحة وكل الأجزاء المعدنية بالأرضي. هو ما يجعل لمس اللوحة آمنًا عند حدوث عطل."],
+      en: ["Earth bar", "EARTH BAR",
+           "Bonds the enclosure and every metal part to earth. It is what makes touching the panel safe when a fault occurs."]
+    }
+  };
+
+  var hots = document.querySelectorAll(".hot");
+  var xn = document.getElementById("x-n"), xt = document.getElementById("x-t"),
+      xl = document.getElementById("x-l"), xp = document.getElementById("x-p");
+
+  function showPart(k) {
+    var en = document.documentElement.classList.contains("en");
+    var d = PARTS[k][en ? "en" : "ar"];
+    xn.textContent = "0" + k;
+    xt.textContent = d[0]; xl.textContent = d[1]; xp.textContent = d[2];
+    hots.forEach(function (h) { h.classList.toggle("on", h.dataset.x === k); });
+  }
+  hots.forEach(function (h) { h.addEventListener("click", function () { showPart(h.dataset.x); }); });
+  showPart("1");
+
+  /* ----------------------------------------------------------
+     محدّد نوع اللوحة
+
+     المنطق مرتّب بالأولوية: الحاجة الأشد إلحاحًا تُقترح أولًا.
+     المولّد يسبق كل شيء لأن غيابه يوقف الإنتاج، ثم موقع اللوحة،
+     ثم تحسين معامل القدرة كإضافة لا كبديل.
+     ---------------------------------------------------------- */
+  var pick = { place: null, gen: null, pf: null };
+
+  var RESULT = {
+    ats:   { ar: ["لوحة تغذية احتياطية ATS", "عندك مولّد والتحويل يجب أن يكون تلقائيًا — هذه اللوحة تنقل الحمل بين الشبكة والمولّد دون تدخل. تُركَّب قبل لوحة التوزيع الرئيسية أو بجوارها."],
+             en: ["ATS panel", "You have a generator and transfer must be automatic — this panel moves the load between grid and generator with no human involved. It sits before or beside the main board."],
+             opt: "لوحة تغذية احتياطية ATS" },
+    main:  { ar: ["لوحة توزيع رئيسية MDB", "اللوحة الأولى بعد المحوّل أو العدّاد، ومنها تتفرّع الشبكة كلها. مقطع القضبان وأمبيرية القاطع الرئيسي يُحسبان من إجمالي الحمل."],
+             en: ["Main distribution panel (MDB)", "The first board after the transformer or meter; the whole network branches from it. Busbar section and main breaker rating come from total load."],
+             opt: "لوحة توزيع رئيسية MDP" },
+    sub:   { ar: ["لوحة توزيع فرعية SMDB", "تغذّي دورًا أو قسمًا وتتفرّع من اللوحة الرئيسية. تعزل عطل القسم عن باقي المنشأة."],
+             en: ["Sub-distribution panel (SMDB)", "Feeds a floor or department from the main board, and isolates a fault in that area from the rest of the site."],
+             opt: "لوحة توزيع فرعية" },
+    ctrl:  { ar: ["لوحة تحكم", "تدير تشغيل الماكينة أو الخط وتوقيته وحمايته، بمنطق تقليدي أو عبر PLC حسب ما يطلبه التشغيل."],
+             en: ["Control panel", "Runs the machine or line — its sequencing, timing and protection — hard-wired or PLC-based as operation requires."],
+             opt: "لوحة تحكم" },
+    light: { ar: ["لوحة إنارة", "توزّع دوائر الإنارة، مع تحكم بالمجموعات أو بمؤقّت عند الحاجة."],
+             en: ["Lighting panel", "Distributes lighting circuits, with group or timer control where needed."],
+             opt: "لوحة إنارة" }
+  };
+
+  var PF_NOTE = {
+    ar: " وبما أن فاتورتك بها غرامة معامل قدرة، ننصح بلوحة تحسين معامل قدرة بجوارها — غالبًا تسترد تكلفتها من وفر الفاتورة.",
+    en: " Since your bill carries a power-factor penalty, we also suggest a correction panel alongside it — it usually pays for itself from the bill saving."
+  };
+
+  var qres = document.getElementById("qres"),
+      qresT = document.getElementById("qres-t"),
+      qresP = document.getElementById("qres-p");
+  var chosen = null;
+
+  function decide() {
+    if (!pick.place || !pick.gen || !pick.pf) return;   // لا نوصي قبل اكتمال الصورة
+
+    var key;
+    if (pick.gen === "yes" && (pick.place === "main" || pick.place === "sub")) key = "ats";
+    else if (pick.place === "main") key = "main";
+    else if (pick.place === "sub") key = "sub";
+    else if (pick.place === "machine") key = "ctrl";
+    else key = "light";
+
+    chosen = RESULT[key];
+    var en = document.documentElement.classList.contains("en");
+    var d = chosen[en ? "en" : "ar"];
+
+    qresT.textContent = d[0];
+    qresP.textContent = d[1] + (pick.pf === "yes" ? PF_NOTE[en ? "en" : "ar"] : "");
+    qres.classList.add("show");
+    qres.scrollIntoView({ behavior: still ? "auto" : "smooth", block: "nearest" });
+  }
+
+  document.querySelectorAll(".opts").forEach(function (group) {
+    group.querySelectorAll(".opt").forEach(function (b) {
+      b.addEventListener("click", function () {
+        group.querySelectorAll(".opt").forEach(function (o) { o.classList.remove("on"); });
+        b.classList.add("on");
+        pick[group.dataset.q] = b.dataset.v;
+        decide();
+      });
+    });
+  });
+
+  // التوصية تملأ النموذج: الزائر لا يعيد كتابة ما اختاره للتوّ
+  document.getElementById("qres-go").addEventListener("click", function () {
+    if (chosen) {
+      var sel = document.getElementById("q-type");
+      for (var i = 0; i < sel.options.length; i++) {
+        if (sel.options[i].text === chosen.opt) { sel.selectedIndex = i; break; }
+      }
+    }
+    document.getElementById("quote").scrollIntoView({ behavior: still ? "auto" : "smooth" });
+  });
+
+  /* ---------- عرض السعر → واتساب ---------- */
+  function val(id) { return (document.getElementById(id).value || "").trim(); }
+
+  document.getElementById("q-send").addEventListener("click", function () {
+    var en = document.documentElement.classList.contains("en");
+    var L = en
+      ? ["Panel type", "Rating", "Quantity", "Project / company", "Name", "Phone", "Details"]
+      : ["نوع اللوحة", "الأمبيرية", "العدد", "المشروع / الجهة", "الاسم", "رقم التواصل", "تفاصيل"];
+    var v = [val("q-type"), val("q-amp"), val("q-qty"), val("q-project"),
+             val("q-name"), val("q-phone"), val("q-notes")];
+
+    var body = L.map(function (k, i) { return v[i] ? k + ": " + v[i] : null; })
+                .filter(Boolean).join("\n");
+
+    var head = en ? "Quote request — from the El Hana Electric website"
+                  : "طلب عرض سعر — من موقع الهنا اليكتريك";
+
+    open("https://wa.me/" + SALES + "?text=" + encodeURIComponent(head + "\n\n" + body),
+         "_blank", "noopener");
+  });
+
+  document.getElementById("yr").textContent = new Date().getFullYear();
+})();
+</script>
+
+</body>
+</html>
