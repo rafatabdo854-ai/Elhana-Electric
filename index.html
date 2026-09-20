@@ -739,6 +739,16 @@ setTimeout(function () {
   var b = document.getElementById("boot");
   if (b) { b.classList.add("done"); }
   document.body.classList.remove("loading");
+
+  /* نفس الفكرة لعناصر الظهور عند التمرير: هي مخفية بالـCSS لحد ما
+     السكربت الرئيسي يظهّرها. لو وقع، الصفحة بتبان نص فاضي — عناوين
+     وصور مش ظاهرة. فبعد 3 ثواني نظهّر أي عنصر لسه مخفي. */
+  setTimeout(function () {
+    var hidden = document.querySelectorAll(".rise:not(.in)");
+    if (hidden.length) {
+      for (var i = 0; i < hidden.length; i++) { hidden[i].classList.add("in"); }
+    }
+  }, 500);
 }, 2500);
 </script>
 
@@ -1873,13 +1883,4 @@ setTimeout(function () {
 
   function showPart(k) {
     var en = document.documentElement.classList.contains("en");
-    var d = PARTS[k][en ? "en" : "ar"];
-    xn.textContent = "0" + k;
-    xt.textContent = d[0]; xl.textContent = d[1]; xp.textContent = d[2];
-    hots.forEach(function (h) { h.classList.toggle("on", h.dataset.x === k); });
-  }
-  hots.forEach(function (h) { h.addEventListener("click", function () { showPart(h.dataset.x); }); });
-  showPart("1");
-
-  /* ----------------------------------------------------------
- 
+    va
