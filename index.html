@@ -320,8 +320,12 @@ html:not(.en) #drawer .panel { transform: translateX(100%); }
    ============================================================ */
 .hero { position: relative; background: var(--shell); color: var(--carbon); overflow: hidden;
         border-bottom: 1px solid var(--line); }
-.hero-in { position: relative; display: grid; grid-template-columns: 1.02fr .98fr;
-           gap: 48px; align-items: center; padding-block: 78px 0; }
+/* النصفان المتساويان — نص يمين وصورة شمال — هما تخطيط صفحة الهبوط
+   القياسي، وأول ما تراه العين. هنا العمودان غير متساويين والصورة
+   تخرج من حدّ الحاوية إلى حافة الشاشة: قَصٌّ مقصود يفعله الورق
+   المطبوع ولا يفعله القالب، ويجعل الصورة تُقرأ كمشهد لا كبطاقة. */
+.hero-in { position: relative; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 6fr);
+           gap: 40px; align-items: center; padding-block: 72px 0; }
 
 /* القسم مالوش مسافة سفلية عن قصد: الصورة بتلزق في حافته. لكن عمود
    النص لو طال أكتر من الصورة — وده بيحصل في النسخة الإنجليزية لأن
@@ -336,21 +340,23 @@ html.en .hero h1 { font-size: clamp(1.85rem, 4.2vw, 2.7rem); }
 .hero h1 { font-size: clamp(1.95rem, 5vw, 3.15rem); font-weight: 600; letter-spacing: -.01em; }
 .hero .lede { font-size: clamp(1rem, 2.3vw, 1.13rem); font-weight: 300; color: var(--mute);
               margin-block: 18px 28px; max-width: 46ch; }
-.hero .en-kicker { font-family: var(--display); font-weight: 300; font-size: .76rem;
-                   letter-spacing: .32em; color: var(--copper); margin-bottom: 14px;
-                   direction: ltr; }
-html:not(.en) .hero .en-kicker { text-align: right; }
+.hero .en-kicker { font-family: var(--mono-ui); font-weight: 500; font-size: .76rem;
+                   letter-spacing: .06em; color: var(--copper); margin-bottom: 14px; }
+
 .feed { height: 3px; width: 64px; background: var(--copper); margin-block: 24px 28px; }
 .hero figure { margin: 0; align-self: end; }
 /* صورة رأسية في عمود نصف الشاشة تطول أكثر من اللازم وتدفع النص لأعلى،
    فنقيّد ارتفاعها ونُظهر أهم جزء منها: القضبان والقواطع أعلى اللوحة. */
-.hero figure img { width: 100%; height: 520px; display: block; border-radius: 3px;
-                   border: 1px solid var(--line);
+.hero figure { margin-inline-end: calc(50% - 50vw); }
+.hero figure img { width: 100%; height: 500px; display: block; border-radius: 0;
+                   border: 0; border-top: 1px solid var(--line);
                    object-fit: cover; object-position: center 18%; }
 @media (max-width: 900px) { .hero figure img { height: 360px; } }
 @media (max-width: 900px) {
-  .hero-in { grid-template-columns: 1fr; gap: 28px; padding-block: 50px 0; }
-  .hero figure { max-width: 430px; margin-inline: auto; }
+  .hero-in { grid-template-columns: 1fr; gap: 26px; padding-block: 44px 0; }
+  /* على الهاتف تمتدّ الصورة عرض الشاشة كاملًا من الحافة إلى الحافة */
+  .hero figure { margin-inline: calc(50% - 50vw); max-width: none; }
+  .hero figure img { height: 300px; }
 }
 
 .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
@@ -372,17 +378,55 @@ html:not(.en) .hero .en-kicker { text-align: right; }
 /* ============================================================
    الأقسام
    ============================================================ */
-section { padding-block: 72px; }
-.alt { background: var(--shell); }
-.sec-head { margin-bottom: 36px; max-width: 70ch; }
-.sec-head .kick { font-family: var(--display); font-weight: 300; font-size: .74rem;
-                  letter-spacing: .22em; color: var(--copper); margin-bottom: 9px; }
-.sec-head h2 { font-size: clamp(1.4rem, 3.3vw, 2rem); }
-.sec-head p { color: var(--mute); margin-block: 10px 0; }
+/* ------------------------------------------------------------
+   الأقسام — الصفحة كورقة رسم، لا كصفحة هبوط
 
-.rise { opacity: 0; transform: translateY(18px);
-        transition: opacity .6s var(--ease), transform .6s var(--ease); }
-.rise.in { opacity: 1; transform: none; }
+   ما كان يجعلها تبدو مولَّدة ليس اللون ولا الخط، بل أن كل قسم
+   يُبنى بالنمط نفسه: سطر إنجليزي صغير، ثم عنوان، ثم فقرة، ثم شبكة
+   بطاقات متساوية، ثم يتكرر أربع عشرة مرة. البنية المتكرّرة هي
+   التوقيع.
+
+   البديل هنا مأخوذ من الورق الذي يتعامل معه المشتري فعلًا: كراسة
+   الشروط والمخطط ولوحة البيانات. رأس القسم مرقَّم ومحاذٍ للبداية،
+   يفصله خط، ورقمه في عمود جانبي بخط أحادي المسافة. الترقيم من
+   عدّاد CSS فلا يحتاج كتابة رقم في أي قسم.
+   ------------------------------------------------------------ */
+:root { --mono-ui: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace; }
+body { counter-reset: sec; }
+
+section { padding-block: 64px; border-top: 1px solid var(--line); }
+section:first-of-type { border-top: 0; }
+.alt { background: var(--shell); }
+
+.sec-head {
+  display: grid; grid-template-columns: 58px minmax(0, 1fr);
+  gap: 0 22px; margin-bottom: 34px; max-width: none;
+}
+.sec-head::before {
+  counter-increment: sec;
+  content: counter(sec, decimal-leading-zero);
+  grid-row: 1 / span 3;
+  font-family: var(--mono-ui); font-size: 1.5rem; font-weight: 500;
+  color: var(--line); line-height: 1; letter-spacing: -.02em;
+  padding-top: 4px; direction: ltr;
+}
+.sec-head .kick {
+  font-family: var(--mono-ui); font-weight: 500; font-size: .7rem;
+  letter-spacing: .12em; color: var(--copper); margin-bottom: 8px;
+  text-transform: none;
+}
+.sec-head h2 { font-size: clamp(1.35rem, 3vw, 1.85rem); letter-spacing: -.01em; }
+.sec-head p { color: var(--mute); margin-block: 9px 0; max-width: 64ch; font-size: .95rem; }
+
+@media (max-width: 640px) {
+  section { padding-block: 46px; }
+  .sec-head { grid-template-columns: 1fr; gap: 0; margin-bottom: 26px; }
+  .sec-head::before { grid-row: auto; font-size: .95rem; padding: 0 0 8px; }
+}
+
+/* الظهور التدريجي عند التمرير حيلة صفحات الهبوط، ويُبطئ القراءة على
+   الهاتف بلا مقابل. المحتوى يظهر فورًا. */
+.rise, .rise.in { opacity: 1; transform: none; transition: none; }
 
 /* شريط المنتجات الأفقي */
 .rail-head { display: flex; align-items: flex-end; gap: 14px; margin-bottom: 24px; }
@@ -403,7 +447,7 @@ section { padding-block: 72px; }
 
 .item { background: #fff; border: 1px solid var(--line); display: flex; flex-direction: column;
         overflow: hidden; transition: transform .3s var(--ease), box-shadow .3s var(--ease); }
-.item:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(16,36,56,.08); }
+.item:hover { border-color: var(--ink); }
 .item .shot { overflow: hidden; background: var(--shell-2); }
 /* اللوحة الكهربائية جسم رأسي. الإطار العرضي 4/3 كان يقصّ منها شريحة
    عشوائية — ركن حديد أو قاع كابينة — وتختفي اللوحة نفسها.
@@ -412,7 +456,7 @@ section { padding-block: 72px; }
             object-position: center 22%; display: block;
             transition: transform .5s var(--ease); }
 .item:hover img { transform: scale(1.045); }
-.item .body { padding: 15px 17px 18px; border-top: 3px solid var(--copper); flex: 1; }
+.item .body { padding: 15px 17px 18px; border-top: 1px solid var(--line); flex: 1; }
 
 /* بطاقة بلا صورة — للمنتجات التي لم تُصوَّر بعد.
    مربّع رمادي مكتوب عليه "ضع صورة" يقول للزائر إن الموقع ناقص؛
@@ -509,16 +553,18 @@ html:not(.en) .xinfo .lat { text-align: right; }
 .stats .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
                gap: 1px; background: var(--line); }
 .stats .cell { background: #fff; padding: 30px 22px; }
-.stats .num { font-family: var(--display); font-weight: 700; font-size: clamp(1.8rem, 4.4vw, 2.5rem);
+.stats .num { font-family: var(--mono-ui); font-weight: 600; font-size: clamp(1.7rem, 4vw, 2.3rem);
               color: var(--ink); line-height: 1; direction: ltr; }
 html:not(.en) .stats .num { text-align: right; }
 .stats .lbl { font-size: .9rem; color: var(--mute); margin-top: 10px; }
 
 /* القطاعات */
-.sectors { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 18px; }
-.sector { background: #fff; border: 1px solid var(--line); padding: 22px 20px;
-          transition: border-color .22s, transform .22s var(--ease); }
-.sector:hover { border-color: var(--copper); transform: translateY(-3px); }
+/* شبكة خلايا يفصلها خط شعرة واحد، لا بطاقات مستقلة لكلٍّ منها إطار.
+   نفس نمط شريط الأرقام أعلى الصفحة — لغة واحدة تتكرر بدل ثلاث. */
+.sectors { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+           gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.sector { background: #fff; border: 0; padding: 22px 20px; transition: background .2s; }
+.sector:hover { background: var(--shell); }
 .sector svg { width: 30px; height: 30px; fill: none; stroke: var(--copper);
               stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 .sector h3 { font-size: 1rem; font-weight: 600; margin-block: 12px 6px; }
@@ -526,19 +572,20 @@ html:not(.en) .stats .num { text-align: right; }
 
 /* مراحل التنفيذ */
 .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 24px; }
-.step { border-top: 3px solid var(--ink); padding-top: 14px; }
-.step .n { font-family: var(--display); font-weight: 700; font-size: 1.5rem;
+.step { border-top: 1px solid var(--ink); padding-top: 14px; }
+.step .n { font-family: var(--mono-ui); font-weight: 500; font-size: 1.25rem;
            color: var(--copper); direction: ltr; line-height: 1; }
 html:not(.en) .step .n { text-align: right; }
 .step h3 { font-size: 1rem; font-weight: 600; margin-block: 8px 6px; }
 .step p { font-size: .9rem; color: var(--mute); margin: 0; }
 
 /* المكوّنات */
-.brands { display: flex; flex-wrap: wrap; gap: 12px; }
-.brand { border: 1px solid var(--line); background: #fff; padding: 11px 24px;
-         font-family: var(--display); font-weight: 500; font-size: .95rem;
-         letter-spacing: .04em; direction: ltr; transition: border-color .2s, color .2s; }
-.brand:hover { border-color: var(--copper); color: var(--copper); }
+.brands { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+          gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.brand { background: #fff; padding: 18px 20px; text-align: center;
+         font-family: var(--mono-ui); font-weight: 500; font-size: .92rem;
+         letter-spacing: .02em; direction: ltr; transition: background .2s; }
+.brand:hover { background: var(--shell); }
 
 /* العملاء — شريط متحرك تلقائيًا، يتوقف عند تمرير الفأرة أو اللمس */
 .marquee { position: relative; overflow: hidden; width: 100%;
@@ -558,21 +605,41 @@ html:not(.en) .step .n { text-align: right; }
 }
 
 /* الأعمال */
-.gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(268px, 1fr));
-           gap: 20px; align-items: start; }
+/* بلاطات أصغر وفواصل أضيق: الشبكة تُقرأ ككشف تصوير صناعي، لا
+   كبطاقات معرض. الصورة الكبيرة تُرى بالضغط عليها. */
+.gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(196px, 1fr));
+           gap: 12px; align-items: start; }
 .gallery figure { margin: 0; background: #fff; border: 1px solid var(--line); overflow: hidden; }
 .gallery button.shot { display: block; width: 100%; padding: 0; border: 0;
                        background: var(--shell-2); cursor: zoom-in; overflow: hidden; }
-.gallery img { width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover;
+.gallery img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover;
                object-position: center 22%; display: block;
                transition: transform .5s var(--ease); }
 .gallery button.shot:hover img { transform: scale(1.05); }
-.gallery figcaption { padding: 14px 16px; font-size: .88rem; color: var(--mute);
-                      border-top: 3px solid var(--copper); }
+
+/* العملاء: قائمة ساكنة تُقرأ، لا شريط يمرّ. الاسم مع المشروع بجواره
+   هو ما يقنع المشتري الصناعي؛ الشريط المتحرك يقول "شعارات للزينة". */
+.accred { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+.accred figure { margin: 0; border: 1px solid var(--line); background: #fff; }
+.accred button.shot { display: block; width: 100%; padding: 0; border: 0; background: var(--shell-2); cursor: zoom-in; }
+.accred img { width: 100%; height: auto; display: block; }
+.accred-facts { margin: 0; }
+.accred-facts > div { display: flex; flex-direction: column; gap: 2px; padding: 13px 0; border-bottom: 1px solid var(--line); }
+.accred-facts > div:first-child { border-top: 1px solid var(--line); }
+.accred-facts dt { font-size: .8rem; color: var(--mute); }
+.accred-facts dd { margin: 0; font-size: .98rem; font-weight: 600; }
+@media (max-width: 760px) { .accred { grid-template-columns: 1fr; gap: 18px; } }
+
+.clients-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0; border-top: 1px solid var(--line); }
+.client-row { display: flex; flex-direction: column; gap: 3px; padding: 15px 4px; border-bottom: 1px solid var(--line); }
+.client-row b { font-weight: 600; font-size: .96rem; }
+.client-row span { font-size: .82rem; color: var(--mute); }
+.gallery figcaption { padding: 9px 11px; font-size: .78rem; line-height: 1.5;
+                      color: var(--mute); border-top: 1px solid var(--line); }
 
 /* لماذا نحن */
 .points { display: grid; grid-template-columns: repeat(auto-fit, minmax(246px, 1fr)); gap: 30px 40px; }
-.point { border-top: 2px solid var(--ink); padding-top: 16px; }
+.point { border-top: 1px solid var(--ink); padding-top: 16px; }
 .point h3 { font-size: 1rem; font-weight: 600; margin-bottom: 8px; }
 .point p { font-size: .92rem; color: var(--mute); margin: 0; }
 
@@ -907,8 +974,8 @@ setTimeout(function () {
         </div>
       </div>
 
-      <a href="#explorer"><span data-ar>داخل اللوحة</span><span data-en-only>Inside</span></a>
-      <a href="#selector"><span data-ar>حدّد لوحتك</span><span data-en-only>Find yours</span></a>
+      <a href="#selector"><span data-ar>أي لوحة تحتاج؟</span><span data-en-only>Which panel</span></a>
+      <a href="#accreditation"><span data-ar>الاعتماد</span><span data-en-only>Approval</span></a>
       <a href="#sectors"><span data-ar>القطاعات</span><span data-en-only>Sectors</span></a>
       <a href="#flow"><span data-ar>مراحل التنفيذ</span><span data-en-only>Process</span></a>
       <a href="#work"><span data-ar>أعمالنا</span><span data-en-only>Our work</span></a>
@@ -931,8 +998,9 @@ setTimeout(function () {
     <div class="grp" data-ar>المنتجات</div><div class="grp" data-en-only>PRODUCTS</div>
     <a href="#products"><span data-ar>كل المنتجات</span><span data-en-only>All products</span></a>
     <div class="grp" data-ar>الشركة</div><div class="grp" data-en-only>COMPANY</div>
+    <a href="#selector"><span data-ar>أي لوحة تحتاج؟</span><span data-en-only>Which panel do you need?</span></a>
+    <a href="#accreditation"><span data-ar>الاعتماد</span><span data-en-only>Approval</span></a>
     <a href="#explorer"><span data-ar>داخل اللوحة</span><span data-en-only>Inside the panel</span></a>
-    <a href="#selector"><span data-ar>حدّد لوحتك</span><span data-en-only>Find your panel</span></a>
     <a href="#sectors"><span data-ar>القطاعات</span><span data-en-only>Sectors</span></a>
     <a href="#flow"><span data-ar>مراحل التنفيذ</span><span data-en-only>Process</span></a>
     <a href="#work"><span data-ar>أعمالنا</span><span data-en-only>Our work</span></a>
@@ -953,7 +1021,7 @@ setTimeout(function () {
 <div class="hero">
   <div class="wrap hero-in">
     <div>
-      <div class="en-kicker rise">LOW &amp; MEDIUM VOLTAGE SWITCHGEAR</div>
+      <div class="en-kicker rise">تأسست 2008 · العاشر من رمضان</div>
       <h1 class="rise">
         <span data-ar>نصنع اللوحات الكهربائية التي يقوم عليها خط الإنتاج</span>
         <span data-en-only>We build the switchgear your production line runs on</span>
@@ -994,18 +1062,8 @@ setTimeout(function () {
     <div class="grid">
 
       <div class="cell rise">
-        <div class="num">+15</div>
-        <div class="lbl"><span data-ar>سنة خبرة في السوق</span><span data-en-only>years in the market</span></div>
-      </div>
-
-      <div class="cell rise">
-        <div class="num">+400</div>
-        <div class="lbl"><span data-ar>لوحة سنويًا</span><span data-en-only>panels per year</span></div>
-      </div>
-
-      <div class="cell rise">
-        <div class="num">3</div>
-        <div class="lbl"><span data-ar>وحدات إنتاج بالعاشر من رمضان</span><span data-en-only>production units in 10th of Ramadan</span></div>
+        <div class="num">2008</div>
+        <div class="lbl"><span data-ar>سنة التأسيس</span><span data-en-only>founded</span></div>
       </div>
 
       <div class="cell rise">
@@ -1013,6 +1071,70 @@ setTimeout(function () {
         <div class="lbl"><span data-ar>أقصى أمبيرية نُنفّذها</span><span data-en-only>maximum rating we build</span></div>
       </div>
 
+      <div class="cell rise">
+        <div class="num">24kV</div>
+        <div class="lbl"><span data-ar>محطات مدمجة حتى</span><span data-en-only>package substations up to</span></div>
+      </div>
+
+      <div class="cell rise">
+        <div class="num">100kA</div>
+        <div class="lbl"><span data-ar>تيار تغذية حتى</span><span data-en-only>feeding current up to</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ الاعتماد ============
+     صورة الشهادة في img/accreditation.jpg — لاستبدالها ارفع صورة
+     بنفس الاسم. لا تكتب هنا أي اعتماد غير صادر فعلًا. -->
+<section class="alt" id="accreditation">
+  <div class="wrap">
+    <div class="sec-head rise">
+      <div class="kick">الاعتماد</div>
+      <h2><span data-ar>معتمدون من الشركة القابضة لكهرباء مصر</span>
+          <span data-en-only>Approved by the Egyptian Electricity Holding Company</span></h2>
+      <p><span data-ar>شهادة اعتماد لتصنيع اللوحات الكهربائية، صادرة عن لجنة اعتماد المهمات
+         بوزارة الكهرباء والطاقة المتجددة.</span>
+         <span data-en-only>A manufacturing approval certificate issued by the equipment approval
+         committee of the Ministry of Electricity and Renewable Energy.</span></p>
+    </div>
+
+    <div class="accred rise">
+      <figure>
+        <button class="shot" type="button" data-full="./img/accreditation.jpg" data-cap="شهادة اعتماد الشركة القابضة لكهرباء مصر">
+          <img src="./img/accreditation.jpg" loading="lazy" decoding="async" width="720" height="521"
+               alt="شهادة اعتماد من الشركة القابضة لكهرباء مصر لتصنيع اللوحات الكهربائية">
+        </button>
+      </figure>
+      <dl class="accred-facts">
+        <div><dt>اللوحة المعتمدة</dt><dd>جهد منخفض 400 فولت — طراز ATN-3600A</dd></div>
+        <div><dt>السعة</dt><dd>3600 أمبير، بقاطع رئيسي 4000 أمبير</dd></div>
+        <div><dt>المكوّن المحلي</dt><dd>47.29%</dd></div>
+        <div><dt>سريان الاعتماد</dt><dd>ثلاث سنوات اعتبارًا من 13 أبريل 2025</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<section id="clients">
+  <div class="wrap">
+    <div class="sec-head rise">
+      <div class="kick">من عملائنا</div>
+      <h2><span data-ar>جهات نفّذنا لها</span><span data-en-only>Who we have built for</span></h2>
+      <p><span data-ar>أسماء ومشاريع بعينها — اسأل عن أيٍّ منها.</span>
+         <span data-en-only>Named companies and specific projects — ask us about any of them.</span></p>
+    </div>
+    <div class="clients-grid">
+      <div class="client-row rise"><b>شركة حسن علام</b><span>مشروع الضبعة النووي</span></div>
+      <div class="client-row rise"><b>شركة السويدي للأدوات الصحية</b><span>ريتزي</span></div>
+      <div class="client-row rise"><b>محمود محمد فريد رستم وشركاه</b><span>لوحات ATS — كليك</span></div>
+      <div class="client-row rise"><b>شركة سيراميكا روندي</b><span>بني سويف</span></div>
+      <div class="client-row rise"><b>شركة السونيا تكس</b></div>
+      <div class="client-row rise"><b>شركة فايبر ون</b></div>
+      <div class="client-row rise"><b>شركة أغابي لصناعة الكرتون</b></div>
+      <div class="client-row rise"><b>شركة ماستر لاين للمنسوجات</b></div>
+      <div class="client-row rise"><b>شركة قطونيل</b></div>
     </div>
   </div>
 </section>
@@ -1022,7 +1144,7 @@ setTimeout(function () {
   <div class="wrap">
     <div class="rail-head rise">
       <div class="sec-head">
-        <div class="kick">PRODUCTS</div>
+        <div class="kick">ما نصنعه</div>
         <h2><span data-ar>ما نصنعه</span><span data-en-only>What we build</span></h2>
         <p>
           <span data-ar>كل لوحة تُنفَّذ بالأمبيرية والمقاس ودرجة الحماية التي يحددها المشروع، لا بمقاسات كتالوج جاهز.</span>
@@ -1126,44 +1248,7 @@ setTimeout(function () {
      بنفس data-x.
      لتبديل الصورة: بدّل src، ثم أعد ضبط النسب لتناسبها.
      ═══════════════════════════════════════════════════════════ -->
-<section class="alt" id="explorer">
-  <div class="wrap">
-    <div class="sec-head rise">
-      <div class="kick">INSIDE THE PANEL</div>
-      <h2><span data-ar>ماذا يوجد داخل اللوحة؟</span><span data-en-only>What is inside the panel?</span></h2>
-      <p><span data-ar>لوحة من إنتاجنا. اضغط أي نقطة لتعرف ما هي القطعة ووظيفتها.</span>
-         <span data-en-only>A panel we built. Tap any point to see what the part is and what it does.</span></p>
-    </div>
 
-    <div class="explorer rise">
-      <div class="xview">
-        <img src="./img/panel-mdb.jpg" width="1200" height="1600"
-             alt="لوحة توزيع رئيسية من إنتاج الهنا اليكتريك، وعليها نقاط تفاعلية">
-
-        <button class="hot on" data-x="1" style="top:17%;right:50%" aria-label="القضبان الرئيسية">1</button>
-        <button class="hot"    data-x="2" style="top:22%;right:26%" aria-label="القواطع الخارجة">2</button>
-        <button class="hot"    data-x="3" style="top:46%;right:50%" aria-label="الخوارج">3</button>
-        <button class="hot"    data-x="4" style="top:74%;right:44%" aria-label="محوّلات التيار">4</button>
-        <button class="hot"    data-x="5" style="top:84%;right:47%" aria-label="القاطع الرئيسي">5</button>
-        <button class="hot"    data-x="6" style="top:93%;right:45%" aria-label="بار الأرضي">6</button>
-      </div>
-
-      <div>
-        <div class="xinfo" id="xinfo">
-          <div class="n" id="x-n">01</div>
-          <h3 id="x-t">القضبان الرئيسية</h3>
-          <div class="lat" id="x-l">MAIN BUSBAR</div>
-          <p id="x-p">قضبان نحاسية تحمل التيار الكامل للوحة، ومقطعها يُحسب على أقصى حمل
-            مع هامش حراري — لا يُختار من مقاس جاهز.</p>
-        </div>
-        <p class="xhint">
-          <span data-ar>الأرقام على الصورة قابلة للضغط — كل واحدة تشرح قطعة.</span>
-          <span data-en-only>The numbers on the image are clickable — each explains one part.</span>
-        </p>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- ═══════════════════════════════════════════════════════════
      ✏️  محدّد نوع اللوحة
@@ -1174,12 +1259,13 @@ setTimeout(function () {
 <section id="selector">
   <div class="wrap">
     <div class="sec-head rise">
-      <div class="kick">PANEL SELECTOR</div>
-      <h2><span data-ar>حدّد لوحتك في ثلاث خطوات</span><span data-en-only>Find your panel in three steps</span></h2>
-      <p><span data-ar>إجابات سريعة تنتهي بتوصية مبدئية — ليست بديلًا عن دراسة الأحمال،
-        لكنها تكفي لبدء الحديث.</span>
-         <span data-en-only>Quick answers ending in an initial recommendation — not a substitute
-        for a load study, but enough to start the conversation.</span></p>
+      <div class="kick">اختر لوحتك</div>
+      <h2><span data-ar>أي لوحة تحتاج؟</span><span data-en-only>Which panel do you need?</span></h2>
+      <p><span data-ar>ثلاثة أسئلة تنتهي بتوصية مبدئية. ومن يعرف ما يريد يقرأ الجدول أسفلها —
+        الفرق بين الأنواع في موقعها من الشبكة ووظيفتها، لا في شكلها.</span>
+         <span data-en-only>Three questions ending in an initial recommendation. If you already know
+        what you want, read the table below it — the types differ in where they sit on the network
+        and what they do, not in how they look.</span></p>
     </div>
 
     <div class="quiz-box rise">
@@ -1230,26 +1316,9 @@ setTimeout(function () {
         </button>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- ═══════════════════════════════════════════════════════════
-     ✏️  دليل اختيار نوع اللوحة
-
-     أكثر سؤال يصل المصانع: ما الفرق بين MDB و SMDB و ATS؟
-     المشتري الذي لا يعرف ما يطلبه لا يطلب — يؤجّل ويسأل غيره.
-     هذا الجدول يجعله يعرف قبل أن يتصل، فتصل مكالمته محدَّدة.
-     ═══════════════════════════════════════════════════════════ -->
-<section id="picker">
-  <div class="wrap">
-    <div class="sec-head rise">
-      <div class="kick">WHICH PANEL</div>
-      <h2><span data-ar>أي لوحة تحتاج؟</span><span data-en-only>Which panel do you need?</span></h2>
-      <p><span data-ar>الفرق بين الأنواع في موقعها من الشبكة ووظيفتها — لا في شكلها.</span>
-         <span data-en-only>The types differ in where they sit on the network and what they do — not in how they look.</span></p>
-    </div>
-
-    <div class="picker rise">
+    <p class="rise" style="margin:36px 0 14px;font-weight:600"><span data-ar>أو اقرأ الفرق بنفسك</span><span data-en-only>Or read the differences yourself</span></p>
+<div class="picker rise">
       <div class="row head">
         <div><span data-ar>النوع</span><span data-en-only>Type</span></div>
         <div><span data-ar>موقعها من الشبكة</span><span data-en-only>Where it sits</span></div>
@@ -1312,6 +1381,15 @@ setTimeout(function () {
 </section>
 
 <!-- ═══════════════════════════════════════════════════════════
+     ✏️  دليل اختيار نوع اللوحة
+
+     أكثر سؤال يصل المصانع: ما الفرق بين MDB و SMDB و ATS؟
+     المشتري الذي لا يعرف ما يطلبه لا يطلب — يؤجّل ويسأل غيره.
+     هذا الجدول يجعله يعرف قبل أن يتصل، فتصل مكالمته محدَّدة.
+     ═══════════════════════════════════════════════════════════ -->
+
+
+<!-- ═══════════════════════════════════════════════════════════
      ✏️  القطاعات التي تخدمونها
 
      لحذف قطاع: امسح كتلة <div class="sector rise"> ... </div>
@@ -1323,7 +1401,7 @@ setTimeout(function () {
 <section class="alt" id="sectors">
   <div class="wrap">
     <div class="sec-head rise">
-      <div class="kick">SECTORS</div>
+      <div class="kick">أين تعمل لوحاتنا</div>
       <h2><span data-ar>القطاعات التي نخدمها</span><span data-en-only>Sectors we serve</span></h2>
       <p><span data-ar>لكل قطاع أولوية مختلفة — والاختيار داخل اللوحة يتبعها.</span>
          <span data-en-only>Each sector has a different priority, and the choices inside the panel follow it.</span></p>
@@ -1384,7 +1462,7 @@ setTimeout(function () {
 <section id="flow">
   <div class="wrap">
     <div class="sec-head rise">
-      <div class="kick">PROCESS</div>
+      <div class="kick">كيف ننفّذ طلبك</div>
       <h2><span data-ar>كيف يمرّ المشروع عندنا</span><span data-en-only>How a project runs with us</span></h2>
       <p><span data-ar>خمس مراحل، وفي كل واحدة تعرف أين وصل طلبك.</span>
          <span data-en-only>Five stages — at each one you know where your order stands.</span></p>
@@ -1425,7 +1503,7 @@ setTimeout(function () {
 <section class="alt" id="brands">
   <div class="wrap">
     <div class="sec-head rise">
-      <div class="kick">COMPONENTS</div>
+      <div class="kick">بماذا نبني</div>
       <h2><span data-ar>المكوّنات التي نبني بها</span><span data-en-only>What we build with</span></h2>
       <p><span data-ar>الماركة تُذكر بالاسم في عرض السعر، فتعرف ما بداخل اللوحة قبل أن توافق عليها.</span>
          <span data-en-only>Every brand is named in the quotation, so you know what is inside before you approve it.</span></p>
@@ -1457,11 +1535,50 @@ setTimeout(function () {
      وغيّر: src و data-full (نفس المسار) و alt و النص أسفلها.
      الوصف تحت الصورة يشرح ما فيها — لا يكرّر اسم الشركة.
      ═══════════════════════════════════════════════════════════ -->
+<section id="explorer">
+  <div class="wrap">
+    <div class="sec-head rise">
+      <div class="kick">داخل اللوحة</div>
+      <h2><span data-ar>ماذا يوجد داخل اللوحة؟</span><span data-en-only>What is inside the panel?</span></h2>
+      <p><span data-ar>لوحة من إنتاجنا. اضغط أي نقطة لتعرف ما هي القطعة ووظيفتها.</span>
+         <span data-en-only>A panel we built. Tap any point to see what the part is and what it does.</span></p>
+    </div>
+
+    <div class="explorer rise">
+      <div class="xview">
+        <img src="./img/panel-mdb.jpg" width="1200" height="1600"
+             alt="لوحة توزيع رئيسية من إنتاج الهنا اليكتريك، وعليها نقاط تفاعلية">
+
+        <button class="hot on" data-x="1" style="top:17%;right:50%" aria-label="القضبان الرئيسية">1</button>
+        <button class="hot"    data-x="2" style="top:22%;right:26%" aria-label="القواطع الخارجة">2</button>
+        <button class="hot"    data-x="3" style="top:46%;right:50%" aria-label="الخوارج">3</button>
+        <button class="hot"    data-x="4" style="top:74%;right:44%" aria-label="محوّلات التيار">4</button>
+        <button class="hot"    data-x="5" style="top:84%;right:47%" aria-label="القاطع الرئيسي">5</button>
+        <button class="hot"    data-x="6" style="top:93%;right:45%" aria-label="بار الأرضي">6</button>
+      </div>
+
+      <div>
+        <div class="xinfo" id="xinfo">
+          <div class="n" id="x-n">01</div>
+          <h3 id="x-t">القضبان الرئيسية</h3>
+          <div class="lat" id="x-l">MAIN BUSBAR</div>
+          <p id="x-p">قضبان نحاسية تحمل التيار الكامل للوحة، ومقطعها يُحسب على أقصى حمل
+            مع هامش حراري — لا يُختار من مقاس جاهز.</p>
+        </div>
+        <p class="xhint">
+          <span data-ar>الأرقام على الصورة قابلة للضغط — كل واحدة تشرح قطعة.</span>
+          <span data-en-only>The numbers on the image are clickable — each explains one part.</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ أعمالنا ============ -->
 <section id="work">
   <div class="wrap">
     <div class="sec-head rise">
-      <div class="kick">OUR WORK</div>
+      <div class="kick">من داخل المصنع</div>
       <h2><span data-ar>من أعمالنا</span><span data-en-only>Our work</span></h2>
       <p><span data-ar>صور من داخل المصنع أثناء التجميع — اضغط أي صورة لتكبيرها.</span>
          <span data-en-only>Shots from the factory floor during assembly — tap any image to enlarge.</span></p>
@@ -1605,7 +1722,7 @@ setTimeout(function () {
 <section id="facility">
   <div class="wrap">
     <div class="sec-head rise">
-      <div class="kick">OUR FACILITY</div>
+      <div class="kick">المقر</div>
       <h2><span data-ar>المصنع</span><span data-en-only>Our facility</span></h2>
       <p><span data-ar>المقر والصالة في العاشر من رمضان — التصنيع والتجميع والاختبار تحت سقف واحد.</span>
          <span data-en-only>The premises and assembly hall in 10th of Ramadan City — fabrication, assembly and testing under one roof.</span></p>
@@ -1641,7 +1758,7 @@ setTimeout(function () {
 <section class="alt" id="why">
   <div class="wrap">
     <div class="sec-head rise">
-      <div class="kick">WHY US</div>
+      <div class="kick">لماذا الهنا</div>
       <h2><span data-ar>لماذا الهنا اليكتريك</span><span data-en-only>Why El Hana Electric</span></h2>
     </div>
 
@@ -1680,39 +1797,6 @@ setTimeout(function () {
      بصري فقط، وقارئ الشاشة يكتفي بالأولى.
      ═══════════════════════════════════════════════════════════ -->
 <!-- ============ العملاء ============ -->
-<section id="clients">
-  <div class="wrap">
-    <div class="sec-head rise">
-      <div class="kick">TRUSTED BY</div>
-      <h2><span data-ar>من عملائنا</span><span data-en-only>Companies that work with us</span></h2>
-      <p><span data-ar>من بين عملاء تعاملنا معهم على مدى السنوات الماضية.</span>
-         <span data-en-only>Among the companies we have worked with over the years.</span></p>
-    </div>
-  </div>
-  <div class="marquee rise">
-    <div class="marquee-track">
-      <span class="client">حسن علام<small>مشروع الضبعة النووي</small></span>
-      <span class="client">السويدي للأدوات الصحية<small>ريتزي</small></span>
-      <span class="client">محمود محمد فريد رستم وشركاه<small>كليك ATS</small></span>
-      <span class="client">سيراميكا روندي<small>بني سويف</small></span>
-      <span class="client">السونيا تكس</span>
-      <span class="client">فايبر ون</span>
-      <span class="client">اغابي لصناعة الكرتون</span>
-      <span class="client">ماستر لاين للمنسوجات</span>
-      <span class="client">قطونيل</span>
-      <span class="client" aria-hidden="true">حسن علام<small>مشروع الضبعة النووي</small></span>
-      <span class="client" aria-hidden="true">السويدي للأدوات الصحية<small>ريتزي</small></span>
-      <span class="client" aria-hidden="true">محمود محمد فريد رستم وشركاه<small>كليك ATS</small></span>
-      <span class="client" aria-hidden="true">سيراميكا روندي<small>بني سويف</small></span>
-      <span class="client" aria-hidden="true">السونيا تكس</span>
-      <span class="client" aria-hidden="true">فايبر ون</span>
-      <span class="client" aria-hidden="true">اغابي لصناعة الكرتون</span>
-      <span class="client" aria-hidden="true">ماستر لاين للمنسوجات</span>
-      <span class="client" aria-hidden="true">قطونيل</span>
-    </div>
-  </div>
-</section>
-
 <!-- ═══════════════════════════════════════════════════════════
      ✏️  نموذج طلب عرض السعر
 
@@ -1723,7 +1807,7 @@ setTimeout(function () {
 <section class="quote" id="quote">
   <div class="wrap">
     <div class="sec-head rise">
-      <div class="kick">GET A QUOTE</div>
+      <div class="kick">اطلب عرض سعر</div>
       <h2><span data-ar>اطلب عرض سعر</span><span data-en-only>Request a quote</span></h2>
       <p><span data-ar>املأ ما تعرفه فقط — البيانات تتحوّل إلى رسالة واتساب جاهزة، وأنت من يضغط إرسال.</span>
          <span data-en-only>Fill in only what you know — it becomes a ready WhatsApp message, and you press send.</span></p>
@@ -1795,18 +1879,19 @@ setTimeout(function () {
 <section id="contact">
   <div class="wrap">
     <div class="sec-head rise">
-      <div class="kick">CONTACT</div>
+      <div class="kick">تواصل معنا</div>
       <h2><span data-ar>تواصل معنا</span><span data-en-only>Contact us</span></h2>
     </div>
 
     <div class="lines">
       <div class="line rise">
-        <div class="k"><span data-ar>المهندس أحمد التوني</span><span data-en-only>Eng. Ahmed El-Tony</span></div>
-        <div class="v num"><a href="https://wa.me/201003769727" target="_blank" rel="noopener">+20 100 376 9727</a></div>
+        <div class="k"><span data-ar>م. أحمد التوني — صاحب الشركة</span><span data-en-only>Eng. Ahmed El-Tony — owner</span></div>
+        <div class="v num"><a href="tel:+201003769727">010 0376 9727</a></div>
       </div>
       <div class="line rise">
         <div class="k"><span data-ar>المبيعات</span><span data-en-only>Sales</span></div>
-        <div class="v num"><a href="tel:+201050559450">010 5055 9450</a><br><a href="tel:+201050559451">010 5055 9451</a></div>
+        <div class="v num"><a href="https://wa.me/201050559450" target="_blank" rel="noopener">010 5055 9450</a>
+          <small style="color:var(--mute);font-size:.8em"> واتساب</small><br><a href="tel:+201050559451">010 5055 9451</a></div>
       </div>
       <div class="line rise">
         <div class="k"><span data-ar>البريد الإلكتروني</span><span data-en-only>Email</span></div>
@@ -1944,7 +2029,7 @@ setTimeout(function () {
 
   /* ✏️  الرقم الذي تصل إليه طلبات عرض السعر — بكود الدولة وبلا +
          لتغييره: اكتب الرقم الجديد بين علامتي التنصيص. */
-  var SALES = "201050559451";
+  var SALES = "201050559450";   // رقم المبيعات — عليه واتساب
   var still = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ---------- شاشة التشغيل ---------- */
