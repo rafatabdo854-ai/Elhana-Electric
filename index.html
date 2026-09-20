@@ -78,7 +78,13 @@
 <title>شركة الهنا اليكتريك | تصنيع اللوحات الكهربائية — العاشر من رمضان</title>
 
 <meta name="description" content="الهنا اليكتريك لتصنيع اللوحات الكهربائية والأعمال الهندسية بمدينة العاشر من رمضان: لوحات التوزيع الرئيسية والفرعية وATS والتحكم وتحسين معامل القدرة والإنارة — جهد منخفض ومتوسط.">
-<meta name="theme-color" content="#0F2438">
+<meta name="theme-color" content="#FFFFFF">
+
+<!-- ✏️  مظهر الموقع لو الزائر ضغط "إضافة إلى الشاشة الرئيسية" وفتحه
+     كأنه تطبيق: شريط الحالة (الساعة والبطارية) يبقى بخلفية بيضاء
+     تناسب تصميم الموقع الفاتح، بدل ما يفضل كحلي غامق من التصميم القديم. -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 
 <!-- ✏️  توجيه محرّكات البحث: فهرسة كاملة + السماح بصورة كبيرة في النتيجة -->
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -192,13 +198,13 @@ html:not(.en) [data-en-only] { display: none; }
    شاشة التشغيل
    ============================================================ */
 #boot { position: fixed; inset: 0; z-index: 999; background: var(--paper); color: var(--ink);
-        display: grid; place-content: center; justify-items: center; gap: 24px;
+        display: grid; place-content: center; justify-items: center; gap: 26px;
         transition: opacity .5s var(--ease), visibility .5s; }
 #boot.done { opacity: 0; visibility: hidden; }
-#boot .mark { width: 72px; height: 72px; border-radius: 50%; background: var(--shell);
+#boot .mark { width: 108px; height: 108px; border-radius: 50%; background: var(--shell);
               border: 1px solid var(--line); }
-#boot .lamps { display: flex; gap: 15px; }
-#boot .lamp { width: 14px; height: 14px; border-radius: 50%;
+#boot .lamps { display: flex; gap: 17px; }
+#boot .lamp { width: 16px; height: 16px; border-radius: 50%;
               background: var(--shell-2); box-shadow: inset 0 0 0 1px var(--line); }
 
 /* ✏️  لمبات شاشة التشغيل — ترمز لأوجه الكهرباء الثلاثة: أحمر وأصفر وأزرق.
@@ -217,7 +223,7 @@ html:not(.en) [data-en-only] { display: none; }
 #boot .bus span { display: block; height: 100%; width: 0; background: var(--copper); }
 #boot .bus span { animation: busFill .9s .3s cubic-bezier(.22,.61,.36,1) forwards; }
 @keyframes busFill { to { width: 100%; } }
-#boot .cap { font-family: var(--display); font-weight: 300; font-size: .72rem;
+#boot .cap { font-family: var(--display); font-weight: 400; font-size: .82rem;
              letter-spacing: .3em; color: var(--mute); direction: ltr; }
 
 /* ============================================================
