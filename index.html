@@ -789,7 +789,7 @@ setTimeout(function () {
       for (var i = 0; i < hidden.length; i++) { hidden[i].classList.add("in"); }
     }
   }, 500);
-}, 2500);
+}, 3000);
 </script>
 
 <!-- ============ شريط علوي ============ -->
@@ -1693,7 +1693,7 @@ setTimeout(function () {
 
 <div id="lb" role="dialog" aria-modal="true" aria-label="عرض الصورة">
   <button class="close" type="button" aria-label="إغلاق">✕</button>
-  <img id="lb-img" src="" alt="">
+  <img id="lb-img" alt="">
   <div class="cap" id="lb-cap"></div>
 </div>
 
@@ -1717,16 +1717,22 @@ setTimeout(function () {
   if (still || !boot) { dropBoot(); }
   else {
     boot.classList.add("run");
+    /* ✏️  توقيت شاشة التشغيل
+
+           اللمبات بتنوّر واحدة ورا التانية، وشريط النحاس بياخد 1200
+           مللي لحد ما يمتلئ. فالحد الأدنى لعرض الشاشة لازم يكون أطول
+           من ده، وإلا الشاشة بتقفل والحركة لسه شغالة فالزائر ميشوفش
+           حاجة. لو عايزها أسرع، قلّل 1700 — بس متنزلش تحت 1400. */
     boot.querySelectorAll(".lamp").forEach(function (l, i) {
-      setTimeout(function () { l.classList.add("on"); }, 110 + i * 165);
+      setTimeout(function () { l.classList.add("on"); }, 160 + i * 200);
     });
-    var min = new Promise(function (r) { setTimeout(r, 1200); });
+    var min = new Promise(function (r) { setTimeout(r, 1700); });
     var load = new Promise(function (r) {
       if (document.readyState === "complete") r();
       else addEventListener("load", r, { once: true });
     });
     Promise.all([min, load]).then(dropBoot);
-    setTimeout(dropBoot, 2200);          // شبكة بطيئة: لا ننتظر بلا حدّ
+    setTimeout(dropBoot, 2700);          // شبكة بطيئة: لا ننتظر بلا حدّ
   }
 
   /* ----------------------------------------------------------
@@ -1889,9 +1895,4 @@ setTimeout(function () {
       ar: ["القواطع الخارجة", "OUTGOING BREAKERS",
            "كل قاطع يغذّي دائرة أو لوحة فرعية، وأمبيريته تُختار لتفصل قبل الكابل الذي يحميه."],
       en: ["Outgoing breakers", "OUTGOING BREAKERS",
-           "Each breaker feeds a circuit or a sub-board, rated to trip before the cable it protects."]
-    },
-    "3": {
-      ar: ["الخوارج وترميز الأوجه", "PHASE-CODED LINKS",
-           "أحمر وأصفر وأزرق: ترميز الأوجه الثلاثة. توزيع الأحمال عليها بالتساوي يمنع تحميل وجه أكثر من غيره."],
-      en: ["Phase-co
+           
