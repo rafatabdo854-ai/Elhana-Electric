@@ -1512,15 +1512,17 @@ setTimeout(function () {
       <div class="field">
         <label for="q-type"><span data-ar>نوع اللوحة</span><span data-en-only>Panel type</span></label>
         <select id="q-type">
-          <option>لوحة توزيع رئيسية MDP</option>
-          <option>لوحة توزيع فرعية</option>
-          <option>لوحة تغذية احتياطية ATS</option>
-          <option>لوحة إنارة</option>
-          <option>لوحة تحكم</option>
-          <option>لوحة تحسين معامل القدرة</option>
-          <option>صناديق رايزر</option>
-          <option>حوامل كابلات</option>
-          <option>غير محدد / سأرفق الرسومات</option>
+          <!-- ✏️  كل خيار له نصّان: العربي والإنجليزي، والقيمة value مفتاح
+               ثابت لا يتغيّر مع اللغة. لو أضفت خيارًا، ادّيه value جديد. -->
+          <option value="mdb"   data-ar="لوحة توزيع رئيسية MDP"     data-en="Main distribution panel (MDP)">لوحة توزيع رئيسية MDP</option>
+          <option value="smdb"  data-ar="لوحة توزيع فرعية"          data-en="Sub-distribution panel">لوحة توزيع فرعية</option>
+          <option value="ats"   data-ar="لوحة تغذية احتياطية ATS"   data-en="ATS transfer panel">لوحة تغذية احتياطية ATS</option>
+          <option value="light" data-ar="لوحة إنارة"                data-en="Lighting panel">لوحة إنارة</option>
+          <option value="ctrl"  data-ar="لوحة تحكم"                 data-en="Control panel">لوحة تحكم</option>
+          <option value="pfc"   data-ar="لوحة تحسين معامل القدرة"   data-en="Power factor correction panel">لوحة تحسين معامل القدرة</option>
+          <option value="riser" data-ar="صناديق رايزر"              data-en="Riser boxes">صناديق رايزر</option>
+          <option value="tray"  data-ar="حوامل كابلات"              data-en="Cable trays">حوامل كابلات</option>
+          <option value="other" data-ar="غير محدد / سأرفق الرسومات" data-en="Not sure / I will attach drawings">غير محدد / سأرفق الرسومات</option>
         </select>
       </div>
       <div class="field">
@@ -1753,11 +1755,23 @@ setTimeout(function () {
   var LS = "elhana.lang";
   var langBtn = document.getElementById("lang");
 
+  /* أجزاء من الصفحة يكتبها السكربت وقت التشغيل (شرح أجزاء اللوحة،
+     توصية المحدّد، قائمة أنواع اللوحات). النصوص دي مش بتتبدّل لوحدها
+     مع الكلاس، فكل جزء بيسجّل هنا دالة تعيد رسمه عند تغيير اللغة. */
+  var onLang = [];
+
   function setLang(code) {
     var en = code === "en";
     document.documentElement.classList.toggle("en", en);
     document.documentElement.setAttribute("lang", en ? "en" : "ar");
     document.documentElement.setAttribute("dir", en ? "ltr" : "rtl");
+    document.querySelectorAll("option[data-ar]").forEach(function (o) {
+      var t = en ? o.getAttribute("data-en") : o.getAttribute("data-ar");
+      if (t) { o.textContent = t; }
+    });
+    for (var i = 0; i < onLang.length; i++) {
+      try { onLang[i](en); } catch (e) {}
+    }
     try { localStorage.setItem(LS, en ? "en" : "ar"); } catch (e) {}
   }
 
@@ -1935,7 +1949,9 @@ setTimeout(function () {
   var xn = document.getElementById("x-n"), xt = document.getElementById("x-t"),
       xl = document.getElementById("x-l"), xp = document.getElementById("x-p");
 
+  var curPart = "1";
   function showPart(k) {
+    curPart = k;
     var en = document.documentElement.classList.contains("en");
     var d = PARTS[k][en ? "en" : "ar"];
     xn.textContent = "0" + k;
@@ -1944,6 +1960,7 @@ setTimeout(function () {
   }
   hots.forEach(function (h) { h.addEventListener("click", function () { showPart(h.dataset.x); }); });
   showPart("1");
+  onLang.push(function () { showPart(curPart); });
 
   /* ----------------------------------------------------------
      محدّد نوع اللوحة
@@ -1957,19 +1974,19 @@ setTimeout(function () {
   var RESULT = {
     ats:   { ar: ["لوحة تغذية احتياطية ATS", "عندك مولّد والتحويل يجب أن يكون تلقائيًا — هذه اللوحة تنقل الحمل بين الشبكة والمولّد دون تدخل. تُركَّب قبل لوحة التوزيع الرئيسية أو بجوارها."],
              en: ["ATS panel", "You have a generator and transfer must be automatic — this panel moves the load between grid and generator with no human involved. It sits before or beside the main board."],
-             opt: "لوحة تغذية احتياطية ATS" },
+             opt: "ats" },
     main:  { ar: ["لوحة توزيع رئيسية MDB", "اللوحة الأولى بعد المحوّل أو العدّاد، ومنها تتفرّع الشبكة كلها. مقطع القضبان وأمبيرية القاطع الرئيسي يُحسبان من إجمالي الحمل."],
              en: ["Main distribution panel (MDB)", "The first board after the transformer or meter; the whole network branches from it. Busbar section and main breaker rating come from total load."],
-             opt: "لوحة توزيع رئيسية MDP" },
+             opt: "mdb" },
     sub:   { ar: ["لوحة توزيع فرعية SMDB", "تغذّي دورًا أو قسمًا وتتفرّع من اللوحة الرئيسية. تعزل عطل القسم عن باقي المنشأة."],
              en: ["Sub-distribution panel (SMDB)", "Feeds a floor or department from the main board, and isolates a fault in that area from the rest of the site."],
-             opt: "لوحة توزيع فرعية" },
+             opt: "smdb" },
     ctrl:  { ar: ["لوحة تحكم", "تدير تشغيل الماكينة أو الخط وتوقيته وحمايته، بمنطق تقليدي أو عبر PLC حسب ما يطلبه التشغيل."],
              en: ["Control panel", "Runs the machine or line — its sequencing, timing and protection — hard-wired or PLC-based as operation requires."],
-             opt: "لوحة تحكم" },
+             opt: "ctrl" },
     light: { ar: ["لوحة إنارة", "توزّع دوائر الإنارة، مع تحكم بالمجموعات أو بمؤقّت عند الحاجة."],
              en: ["Lighting panel", "Distributes lighting circuits, with group or timer control where needed."],
-             opt: "لوحة إنارة" }
+             opt: "light" }
   };
 
   var PF_NOTE = {
@@ -1982,7 +1999,7 @@ setTimeout(function () {
       qresP = document.getElementById("qres-p");
   var chosen = null;
 
-  function decide() {
+  function decide(quiet) {
     if (!pick.place || !pick.gen || !pick.pf) return;   // لا نوصي قبل اكتمال الصورة
 
     var key;
@@ -1999,8 +2016,9 @@ setTimeout(function () {
     qresT.textContent = d[0];
     qresP.textContent = d[1] + (pick.pf === "yes" ? PF_NOTE[en ? "en" : "ar"] : "");
     qres.classList.add("show");
-    qres.scrollIntoView({ behavior: still ? "auto" : "smooth", block: "nearest" });
+    if (!quiet) { qres.scrollIntoView({ behavior: still ? "auto" : "smooth", block: "nearest" }); }
   }
+  onLang.push(function () { if (chosen) { decide(true); } });
 
   document.querySelectorAll(".opts").forEach(function (group) {
     group.querySelectorAll(".opt").forEach(function (b) {
@@ -2016,10 +2034,7 @@ setTimeout(function () {
   // التوصية تملأ النموذج: الزائر لا يعيد كتابة ما اختاره للتوّ
   document.getElementById("qres-go").addEventListener("click", function () {
     if (chosen) {
-      var sel = document.getElementById("q-type");
-      for (var i = 0; i < sel.options.length; i++) {
-        if (sel.options[i].text === chosen.opt) { sel.selectedIndex = i; break; }
-      }
+      document.getElementById("q-type").value = chosen.opt;
     }
     document.getElementById("quote").scrollIntoView({ behavior: still ? "auto" : "smooth" });
   });
@@ -2032,7 +2047,12 @@ setTimeout(function () {
     var L = en
       ? ["Panel type", "Rating", "Quantity", "Project / company", "Name", "Phone", "Details"]
       : ["نوع اللوحة", "الأمبيرية", "العدد", "المشروع / الجهة", "الاسم", "رقم التواصل", "تفاصيل"];
-    var v = [val("q-type"), val("q-amp"), val("q-qty"), val("q-project"),
+    /* نوع اللوحة يُقرأ بالنص المعروض لا بقيمة الخيار، لأن القيمة
+       مفتاح داخلي (mdb / ats ...) لا يفهمه من يستلم الرسالة. */
+    var typeSel = document.getElementById("q-type");
+    var typeTxt = typeSel.options[typeSel.selectedIndex].text;
+
+    var v = [typeTxt, val("q-amp"), val("q-qty"), val("q-project"),
              val("q-name"), val("q-phone"), val("q-notes")];
 
     var body = L.map(function (k, i) { return v[i] ? k + ": " + v[i] : null; })
