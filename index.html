@@ -437,6 +437,8 @@ section:first-of-type { border-top: 0; }
                    transition: border-color .18s, background .18s; }
 .rail-nav button:hover { border-color: var(--ink); background: var(--shell); }
 .rail-nav svg { width: 17px; height: 17px; fill: none; stroke: var(--ink); stroke-width: 2.2; }
+/* في الواجهة العربية الشريط يبدأ من اليمين، فالسهم يُقلب ليطابق اتجاه الحركة */
+html:not(.en) .rail-nav svg { transform: scaleX(-1); }
 @media (max-width: 720px) { .rail-nav { display: none; } }
 
 .rail { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(280px, 320px);
@@ -627,6 +629,19 @@ html:not(.en) .step .n { text-align: right; }
                transition: transform .5s var(--ease); }
 .gallery button.shot:hover img { transform: scale(1.05); }
 
+/* نسخة شريطية من المعرض: 17 صورة كشبكة كانت تأخذ شاشتين كاملتين.
+   الشريط يعرض نفس الصور في ارتفاع بطاقة واحدة، والسحب أسرع من التمرير. */
+.gallery.gal-rail { display: grid; grid-auto-flow: column;
+                    grid-auto-columns: minmax(216px, 244px); gap: 12px;
+                    overflow-x: auto; overscroll-behavior-x: contain;
+                    scroll-snap-type: x mandatory; scrollbar-width: none;
+                    padding-bottom: 6px; }
+.gallery.gal-rail::-webkit-scrollbar { display: none; }
+.gallery.gal-rail > figure { scroll-snap-align: start; }
+@media (max-width: 640px) {
+  .gallery.gal-rail { grid-auto-columns: 74%; gap: 10px; }
+}
+
 /* العملاء: قائمة ساكنة تُقرأ، لا شريط يمرّ. الاسم مع المشروع بجواره
    هو ما يقنع المشتري الصناعي؛ الشريط المتحرك يقول "شعارات للزينة". */
 .accred { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 28px; align-items: start; }
@@ -790,7 +805,7 @@ footer { background: var(--carbon); color: #93A0AD; font-size: .88rem; }
   .hero .lede { color: #333; }
   .hero::before, .feed { display: none; }
   .rise { opacity: 1; transform: none; }
-  .rail { grid-auto-flow: row; grid-template-columns: 1fr 1fr; overflow: visible; }
+  .rail, .gallery.gal-rail { grid-auto-flow: row; grid-template-columns: 1fr 1fr; overflow: visible; }
   .item, .gallery figure, .step, .sector { break-inside: avoid; }
   footer { background: #fff; color: #000; }
 }
@@ -1031,7 +1046,7 @@ setTimeout(function () {
 <div class="hero">
   <div class="wrap hero-in">
     <div>
-      <div class="en-kicker rise">تأسست 2008 · العاشر من رمضان</div>
+      <div class="en-kicker rise"><span data-ar>تأسست 2008 · العاشر من رمضان</span><span data-en-only>Established 2008 · 10th of Ramadan</span></div>
       <h1 class="rise">
         <span data-ar>نصنع اللوحات الكهربائية التي يقوم عليها خط الإنتاج</span>
         <span data-en-only>We build the switchgear your production line runs on</span>
@@ -1101,7 +1116,7 @@ setTimeout(function () {
 <section class="alt" id="accreditation">
   <div class="wrap">
     <div class="sec-head rise">
-      <div class="kick">الاعتماد</div>
+      <div class="kick"><span data-ar>الاعتماد</span><span data-en-only>Accreditation</span></div>
       <h2><span data-ar>معتمدون من الشركة القابضة لكهرباء مصر</span>
           <span data-en-only>Approved by the Egyptian Electricity Holding Company</span></h2>
       <p><span data-ar>شهادة اعتماد لتصنيع اللوحات الكهربائية، صادرة عن لجنة اعتماد المهمات
@@ -1130,7 +1145,7 @@ setTimeout(function () {
 <section id="clients">
   <div class="wrap">
     <div class="sec-head rise">
-      <div class="kick">من عملائنا</div>
+      <div class="kick"><span data-ar>من عملائنا</span><span data-en-only>Our clients</span></div>
       <h2><span data-ar>جهات نفّذنا لها</span><span data-en-only>Who we have built for</span></h2>
       <p><span data-ar>أسماء ومشاريع بعينها — اسأل عن أيٍّ منها.</span>
          <span data-en-only>Named companies and specific projects — ask us about any of them.</span></p>
@@ -1154,7 +1169,7 @@ setTimeout(function () {
   <div class="wrap">
     <div class="rail-head rise">
       <div class="sec-head">
-        <div class="kick">ما نصنعه</div>
+        <div class="kick"><span data-ar>ما نصنعه</span><span data-en-only>What we build</span></div>
         <h2><span data-ar>ما نصنعه</span><span data-en-only>What we build</span></h2>
         <p>
           <span data-ar>كل لوحة تُنفَّذ بالأمبيرية والمقاس ودرجة الحماية التي يحددها المشروع، لا بمقاسات كتالوج جاهز.</span>
@@ -1269,7 +1284,7 @@ setTimeout(function () {
 <section id="selector">
   <div class="wrap">
     <div class="sec-head rise">
-      <div class="kick">اختر لوحتك</div>
+      <div class="kick"><span data-ar>اختر لوحتك</span><span data-en-only>Choose your panel</span></div>
       <h2><span data-ar>أي لوحة تحتاج؟</span><span data-en-only>Which panel do you need?</span></h2>
       <p><span data-ar>ثلاثة أسئلة تنتهي بتوصية مبدئية. ومن يعرف ما يريد يقرأ الجدول أسفلها —
         الفرق بين الأنواع في موقعها من الشبكة ووظيفتها، لا في شكلها.</span>
@@ -1411,7 +1426,7 @@ setTimeout(function () {
 <section class="alt" id="sectors">
   <div class="wrap">
     <div class="sec-head rise">
-      <div class="kick">أين تعمل لوحاتنا</div>
+      <div class="kick"><span data-ar>أين تعمل لوحاتنا</span><span data-en-only>Where our panels work</span></div>
       <h2><span data-ar>القطاعات التي نخدمها</span><span data-en-only>Sectors we serve</span></h2>
       <p><span data-ar>لكل قطاع أولوية مختلفة — والاختيار داخل اللوحة يتبعها.</span>
          <span data-en-only>Each sector has a different priority, and the choices inside the panel follow it.</span></p>
@@ -1472,7 +1487,7 @@ setTimeout(function () {
 <section id="flow">
   <div class="wrap">
     <div class="sec-head rise">
-      <div class="kick">كيف ننفّذ طلبك</div>
+      <div class="kick"><span data-ar>كيف ننفّذ طلبك</span><span data-en-only>How we deliver</span></div>
       <h2><span data-ar>كيف يمرّ المشروع عندنا</span><span data-en-only>How a project runs with us</span></h2>
       <p><span data-ar>خمس مراحل، وفي كل واحدة تعرف أين وصل طلبك.</span>
          <span data-en-only>Five stages — at each one you know where your order stands.</span></p>
@@ -1514,7 +1529,7 @@ setTimeout(function () {
 <section class="alt" id="brands">
   <div class="wrap">
     <div class="sec-head rise">
-      <div class="kick">بماذا نبني</div>
+      <div class="kick"><span data-ar>بماذا نبني</span><span data-en-only>What we build with</span></div>
       <h2><span data-ar>المكوّنات التي نبني بها</span><span data-en-only>What we build with</span></h2>
       <p><span data-ar>الماركة تُذكر بالاسم في عرض السعر، فتعرف ما بداخل اللوحة قبل أن توافق عليها.</span>
          <span data-en-only>Every brand is named in the quotation, so you know what is inside before you approve it.</span></p>
@@ -1564,7 +1579,7 @@ setTimeout(function () {
 <section id="explorer">
   <div class="wrap">
     <div class="sec-head rise">
-      <div class="kick">داخل اللوحة</div>
+      <div class="kick"><span data-ar>داخل اللوحة</span><span data-en-only>Inside the panel</span></div>
       <h2><span data-ar>ماذا يوجد داخل اللوحة؟</span><span data-en-only>What is inside the panel?</span></h2>
       <p><span data-ar>لوحة من إنتاجنا. اضغط أي نقطة لتعرف ما هي القطعة ووظيفتها.</span>
          <span data-en-only>A panel we built. Tap any point to see what the part is and what it does.</span></p>
@@ -1603,14 +1618,20 @@ setTimeout(function () {
 <!-- ============ أعمالنا ============ -->
 <section id="work">
   <div class="wrap">
-    <div class="sec-head rise">
-      <div class="kick">من داخل المصنع</div>
-      <h2><span data-ar>من أعمالنا</span><span data-en-only>Our work</span></h2>
-      <p><span data-ar>صور من داخل المصنع أثناء التجميع — اضغط أي صورة لتكبيرها.</span>
-         <span data-en-only>Shots from the factory floor during assembly — tap any image to enlarge.</span></p>
+    <div class="rail-head rise">
+      <div class="sec-head">
+        <div class="kick"><span data-ar>من داخل المصنع</span><span data-en-only>From the factory floor</span></div>
+        <h2><span data-ar>من أعمالنا</span><span data-en-only>Our work</span></h2>
+        <p><span data-ar>صور من داخل المصنع أثناء التجميع — اسحب الشريط، واضغط أي صورة لتكبيرها.</span>
+           <span data-en-only>Shots from the factory floor during assembly — swipe the strip, tap any image to enlarge.</span></p>
+      </div>
+      <div class="rail-nav">
+        <button type="button" data-rail="prev" data-rail-target="work-rail" aria-label="السابق"><svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg></button>
+        <button type="button" data-rail="next" data-rail-target="work-rail" aria-label="التالي"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+      </div>
     </div>
 
-    <div class="gallery">
+    <div class="gallery gal-rail" id="work-rail" tabindex="0" aria-label="صور من أعمالنا">
       <figure class="rise">
         <button class="shot" type="button" data-full="./img/panel-busbar.jpg" data-cap="توزيع على قضبان نحاسية">
           <img src="./img/panel-busbar.jpg" loading="lazy" decoding="async" width="1200" height="1600" alt="قضبان توزيع نحاسية وتوصيلات الأوجه الثلاثة">
@@ -1748,7 +1769,7 @@ setTimeout(function () {
 <section id="facility">
   <div class="wrap">
     <div class="sec-head rise">
-      <div class="kick">المقر</div>
+      <div class="kick"><span data-ar>المقر</span><span data-en-only>The premises</span></div>
       <h2><span data-ar>المصنع</span><span data-en-only>Our facility</span></h2>
       <p><span data-ar>المقر والصالة في العاشر من رمضان — التصنيع والتجميع والاختبار تحت سقف واحد.</span>
          <span data-en-only>The premises and assembly hall in 10th of Ramadan City — fabrication, assembly and testing under one roof.</span></p>
@@ -1784,7 +1805,7 @@ setTimeout(function () {
 <section class="alt" id="why">
   <div class="wrap">
     <div class="sec-head rise">
-      <div class="kick">لماذا الهنا</div>
+      <div class="kick"><span data-ar>لماذا الهنا</span><span data-en-only>Why El Hana</span></div>
       <h2><span data-ar>لماذا الهنا اليكتريك</span><span data-en-only>Why El Hana Electric</span></h2>
     </div>
 
@@ -1833,7 +1854,7 @@ setTimeout(function () {
 <section class="quote" id="quote">
   <div class="wrap">
     <div class="sec-head rise">
-      <div class="kick">اطلب عرض سعر</div>
+      <div class="kick"><span data-ar>اطلب عرض سعر</span><span data-en-only>Request a quote</span></div>
       <h2><span data-ar>اطلب عرض سعر</span><span data-en-only>Request a quote</span></h2>
       <p><span data-ar>املأ ما تعرفه فقط — البيانات تتحوّل إلى رسالة واتساب جاهزة، وأنت من يضغط إرسال.</span>
          <span data-en-only>Fill in only what you know — it becomes a ready WhatsApp message, and you press send.</span></p>
@@ -1905,7 +1926,7 @@ setTimeout(function () {
 <section id="contact">
   <div class="wrap">
     <div class="sec-head rise">
-      <div class="kick">تواصل معنا</div>
+      <div class="kick"><span data-ar>تواصل معنا</span><span data-en-only>Contact us</span></div>
       <h2><span data-ar>تواصل معنا</span><span data-en-only>Contact us</span></h2>
     </div>
 
@@ -2174,14 +2195,16 @@ setTimeout(function () {
   drawer.querySelectorAll("a").forEach(function (a) { a.addEventListener("click", closeDrawer); });
 
   /* ---------- شريط المنتجات ---------- */
-  var rail = document.getElementById("rail");
   document.querySelectorAll("[data-rail]").forEach(function (b) {
     b.addEventListener("click", function () {
+      // كل زر يعرف شريطه من data-rail-target، والافتراضي شريط المنتجات
+      var el = document.getElementById(b.dataset.railTarget || "rail");
+      if (!el) return;
       // في RTL يكون scrollLeft سالبًا، فنعتمد على اتجاه الصفحة لا على الإشارة
       var rtl = !document.documentElement.classList.contains("en");
-      var step = rail.clientWidth * .8;
+      var step = el.clientWidth * .8;
       var dir = b.dataset.rail === "next" ? 1 : -1;
-      rail.scrollBy({ left: (rtl ? -dir : dir) * step, behavior: still ? "auto" : "smooth" });
+      el.scrollBy({ left: (rtl ? -dir : dir) * step, behavior: still ? "auto" : "smooth" });
     });
   });
 
