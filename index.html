@@ -580,12 +580,22 @@ html:not(.en) .step .n { text-align: right; }
 .step p { font-size: .9rem; color: var(--mute); margin: 0; }
 
 /* المكوّنات */
-.brands { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+.brands { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
           gap: 1px; background: var(--line); border: 1px solid var(--line); }
-.brand { background: #fff; padding: 18px 20px; text-align: center;
-         font-family: var(--mono-ui); font-weight: 500; font-size: .92rem;
-         letter-spacing: .02em; direction: ltr; transition: background .2s; }
+.brand { background: #fff; padding: 24px 14px 20px; text-align: center;
+         display: flex; flex-direction: column; align-items: center; gap: 13px;
+         transition: background .2s; }
 .brand:hover { background: var(--shell); }
+.brand img { height: 40px; width: auto; max-width: 100%; object-fit: contain; display: block; }
+.brand small { font-size: .78rem; line-height: 1.65; color: var(--mute); max-width: 22ch; }
+@media (max-width: 560px) {
+  .brands { grid-template-columns: repeat(2, 1fr); }
+  .brand { padding: 20px 10px 16px; }
+  .brand img { height: 34px; }
+  .brand small { font-size: .74rem; }
+  /* الكارت الأخير يملأ الصف حتى لا تبقى خانة فاضية عند العدد الفردي */
+  .brands .brand:last-of-type { grid-column: 1 / -1; }
+}
 
 /* العملاء — شريط متحرك تلقائيًا، يتوقف عند تمرير الفأرة أو اللمس */
 .marquee { position: relative; overflow: hidden; width: 100%;
@@ -1496,7 +1506,8 @@ setTimeout(function () {
 <!-- ═══════════════════════════════════════════════════════════
      ✏️  ماركات المكوّنات
 
-     لإضافة ماركة: <span class="brand">الاسم</span>
+     كل ماركة = كتلة <div class="brand"> فيها صورة اللوجو وسطر وصف.
+     ملفات اللوجو في img/ بخلفية شفافة وارتفاع 180px تقريبًا.
      لا تُضف ماركة غير مستخدمة فعلًا — المشتري يسأل عنها.
      ═══════════════════════════════════════════════════════════ -->
 <!-- ============ المكوّنات ============ -->
@@ -1509,13 +1520,28 @@ setTimeout(function () {
          <span data-en-only>Every brand is named in the quotation, so you know what is inside before you approve it.</span></p>
     </div>
     <div class="brands rise">
-      <span class="brand">ABB</span>
-      <span class="brand">Schneider Electric</span>
-      <span class="brand">CHINT</span>
-      <span class="brand">Himel</span>
-      <span class="brand">Elsewedy Electric</span>
-      <!-- لإضافة ماركة: انسخ السطر التالي وغيّر الاسم بين الوسمين
-           <span class="brand">Siemens</span>
+      <div class="brand">
+        <img src="img/abb.png" alt="ABB" width="150" height="40" loading="lazy">
+        <small><span data-ar>قواطع وأجهزة حماية</span><span data-en-only>Breakers and protection devices</span></small>
+      </div>
+      <div class="brand">
+        <img src="img/schneider.png" alt="Schneider Electric" width="150" height="40" loading="lazy">
+        <small><span data-ar>قواطع ومكوّنات تحكم</span><span data-en-only>Breakers and control components</span></small>
+      </div>
+      <div class="brand">
+        <img src="img/chint.png" alt="CHINT" width="150" height="40" loading="lazy">
+        <small><span data-ar>قواطع ومكوّنات توزيع</span><span data-en-only>Breakers and distribution gear</span></small>
+      </div>
+      <div class="brand">
+        <img src="img/himel.png" alt="Himel" width="150" height="40" loading="lazy">
+        <small><span data-ar>مكوّنات توزيع وتحكم</span><span data-en-only>Distribution and control components</span></small>
+      </div>
+      <div class="brand">
+        <img src="img/elsewedy.png" alt="Elsewedy Electric" width="150" height="40" loading="lazy">
+        <small><span data-ar>كابلات ومستلزمات كهربائية</span><span data-en-only>Cables and electrical accessories</span></small>
+      </div>
+      <!-- لإضافة ماركة: انسخ كتلة .brand كاملة، وضع ملف اللوجو في img/
+           بخلفية شفافة (PNG أو SVG)، وغيّر اسم الملف ونص alt والسطر أسفله.
            لا تُضف ماركة غير مستخدمة فعلًا: المشتري الصناعي يسأل عنها. -->
     </div>
 
