@@ -561,17 +561,6 @@ html:not(.en) .stats .num { text-align: right; }
 .stats .lbl { font-size: .9rem; color: var(--mute); margin-top: 10px; }
 
 /* القطاعات */
-/* شبكة خلايا يفصلها خط شعرة واحد، لا بطاقات مستقلة لكلٍّ منها إطار.
-   نفس نمط شريط الأرقام أعلى الصفحة — لغة واحدة تتكرر بدل ثلاث. */
-.sectors { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-           gap: 1px; background: var(--line); border: 1px solid var(--line); }
-.sector { background: #fff; border: 0; padding: 22px 20px; transition: background .2s; }
-.sector:hover { background: var(--shell); }
-.sector svg { width: 30px; height: 30px; fill: none; stroke: var(--copper);
-              stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-.sector h3 { font-size: 1rem; font-weight: 600; margin-block: 12px 6px; }
-.sector p { font-size: .88rem; color: var(--mute); margin: 0; }
-
 /* مراحل التنفيذ */
 .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 24px; }
 .step { border-top: 1px solid var(--ink); padding-top: 14px; }
@@ -819,7 +808,7 @@ footer { background: var(--carbon); color: #93A0AD; font-size: .88rem; }
   .hero::before, .feed { display: none; }
   .rise { opacity: 1; transform: none; }
   .rail, .gallery.gal-rail { grid-auto-flow: row; grid-template-columns: 1fr 1fr; overflow: visible; }
-  .item, .gallery figure, .step, .sector { break-inside: avoid; }
+  .item, .gallery figure, .step, .picker .row { break-inside: avoid; }
   footer { background: #fff; color: #000; }
 }
 </style>
@@ -1430,10 +1419,10 @@ setTimeout(function () {
 <!-- ═══════════════════════════════════════════════════════════
      ✏️  القطاعات التي تخدمونها
 
-     لحذف قطاع: امسح كتلة <div class="sector rise"> ... </div>
-     لإضافة قطاع: انسخ كتلة كاملة وغيّر الأيقونة والنص.
+     الجدول من ثلاثة أعمدة: القطاع / اللوحات المطلوبة عادةً / الأولوية.
+     لإضافة قطاع: انسخ كتلة <div class="row"> كاملة وغيّر النصوص.
      اكتب ما يتغيّر داخل اللوحة لكل قطاع، لا كلامًا عامًا —
-     الزائر يبحث عن نفسه في هذه القائمة.
+     الزائر يبحث عن نفسه في هذا الجدول.
      ═══════════════════════════════════════════════════════════ -->
 <!-- ============ القطاعات ============ -->
 <section class="alt" id="sectors">
@@ -1445,47 +1434,59 @@ setTimeout(function () {
          <span data-en-only>Each sector has a different priority, and the choices inside the panel follow it.</span></p>
     </div>
 
-    <div class="sectors">
-      <div class="sector rise">
-        <svg viewBox="0 0 24 24"><path d="M3 21h18M3 21V10l6 4V10l6 4V7l6 4v10"/><path d="M7 21v-4M13 21v-4M18 21v-4"/></svg>
-        <h3><span data-ar>المصانع</span><span data-en-only>Factories</span></h3>
-        <p><span data-ar>أحمال محرّكات كبيرة وبدء متكرر — التركيز على حماية المحرك واستمرارية الخط.</span>
-           <span data-en-only>Large motor loads and frequent starts — motor protection and line continuity come first.</span></p>
+    <div class="picker rise">
+      <div class="row head">
+        <div><span data-ar>القطاع</span><span data-en-only>Sector</span></div>
+        <div><span data-ar>اللوحات المطلوبة عادةً</span><span data-en-only>Panels usually needed</span></div>
+        <div><span data-ar>الأولوية في التصميم</span><span data-en-only>What the design prioritises</span></div>
       </div>
 
-      <div class="sector rise">
-        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="5" rx="1"/><rect x="3" y="12" width="18" height="5" rx="1"/><path d="M7 6.5h.01M7 14.5h.01"/></svg>
-        <h3><span data-ar>مراكز البيانات</span><span data-en-only>Data centres</span></h3>
-        <p><span data-ar>لا تحتمل انقطاعًا — تغذية مزدوجة وزمن تحويل محسوب بالملّي ثانية.</span>
-           <span data-en-only>No downtime tolerated — dual feeds and transfer timed in milliseconds.</span></p>
+      <div class="row">
+        <div class="nm"><span data-ar>المصانع</span><span data-en-only>Factories</span></div>
+        <div class="txt" data-l="اللوحات"><span data-ar>لوحة رئيسية + لوحات تحكم محركات + تحسين معامل القدرة</span>
+          <span data-en-only>Main board + motor control panels + power factor correction</span></div>
+        <div class="txt" data-l="الأولوية"><span data-ar>حماية المحرك واستمرارية الخط مع البدء المتكرر.</span>
+          <span data-en-only>Motor protection and line continuity under frequent starting.</span></div>
       </div>
 
-      <div class="sector rise">
-        <svg viewBox="0 0 24 24"><path d="M4 21V7l8-4 8 4v14"/><path d="M12 10v6M9 13h6"/></svg>
-        <h3><span data-ar>المستشفيات</span><span data-en-only>Hospitals</span></h3>
-        <p><span data-ar>دوائر حرجة تُفصل عن غيرها، وتغذية احتياطية تعمل دون تدخل بشري.</span>
-           <span data-en-only>Critical circuits separated from the rest, with backup that works without a human.</span></p>
+      <div class="row">
+        <div class="nm"><span data-ar>محطات المياه</span><span data-en-only>Water plants</span></div>
+        <div class="txt" data-l="اللوحات"><span data-ar>لوحات تحكم طلمبات + تحويل تلقائي</span>
+          <span data-en-only>Pump control panels + automatic transfer</span></div>
+        <div class="txt" data-l="الأولوية"><span data-ar>تشغيل الطلمبات بالتناوب، وصندوق يتحمّل بيئة الموقع.</span>
+          <span data-en-only>Pumps alternating in rotation, in an enclosure rated for the site.</span></div>
       </div>
 
-      <div class="sector rise">
-        <svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M9 7h2M13 7h2M9 11h2M13 11h2M9 15h2M13 15h2"/><path d="M10 21v-3h4v3"/></svg>
-        <h3><span data-ar>المباني الإدارية</span><span data-en-only>Commercial buildings</span></h3>
-        <p><span data-ar>رايزر يغذّي الأدوار، ولوحات إنارة تُدار بالمجموعات أو بمؤقّت.</span>
-           <span data-en-only>Risers feeding floors, and lighting boards managed by group or timer.</span></p>
+      <div class="row">
+        <div class="nm"><span data-ar>المباني الإدارية</span><span data-en-only>Commercial buildings</span></div>
+        <div class="txt" data-l="اللوحات"><span data-ar>رايزر + لوحات فرعية + لوحات إنارة</span>
+          <span data-en-only>Risers + sub-distribution + lighting boards</span></div>
+        <div class="txt" data-l="الأولوية"><span data-ar>تغذية الأدوار، وإنارة تُدار بالمجموعات أو بمؤقّت.</span>
+          <span data-en-only>Feeding floors, with lighting managed by group or timer.</span></div>
       </div>
 
-      <div class="sector rise">
-        <svg viewBox="0 0 24 24"><path d="M6 21 12 3l6 18"/><path d="M8.4 13h7.2M7 17h10"/></svg>
-        <h3><span data-ar>محطات المحوّلات</span><span data-en-only>Substations</span></h3>
-        <p><span data-ar>خلايا وأكشاك جهد متوسط، ولوحات ربط مع شبكة التوزيع.</span>
-           <span data-en-only>MV cubicles and kiosks, and interface panels with the distribution network.</span></p>
+      <div class="row">
+        <div class="nm"><span data-ar>المستشفيات</span><span data-en-only>Hospitals</span></div>
+        <div class="txt" data-l="اللوحات"><span data-ar>تحويل تلقائي + فصل الدوائر الحرجة</span>
+          <span data-en-only>Automatic transfer + separated critical circuits</span></div>
+        <div class="txt" data-l="الأولوية"><span data-ar>تغذية احتياطية تعمل دون تدخل بشري.</span>
+          <span data-en-only>Backup supply that works without a human.</span></div>
       </div>
 
-      <div class="sector rise">
-        <svg viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 10.5A6 6 0 0 1 6 13.5C6 9.5 12 3 12 3Z"/></svg>
-        <h3><span data-ar>محطات المياه</span><span data-en-only>Water plants</span></h3>
-        <p><span data-ar>طلمبات تعمل بالتناوب، ولوحات تتحمّل الرطوبة وبيئة التشغيل.</span>
-           <span data-en-only>Pumps running in rotation, in enclosures rated for humidity and site conditions.</span></p>
+      <div class="row">
+        <div class="nm"><span data-ar>مراكز البيانات</span><span data-en-only>Data centres</span></div>
+        <div class="txt" data-l="اللوحات"><span data-ar>تغذية مزدوجة + تحويل تلقائي</span>
+          <span data-en-only>Dual feeds + automatic transfer</span></div>
+        <div class="txt" data-l="الأولوية"><span data-ar>زمن تحويل محسوب، والانقطاع غير مقبول.</span>
+          <span data-en-only>Transfer time calculated; downtime is not acceptable.</span></div>
+      </div>
+
+      <div class="row">
+        <div class="nm"><span data-ar>محطات المحوّلات</span><span data-en-only>Substations</span></div>
+        <div class="txt" data-l="اللوحات"><span data-ar>خلايا وأكشاك جهد متوسط + لوحات ربط</span>
+          <span data-en-only>MV cubicles and kiosks + interface panels</span></div>
+        <div class="txt" data-l="الأولوية"><span data-ar>الربط مع شبكة التوزيع وحماية جانب الجهد المتوسط.</span>
+          <span data-en-only>Interfacing the distribution network and protecting the MV side.</span></div>
       </div>
     </div>
   </div>
