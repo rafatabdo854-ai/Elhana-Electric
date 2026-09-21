@@ -642,6 +642,19 @@ html:not(.en) .step .n { text-align: right; }
   .gallery.gal-rail { grid-auto-columns: 74%; gap: 10px; }
 }
 
+/* مراحل التنفيذ بالصور: خمس صور بالترتيب، مربّعة ليبقى الإيقاع واحدًا
+   رغم اختلاف اتجاه التصوير. الرقم يقول إنها تسلسل لا معرض. */
+.gallery.flow { grid-template-columns: repeat(5, 1fr); gap: 12px; align-items: stretch; }
+.gallery.flow img { aspect-ratio: 1 / 1; object-position: center; }
+.gallery.flow .n { font-family: var(--mono-ui); font-size: .72rem; font-weight: 500;
+                   letter-spacing: .1em; color: var(--copper); direction: ltr;
+                   padding: 10px 11px 0; }
+html:not(.en) .gallery.flow .n { text-align: right; }
+.gallery.flow figcaption { border-top: 0; padding-top: 4px; }
+.gallery.flow figcaption b { display: block; color: var(--ink); font-weight: 600;
+                             font-size: .88rem; margin-bottom: 3px; }
+@media (max-width: 860px) { .gallery.flow { grid-template-columns: repeat(2, 1fr); } }
+
 /* العملاء: قائمة ساكنة تُقرأ، لا شريط يمرّ. الاسم مع المشروع بجواره
    هو ما يقنع المشتري الصناعي؛ الشريط المتحرك يقول "شعارات للزينة". */
 .accred { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 28px; align-items: start; }
@@ -1518,6 +1531,74 @@ setTimeout(function () {
   </div>
 </section>
 
+<!-- ============ مراحل التنفيذ بالصور ============
+     خمس صور بالترتيب من الرسم إلى الشحن. الصور من مشروعات مختلفة
+     ومكتوب ذلك في النص — لا تدّعِ أنها لوحة واحدة.
+     لتبديل صورة: ضع الملف في img/ بنفس الاسم واحتفظ بالمقاس المربّع. -->
+<section class="alt" id="build">
+  <div class="wrap">
+    <div class="sec-head rise">
+      <div class="kick"><span data-ar>من الرسم إلى اللوحة</span><span data-en-only>From drawing to panel</span></div>
+      <h2><span data-ar>مراحل التنفيذ بالصور</span><span data-en-only>The build, in photographs</span></h2>
+      <p><span data-ar>صور من مشروعات مختلفة، مرتّبة بترتيب مراحل التنفيذ داخل المصنع.</span>
+         <span data-en-only>Photographs from different projects, arranged in the order the work happens.</span></p>
+    </div>
+
+    <div class="gallery flow">
+      <figure>
+        <div class="n">01</div>
+        <button class="shot" type="button" data-full="./img/step-1-drawing.jpg" data-cap="التصميم">
+          <img src="./img/step-1-drawing.jpg" loading="lazy" decoding="async" width="900" height="900" alt="رسم تنفيذي ثلاثي الأبعاد للوحة">
+        </button>
+        <figcaption>
+          <b><span data-ar>التصميم</span><span data-en-only>Design</span></b>
+          <span data-ar>رسم تنفيذي ثلاثي الأبعاد يحدد مواضع القواطع والقضبان قبل قطع أي حديد.</span><span data-en-only>A 3D shop drawing fixing breaker and busbar positions before any metal is cut.</span>
+        </figcaption>
+      </figure>
+      <figure>
+        <div class="n">02</div>
+        <button class="shot" type="button" data-full="./img/step-2-frame.jpg" data-cap="الهيكل">
+          <img src="./img/step-2-frame.jpg" loading="lazy" decoding="async" width="900" height="900" alt="هياكل لوحات والقواطع مركّبة داخل المصنع">
+        </button>
+        <figcaption>
+          <b><span data-ar>الهيكل</span><span data-en-only>Enclosure</span></b>
+          <span data-ar>هياكل الحديد بعد التجميع والقواطع مركّبة في مواضعها داخل صالة المصنع.</span><span data-en-only>Assembled steel frames with breakers mounted in position on the shop floor.</span>
+        </figcaption>
+      </figure>
+      <figure>
+        <div class="n">03</div>
+        <button class="shot" type="button" data-full="./img/step-3-busbar.jpg" data-cap="القضبان">
+          <img src="./img/step-3-busbar.jpg" loading="lazy" decoding="async" width="900" height="900" alt="قضبان نحاسية وقواطع هوائية قبل التغليف">
+        </button>
+        <figcaption>
+          <b><span data-ar>القضبان</span><span data-en-only>Busbars</span></b>
+          <span data-ar>قضبان النحاس والقواطع الهوائية في مكانها قبل تركيب الألواح والأبواب.</span><span data-en-only>Copper busbars and air circuit breakers in place before panels and doors go on.</span>
+        </figcaption>
+      </figure>
+      <figure>
+        <div class="n">04</div>
+        <button class="shot" type="button" data-full="./img/step-4-finished.jpg" data-cap="التشطيب">
+          <img src="./img/step-4-finished.jpg" loading="lazy" decoding="async" width="900" height="900" alt="واجهة لوحة تحكم مكتملة بأبواب مسمّاة">
+        </button>
+        <figcaption>
+          <b><span data-ar>التشطيب</span><span data-en-only>Finishing</span></b>
+          <span data-ar>اللوحة بعد الإغلاق: أبواب مرقّمة بأسماء الدوائر ومفاتيح ولمبات بيان لكل طلمبة.</span><span data-en-only>The closed panel: doors labelled per circuit, with switches and indicator lamps for each pump.</span>
+        </figcaption>
+      </figure>
+      <figure>
+        <div class="n">05</div>
+        <button class="shot" type="button" data-full="./img/step-5-shipping.jpg" data-cap="التسليم">
+          <img src="./img/step-5-shipping.jpg" loading="lazy" decoding="async" width="900" height="900" alt="لوحات مغلّفة محمّلة للشحن أمام المصنع">
+        </button>
+        <figcaption>
+          <b><span data-ar>التسليم</span><span data-en-only>Delivery</span></b>
+          <span data-ar>اللوحات مغلّفة ومحمّلة على السيارة أمام المصنع في العاشر من رمضان.</span><span data-en-only>Panels wrapped and loaded outside the factory in 10th of Ramadan City.</span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
 <!-- ═══════════════════════════════════════════════════════════
      ✏️  ماركات المكوّنات
 
@@ -1757,6 +1838,27 @@ setTimeout(function () {
         </button>
         <figcaption><span data-ar>رسم تصميمي (Shop drawing) للوحة ATS يوضّح ترتيب القضبان والقواطع قبل اعتماده للتصنيع.</span>
           <span data-en-only>A shop drawing for an ATS panel, showing the busbar and breaker layout before it is approved for manufacturing.</span></figcaption>
+      </figure>
+      <figure>
+        <button class="shot" type="button" data-full="./img/panel-pump-control.jpg" data-cap="لوحة تحكم طلمبات">
+          <img src="./img/panel-pump-control.jpg" loading="lazy" decoding="async" alt="لوحة تحكم طلمبات بمجموعات كونتاكتورات">
+        </button>
+        <figcaption><span data-ar>لوحة تحكم طلمبات: قاطع وكونتاكتور وحماية حرارية لكل طلمبة، وأطراف الربط مرقّمة أسفل كل مجموعة.</span>
+          <span data-en-only>A pump control panel: a breaker, contactor and thermal overload per pump, with numbered terminals under each group.</span></figcaption>
+      </figure>
+      <figure>
+        <button class="shot" type="button" data-full="./img/capacitor-bank-assembly.jpg" data-cap="بنك مكثفات أثناء التجميع">
+          <img src="./img/capacitor-bank-assembly.jpg" loading="lazy" decoding="async" alt="بنك مكثفات أثناء التجميع داخل الهيكل">
+        </button>
+        <figcaption><span data-ar>مكثفات مثبّتة على أرفف داخل الهيكل، والقضبان الملوّنة تغذّي المراحل قبل تركيب الأبواب.</span>
+          <span data-en-only>Capacitors mounted on shelves inside the frame, with colour-coded bars feeding the stages before the doors go on.</span></figcaption>
+      </figure>
+      <figure>
+        <button class="shot" type="button" data-full="./img/db-wall-mount.jpg" data-cap="لوحة فرعية على الحائط">
+          <img src="./img/db-wall-mount.jpg" loading="lazy" decoding="async" alt="لوحة توزيع فرعية مركّبة على الحائط">
+        </button>
+        <figcaption><span data-ar>لوحة فرعية مركّبة في الموقع: قاطع رئيسي وقواطع فرعية ومأخذ خدمة داخل صندوق معدني.</span>
+          <span data-en-only>A sub-distribution board installed on site: main and outgoing breakers with a service socket in a steel box.</span></figcaption>
       </figure>
     </div>
   </div>
