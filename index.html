@@ -905,7 +905,7 @@ footer { background: var(--carbon); color: #93A0AD; font-size: .88rem; }
 </head>
 <body class="loading">
 
-<div id="boot" role="status" aria-label="جارٍ التشغيل">
+<div id="boot" role="status" aria-label="جارٍ التشغيل" data-aria-en="Loading">
   <img class="mark" src="./img/logo.png" alt="">
   <div class="lamps"><span class="lamp"></span><span class="lamp"></span><span class="lamp"></span></div>
   <div class="bus"><span></span></div>
@@ -1010,7 +1010,7 @@ setTimeout(function () {
       <a href="#contact"><span data-ar>تواصل</span><span data-en-only>Contact</span></a>
     </nav>
 
-    <button id="burger" type="button" aria-label="القائمة">
+    <button id="burger" type="button" aria-label="القائمة" data-aria-en="Menu">
       <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
     </button>
   </div>
@@ -1021,7 +1021,7 @@ setTimeout(function () {
 <!-- ============ قائمة الموبايل ============ -->
 <div id="drawer">
   <div class="panel">
-    <button class="x" type="button" aria-label="إغلاق">✕</button>
+    <button class="x" type="button" aria-label="إغلاق" data-aria-en="Close">✕</button>
     <div class="grp" data-ar>المنتجات</div><div class="grp" data-en-only>PRODUCTS</div>
     <a href="#products"><span data-ar>كل المنتجات</span><span data-en-only>All products</span></a>
     <div class="grp" data-ar>الشركة</div><div class="grp" data-en-only>COMPANY</div>
@@ -1129,16 +1129,22 @@ setTimeout(function () {
 
     <div class="accred rise">
       <figure>
-        <button class="shot" type="button" data-full="./img/accreditation.jpg" data-cap="شهادة اعتماد الشركة القابضة لكهرباء مصر">
+        <button class="shot" type="button" data-full="./img/accreditation.jpg" data-cap="شهادة اعتماد الشركة القابضة لكهرباء مصر" data-cap-en="Egyptian Electricity Holding Company approval certificate">
           <img src="./img/accreditation.jpg" loading="lazy" decoding="async" width="720" height="521"
                alt="شهادة اعتماد من الشركة القابضة لكهرباء مصر لتصنيع اللوحات الكهربائية">
         </button>
       </figure>
       <dl class="accred-facts">
-        <div><dt>اللوحة المعتمدة</dt><dd>جهد منخفض 400 فولت — طراز ATN-3600A</dd></div>
-        <div><dt>السعة</dt><dd>3600 أمبير، بقاطع رئيسي 4000 أمبير</dd></div>
-        <div><dt>المكوّن المحلي</dt><dd>47.29%</dd></div>
-        <div><dt>سريان الاعتماد</dt><dd>ثلاث سنوات اعتبارًا من 13 أبريل 2025</dd></div>
+        <div><dt><span data-ar>اللوحة المعتمدة</span><span data-en-only>Approved panel</span></dt>
+          <dd><span data-ar>جهد منخفض 400 فولت — طراز ATN-3600A</span>
+            <span data-en-only>Low voltage 400 V — model ATN-3600A</span></dd></div>
+        <div><dt><span data-ar>السعة</span><span data-en-only>Rating</span></dt>
+          <dd><span data-ar>3600 أمبير، بقاطع رئيسي 4000 أمبير</span>
+            <span data-en-only>3600 A, with a 4000 A main breaker</span></dd></div>
+        <div><dt><span data-ar>المكوّن المحلي</span><span data-en-only>Local content</span></dt><dd>47.29%</dd></div>
+        <div><dt><span data-ar>سريان الاعتماد</span><span data-en-only>Valid for</span></dt>
+          <dd><span data-ar>ثلاث سنوات اعتبارًا من 13 أبريل 2025</span>
+            <span data-en-only>Three years from 13 April 2025</span></dd></div>
       </dl>
     </div>
   </div>
@@ -1153,15 +1159,15 @@ setTimeout(function () {
          <span data-en-only>Named companies and specific projects — ask us about any of them.</span></p>
     </div>
     <div class="clients-grid">
-      <div class="client-row rise"><b>شركة حسن علام</b><span>مشروع الضبعة النووي</span></div>
-      <div class="client-row rise"><b>شركة السويدي للأدوات الصحية</b><span>ريتزي</span></div>
-      <div class="client-row rise"><b>محمود محمد فريد رستم وشركاه</b><span>لوحات ATS — كليك</span></div>
-      <div class="client-row rise"><b>شركة سيراميكا روندي</b><span>بني سويف</span></div>
-      <div class="client-row rise"><b>شركة السونيا تكس</b></div>
-      <div class="client-row rise"><b>شركة فايبر ون</b></div>
-      <div class="client-row rise"><b>شركة أغابي لصناعة الكرتون</b></div>
-      <div class="client-row rise"><b>شركة ماستر لاين للمنسوجات</b></div>
-      <div class="client-row rise"><b>شركة قطونيل</b></div>
+      <div class="client-row rise"><b><span data-ar>شركة حسن علام</span><span data-en-only>Hassan Allam</span></b><span><span data-ar>مشروع الضبعة النووي</span><span data-en-only>El Dabaa nuclear project</span></span></div>
+      <div class="client-row rise"><b><span data-ar>شركة السويدي للأدوات الصحية</span><span data-en-only>Elsewedy Sanitary Ware</span></b><span><span data-ar>ريتزي</span><span data-en-only>Ritzy</span></span></div>
+      <div class="client-row rise"><b><span data-ar>محمود محمد فريد رستم وشركاه</span><span data-en-only>Mahmoud M. Farid Rostam & Partners</span></b><span><span data-ar>لوحات ATS — كليك</span><span data-en-only>ATS panels — Click</span></span></div>
+      <div class="client-row rise"><b><span data-ar>شركة سيراميكا روندي</span><span data-en-only>Ceramica Rondi</span></b><span><span data-ar>بني سويف</span><span data-en-only>Beni Suef</span></span></div>
+      <div class="client-row rise"><b><span data-ar>شركة السونيا تكس</span><span data-en-only>El Sonia Tex</span></b></div>
+      <div class="client-row rise"><b><span data-ar>شركة فايبر ون</span><span data-en-only>Fiber One</span></b></div>
+      <div class="client-row rise"><b><span data-ar>شركة أغابي لصناعة الكرتون</span><span data-en-only>Aghapy Carton</span></b></div>
+      <div class="client-row rise"><b><span data-ar>شركة ماستر لاين للمنسوجات</span><span data-en-only>Master Line Textiles</span></b></div>
+      <div class="client-row rise"><b><span data-ar>شركة قطونيل</span><span data-en-only>Cottonil</span></b></div>
     </div>
   </div>
 </section>
@@ -1179,8 +1185,8 @@ setTimeout(function () {
         </p>
       </div>
       <div class="rail-nav">
-        <button type="button" data-rail="prev" aria-label="السابق"><svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg></button>
-        <button type="button" data-rail="next" aria-label="التالي"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+        <button type="button" data-rail="prev" aria-label="السابق" data-aria-en="Previous"><svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg></button>
+        <button type="button" data-rail="next" aria-label="التالي" data-aria-en="Next"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
       </div>
     </div>
 
@@ -1548,7 +1554,7 @@ setTimeout(function () {
     <div class="gallery flow">
       <figure>
         <div class="n">01</div>
-        <button class="shot" type="button" data-full="./img/step-1-drawing.jpg" data-cap="التصميم">
+        <button class="shot" type="button" data-full="./img/step-1-drawing.jpg" data-cap="التصميم" data-cap-en="Design">
           <img src="./img/step-1-drawing.jpg" loading="lazy" decoding="async" width="900" height="900" alt="رسم تنفيذي ثلاثي الأبعاد للوحة">
         </button>
         <figcaption>
@@ -1558,7 +1564,7 @@ setTimeout(function () {
       </figure>
       <figure>
         <div class="n">02</div>
-        <button class="shot" type="button" data-full="./img/step-2-frame.jpg" data-cap="الهيكل">
+        <button class="shot" type="button" data-full="./img/step-2-frame.jpg" data-cap="الهيكل" data-cap-en="Enclosure">
           <img src="./img/step-2-frame.jpg" loading="lazy" decoding="async" width="900" height="900" alt="هياكل لوحات والقواطع مركّبة داخل المصنع">
         </button>
         <figcaption>
@@ -1568,7 +1574,7 @@ setTimeout(function () {
       </figure>
       <figure>
         <div class="n">03</div>
-        <button class="shot" type="button" data-full="./img/step-3-busbar.jpg" data-cap="القضبان">
+        <button class="shot" type="button" data-full="./img/step-3-busbar.jpg" data-cap="القضبان" data-cap-en="Busbars">
           <img src="./img/step-3-busbar.jpg" loading="lazy" decoding="async" width="900" height="900" alt="قضبان نحاسية وقواطع هوائية قبل التغليف">
         </button>
         <figcaption>
@@ -1578,7 +1584,7 @@ setTimeout(function () {
       </figure>
       <figure>
         <div class="n">04</div>
-        <button class="shot" type="button" data-full="./img/step-4-finished.jpg" data-cap="التشطيب">
+        <button class="shot" type="button" data-full="./img/step-4-finished.jpg" data-cap="التشطيب" data-cap-en="Finishing">
           <img src="./img/step-4-finished.jpg" loading="lazy" decoding="async" width="900" height="900" alt="واجهة لوحة تحكم مكتملة بأبواب مسمّاة">
         </button>
         <figcaption>
@@ -1588,7 +1594,7 @@ setTimeout(function () {
       </figure>
       <figure>
         <div class="n">05</div>
-        <button class="shot" type="button" data-full="./img/step-5-shipping.jpg" data-cap="التسليم">
+        <button class="shot" type="button" data-full="./img/step-5-shipping.jpg" data-cap="التسليم" data-cap-en="Delivery">
           <img src="./img/step-5-shipping.jpg" loading="lazy" decoding="async" width="900" height="900" alt="لوحات مغلّفة محمّلة للشحن أمام المصنع">
         </button>
         <figcaption>
@@ -1672,12 +1678,12 @@ setTimeout(function () {
         <img src="./img/panel-mdb.jpg" width="1200" height="1600"
              alt="لوحة توزيع رئيسية من إنتاج الهنا اليكتريك، وعليها نقاط تفاعلية">
 
-        <button class="hot on" data-x="1" style="top:17%;right:50%" aria-label="القضبان الرئيسية">1</button>
-        <button class="hot"    data-x="2" style="top:22%;right:26%" aria-label="القواطع الخارجة">2</button>
-        <button class="hot"    data-x="3" style="top:46%;right:50%" aria-label="الخوارج">3</button>
-        <button class="hot"    data-x="4" style="top:74%;right:44%" aria-label="محوّلات التيار">4</button>
-        <button class="hot"    data-x="5" style="top:84%;right:47%" aria-label="القاطع الرئيسي">5</button>
-        <button class="hot"    data-x="6" style="top:93%;right:45%" aria-label="بار الأرضي">6</button>
+        <button class="hot on" data-x="1" style="top:17%;right:50%" aria-label="القضبان الرئيسية" data-aria-en="Main busbar">1</button>
+        <button class="hot"    data-x="2" style="top:22%;right:26%" aria-label="القواطع الخارجة" data-aria-en="Outgoing breakers">2</button>
+        <button class="hot"    data-x="3" style="top:46%;right:50%" aria-label="الخوارج" data-aria-en="Phase-coded links">3</button>
+        <button class="hot"    data-x="4" style="top:74%;right:44%" aria-label="محوّلات التيار" data-aria-en="Current transformers">4</button>
+        <button class="hot"    data-x="5" style="top:84%;right:47%" aria-label="القاطع الرئيسي" data-aria-en="Main breaker">5</button>
+        <button class="hot"    data-x="6" style="top:93%;right:45%" aria-label="بار الأرضي" data-aria-en="Earth bar">6</button>
       </div>
 
       <div>
@@ -1708,154 +1714,154 @@ setTimeout(function () {
            <span data-en-only>Shots from the factory floor during assembly — swipe the strip, tap any image to enlarge.</span></p>
       </div>
       <div class="rail-nav">
-        <button type="button" data-rail="prev" data-rail-target="work-rail" aria-label="السابق"><svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg></button>
-        <button type="button" data-rail="next" data-rail-target="work-rail" aria-label="التالي"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
+        <button type="button" data-rail="prev" data-rail-target="work-rail" aria-label="السابق" data-aria-en="Previous"><svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg></button>
+        <button type="button" data-rail="next" data-rail-target="work-rail" aria-label="التالي" data-aria-en="Next"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>
       </div>
     </div>
 
-    <div class="gallery gal-rail" id="work-rail" tabindex="0" aria-label="صور من أعمالنا">
+    <div class="gallery gal-rail" id="work-rail" tabindex="0" aria-label="صور من أعمالنا" data-aria-en="Our work photographs">
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/panel-busbar.jpg" data-cap="توزيع على قضبان نحاسية">
+        <button class="shot" type="button" data-full="./img/panel-busbar.jpg" data-cap="توزيع على قضبان نحاسية" data-cap-en="Copper busbar distribution">
           <img src="./img/panel-busbar.jpg" loading="lazy" decoding="async" width="1200" height="1600" alt="قضبان توزيع نحاسية وتوصيلات الأوجه الثلاثة">
         </button>
         <figcaption><span data-ar>توزيع على قضبان نحاسية بترميز الأوجه الثلاثة، ومفاتيح فرعية على جانبي البار الرئيسي، وأجهزة القياس على الباب.</span>
           <span data-en-only>Copper busbar distribution with three-phase colour coding, outgoing breakers either side of the main bar, and metering on the door.</span></figcaption>
       </figure>
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/panel-mdb.jpg" data-cap="بار رأسي وخوارج متعددة">
+        <button class="shot" type="button" data-full="./img/panel-mdb.jpg" data-cap="بار رأسي وخوارج متعددة" data-cap-en="Vertical bar with multiple outgoing ways">
           <img src="./img/panel-mdb.jpg" loading="lazy" decoding="async" width="1200" height="1600" alt="لوحة توزيع: بار رأسي وخوارج متعددة">
         </button>
         <figcaption><span data-ar>بار رأسي يغذّي أكثر من عشرين خارجًا، وقاطع رئيسي أسفله ومحوّلات تيار للقياس.</span>
           <span data-en-only>A vertical bar feeding over twenty outgoing ways, with the main breaker below and current transformers for metering.</span></figcaption>
       </figure>
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/panel-pfc.jpg" data-cap="بنك مكثفات بمراحل">
+        <button class="shot" type="button" data-full="./img/panel-pfc.jpg" data-cap="بنك مكثفات بمراحل" data-cap-en="Staged capacitor bank">
           <img src="./img/panel-pfc.jpg" loading="lazy" decoding="async" width="1000" height="1333" alt="لوحة تحسين معامل القدرة: بنك مكثفات">
         </button>
         <figcaption><span data-ar>لوحة تحسين معامل القدرة: مراحل مكثفات يديرها كونترولر أعلى اللوحة، وكونتاكتور لكل مرحلة.</span>
           <span data-en-only>Power factor correction panel: capacitor stages managed by a controller at the top, with a contactor per stage.</span></figcaption>
       </figure>
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/panel-control.jpg" data-cap="صندوق التحكم والتوصيلات">
+        <button class="shot" type="button" data-full="./img/panel-control.jpg" data-cap="صندوق التحكم والتوصيلات" data-cap-en="Control box and wiring">
           <img src="./img/panel-control.jpg" loading="lazy" decoding="async" width="900" height="1598" alt="صندوق تحكم وتوصيلات داخل لوحة">
         </button>
         <figcaption><span data-ar>صندوق التحكم وتوصيلاته، وأطراف الربط أسفله مرقّمة ومرتّبة لتسهيل الصيانة.</span>
           <span data-en-only>The control box and its wiring, with numbered, ordered terminals below for easier maintenance.</span></figcaption>
       </figure>
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/panel-front.jpg" data-cap="واجهة لوحة مكتملة">
+        <button class="shot" type="button" data-full="./img/panel-front.jpg" data-cap="واجهة لوحة مكتملة" data-cap-en="Finished panel front">
           <img src="./img/panel-front.jpg" loading="lazy" decoding="async" width="900" height="1598" alt="واجهة لوحة مكتملة: لمبات بيان وجهاز قياس">
         </button>
         <figcaption><span data-ar>واجهة لوحة بعد الإغلاق: لمبات بيان الأوجه الثلاثة وجهاز قياس متعدد يعرض الجهد والتيار.</span>
           <span data-en-only>A finished panel front: three-phase indicator lamps and a multifunction meter showing voltage and current.</span></figcaption>
       </figure>
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/bus-copper.jpg" data-cap="قضبان نحاسية بترميز الأوجه">
+        <button class="shot" type="button" data-full="./img/bus-copper.jpg" data-cap="قضبان نحاسية بترميز الأوجه" data-cap-en="Phase-coded copper busbars">
           <img src="./img/bus-copper.jpg" loading="lazy" decoding="async" width="933" height="1400" alt="قضبان نحاسية مغلّفة بترميز الأوجه الثلاثة، ومواضع الربط مكشوفة عند كل وصلة للفحص وإعادة ال">
         </button>
         <figcaption><span data-ar>قضبان نحاسية مغلّفة بترميز الأوجه الثلاثة، ومواضع الربط مكشوفة عند كل وصلة للفحص وإعادة الشدّ.</span>
           <span data-en-only>Insulated copper busbars in three-phase colour coding, with joints left exposed at each connection for inspection and re-torquing.</span></figcaption>
       </figure>
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/bus-bent.jpg" data-cap="قضبان مجهّزة قبل التركيب">
+        <button class="shot" type="button" data-full="./img/bus-bent.jpg" data-cap="قضبان مجهّزة قبل التركيب" data-cap-en="Bars prepared before installation">
           <img src="./img/bus-bent.jpg" loading="lazy" decoding="async" width="1400" height="933" alt="قضبان نحاس مثنية ومجهّزة على المنضدة قبل التركيب، مرتّبة بالوجه والمقاس لكل موضع في اللوحة">
         </button>
         <figcaption><span data-ar>قضبان نحاس مثنية ومجهّزة على المنضدة قبل التركيب، مرتّبة بالوجه والمقاس لكل موضع في اللوحة.</span>
           <span data-en-only>Copper bars bent and prepared on the bench before installation, sorted by phase and size for each position in the panel.</span></figcaption>
       </figure>
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/bus-assembly.jpg" data-cap="تجميع قضبان التغذية">
+        <button class="shot" type="button" data-full="./img/bus-assembly.jpg" data-cap="تجميع قضبان التغذية" data-cap-en="Busbar assembly">
           <img src="./img/bus-assembly.jpg" loading="lazy" decoding="async" width="1400" height="933" alt="تجميع قضبان التغذية داخل الهيكل: بارات رأسية وتفريعات أفقية تخرج منها التغذية لكل خارج.">
         </button>
         <figcaption><span data-ar>تجميع قضبان التغذية داخل الهيكل: بارات رأسية وتفريعات أفقية تخرج منها التغذية لكل خارج.</span>
           <span data-en-only>Busbar assembly inside the frame: vertical bars with horizontal droppers feeding each outgoing way.</span></figcaption>
       </figure>
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/frame-busbar.jpg" data-cap="هيكل لوحة قبل التغليف">
+        <button class="shot" type="button" data-full="./img/frame-busbar.jpg" data-cap="هيكل لوحة قبل التغليف" data-cap-en="Panel frame before enclosure">
           <img src="./img/frame-busbar.jpg" loading="lazy" decoding="async" width="933" height="1400" alt="هيكل لوحة قبل تركيب الألواح الخارجية، تظهر فيه بارات التغذية والتفريعات وقضيب الأرضي أسفل ">
         </button>
         <figcaption><span data-ar>هيكل لوحة قبل تركيب الألواح الخارجية، تظهر فيه بارات التغذية والتفريعات وقضيب الأرضي أسفل الهيكل.</span>
           <span data-en-only>A panel frame before the outer sheets go on, showing the busbars, the droppers, and the earth bar along the base.</span></figcaption>
       </figure>
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/acb-fronts.jpg" data-cap="واجهات قواطع هوائية">
+        <button class="shot" type="button" data-full="./img/acb-fronts.jpg" data-cap="واجهات قواطع هوائية" data-cap-en="Air circuit breaker fronts">
           <img src="./img/acb-fronts.jpg" loading="lazy" decoding="async" width="1400" height="933" alt="واجهات قواطع هوائية داخل فتحات الأبواب، ومعها وحدات الحماية وشاشات الضبط ولوحات البيانات.">
         </button>
         <figcaption><span data-ar>واجهات قواطع هوائية داخل فتحات الأبواب، ومعها وحدات الحماية وشاشات الضبط ولوحات البيانات.</span>
           <span data-en-only>Air circuit breaker fronts set into the door cut-outs, with their protection units, setting displays and rating plates.</span></figcaption>
       </figure>
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/panels-open.jpg" data-cap="لوحات أثناء التجهيز">
+        <button class="shot" type="button" data-full="./img/panels-open.jpg" data-cap="لوحات أثناء التجهيز" data-cap-en="Panels during fit-out">
           <img src="./img/panels-open.jpg" loading="lazy" decoding="async" width="1400" height="933" alt="لوحات مفتوحة أثناء التجهيز، تظهر فيها القواطع الرئيسية ومسارات الكابلات داخل كل خانة.">
         </button>
         <figcaption><span data-ar>لوحات مفتوحة أثناء التجهيز، تظهر فيها القواطع الرئيسية ومسارات الكابلات داخل كل خانة.</span>
           <span data-en-only>Panels open during fit-out, showing the main breakers and the cable routes inside each cubicle.</span></figcaption>
       </figure>
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/panels-row.jpg" data-cap="لوحات مكتملة قبل التسليم">
+        <button class="shot" type="button" data-full="./img/panels-row.jpg" data-cap="لوحات مكتملة قبل التسليم" data-cap-en="Finished panels before delivery">
           <img src="./img/panels-row.jpg" loading="lazy" decoding="async" width="1400" height="933" alt="صف لوحات مكتملة في صالة المصنع قبل التسليم، بلمبات البيان وأجهزة القياس على الأبواب.">
         </button>
         <figcaption><span data-ar>صف لوحات مكتملة في صالة المصنع قبل التسليم، بلمبات البيان وأجهزة القياس على الأبواب.</span>
           <span data-en-only>A row of finished panels on the factory floor before delivery, with indicator lamps and meters on the doors.</span></figcaption>
       </figure>
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/panel-single.jpg" data-cap="واجهة لوحة مكتملة">
+        <button class="shot" type="button" data-full="./img/panel-single.jpg" data-cap="واجهة لوحة مكتملة" data-cap-en="Finished panel front">
           <img src="./img/panel-single.jpg" loading="lazy" decoding="async" width="933" height="1400" alt="لوحة مكتملة من الأمام: ثلاث لمبات بيان للأوجه، جهاز قياس، لوحة بيانات، وملصق تحذير الخطر ا">
         </button>
         <figcaption><span data-ar>لوحة مكتملة من الأمام: ثلاث لمبات بيان للأوجه، جهاز قياس، لوحة بيانات، وملصق تحذير الخطر الكهربائي.</span>
           <span data-en-only>A finished panel from the front: three phase indicator lamps, a meter, the rating plate, and the electrical hazard label.</span></figcaption>
       </figure>
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/kiosk-front.jpg" data-cap="وحدة مغلّفة قيد التجهيز">
+        <button class="shot" type="button" data-full="./img/kiosk-front.jpg" data-cap="وحدة مغلّفة قيد التجهيز" data-cap-en="Enclosed unit during fit-out">
           <img src="./img/kiosk-front.jpg" loading="lazy" decoding="async" width="1400" height="933" alt="وحدة مغلّفة قيد التجهيز: أبواب بفتحات تهوية، وقاعدة حديدية تسمح برفعها ونقلها كقطعة واحدة.">
         </button>
         <figcaption><span data-ar>وحدة مغلّفة قيد التجهيز: أبواب بفتحات تهوية، وقاعدة حديدية تسمح برفعها ونقلها كقطعة واحدة.</span>
           <span data-en-only>An enclosed unit under assembly: louvred doors and a steel base that lets it be lifted and moved as one piece.</span></figcaption>
       </figure>
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/kiosk-hall.jpg" data-cap="الوحدة المغلّفة من الجانب">
+        <button class="shot" type="button" data-full="./img/kiosk-hall.jpg" data-cap="الوحدة المغلّفة من الجانب" data-cap-en="The enclosed unit from the side">
           <img src="./img/kiosk-hall.jpg" loading="lazy" decoding="async" width="1400" height="933" alt="الوحدة المغلّفة من الجانب داخل الصالة، وبجوارها لوحة مفتوحة أثناء التجميع.">
         </button>
         <figcaption><span data-ar>الوحدة المغلّفة من الجانب داخل الصالة، وبجوارها لوحة مفتوحة أثناء التجميع.</span>
           <span data-en-only>The enclosed unit seen from the side in the hall, with an open panel being assembled beside it.</span></figcaption>
       </figure>
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/panel-acb-dual.jpg" data-cap="قاطعان هوائيان بمجموعتين على قضبان نحاسية">
+        <button class="shot" type="button" data-full="./img/panel-acb-dual.jpg" data-cap="قاطعان هوائيان بمجموعتين على قضبان نحاسية" data-cap-en="Two air circuit breakers on copper busbars">
           <img src="./img/panel-acb-dual.jpg" loading="lazy" decoding="async" width="1200" height="1600" alt="أربعة قواطع هوائية موزّعة على مجموعتين، تغذّي قضبانًا نحاسية بترميز الأوجه الثلاثة">
         </button>
         <figcaption><span data-ar>أربعة قواطع هوائية على مجموعتين، تغذّي قضبانًا نحاسية بترميز الأوجه الثلاثة، مع بار أرضي مستقل على الجانب.</span>
           <span data-en-only>Four air circuit breakers in two banks, feeding copper busbars in three-phase colour coding, with a separate earth bar to the side.</span></figcaption>
       </figure>
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/panel-control-relays.jpg" data-cap="توصيلات ريلايات وكونتاكتورات لوحة تحكم">
+        <button class="shot" type="button" data-full="./img/panel-control-relays.jpg" data-cap="توصيلات ريلايات وكونتاكتورات لوحة تحكم" data-cap-en="Control panel relay and contactor wiring">
           <img src="./img/panel-control-relays.jpg" loading="lazy" decoding="async" width="960" height="1280" alt="باب لوحة تحكم بريلايات وأزرار، وبجواره صف كونتاكتورات موصّلة لتشغيل ماكينات">
         </button>
         <figcaption><span data-ar>باب لوحة تحكم بريلايات وأزرار تشغيل، وبجواره صف كونتاكتورات موصّلة لتشغيل مجموعة ماكينات.</span>
           <span data-en-only>A control panel door with relays and pushbuttons, beside a row of wired contactors for a group of machines.</span></figcaption>
       </figure>
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/ats-design-iso.jpg" data-cap="رسم تصميمي ثلاثي الأبعاد للوحة ATS">
+        <button class="shot" type="button" data-full="./img/ats-design-iso.jpg" data-cap="رسم تصميمي ثلاثي الأبعاد للوحة ATS" data-cap-en="3D shop drawing of an ATS panel">
           <img src="./img/ats-design-iso.jpg" loading="lazy" decoding="async" width="720" height="864" alt="رسم تصميمي ثلاثي الأبعاد للوحة ATS يوضح القضبان والقواطع قبل التصنيع">
         </button>
         <figcaption><span data-ar>رسم تصميمي (Shop drawing) للوحة ATS يوضّح ترتيب القضبان والقواطع قبل اعتماده للتصنيع.</span>
           <span data-en-only>A shop drawing for an ATS panel, showing the busbar and breaker layout before it is approved for manufacturing.</span></figcaption>
       </figure>
       <figure>
-        <button class="shot" type="button" data-full="./img/panel-pump-control.jpg" data-cap="لوحة تحكم طلمبات">
+        <button class="shot" type="button" data-full="./img/panel-pump-control.jpg" data-cap="لوحة تحكم طلمبات" data-cap-en="Pump control panel">
           <img src="./img/panel-pump-control.jpg" loading="lazy" decoding="async" alt="لوحة تحكم طلمبات بمجموعات كونتاكتورات">
         </button>
         <figcaption><span data-ar>لوحة تحكم طلمبات: قاطع وكونتاكتور وحماية حرارية لكل طلمبة، وأطراف الربط مرقّمة أسفل كل مجموعة.</span>
           <span data-en-only>A pump control panel: a breaker, contactor and thermal overload per pump, with numbered terminals under each group.</span></figcaption>
       </figure>
       <figure>
-        <button class="shot" type="button" data-full="./img/capacitor-bank-assembly.jpg" data-cap="بنك مكثفات أثناء التجميع">
+        <button class="shot" type="button" data-full="./img/capacitor-bank-assembly.jpg" data-cap="بنك مكثفات أثناء التجميع" data-cap-en="Capacitor bank during assembly">
           <img src="./img/capacitor-bank-assembly.jpg" loading="lazy" decoding="async" alt="بنك مكثفات أثناء التجميع داخل الهيكل">
         </button>
         <figcaption><span data-ar>مكثفات مثبّتة على أرفف داخل الهيكل، والقضبان الملوّنة تغذّي المراحل قبل تركيب الأبواب.</span>
           <span data-en-only>Capacitors mounted on shelves inside the frame, with colour-coded bars feeding the stages before the doors go on.</span></figcaption>
       </figure>
       <figure>
-        <button class="shot" type="button" data-full="./img/db-wall-mount.jpg" data-cap="لوحة فرعية على الحائط">
+        <button class="shot" type="button" data-full="./img/db-wall-mount.jpg" data-cap="لوحة فرعية على الحائط" data-cap-en="Wall-mounted sub-board">
           <img src="./img/db-wall-mount.jpg" loading="lazy" decoding="async" alt="لوحة توزيع فرعية مركّبة على الحائط">
         </button>
         <figcaption><span data-ar>لوحة فرعية مركّبة في الموقع: قاطع رئيسي وقواطع فرعية ومأخذ خدمة داخل صندوق معدني.</span>
@@ -1880,21 +1886,21 @@ setTimeout(function () {
 
     <div class="gallery">
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/factory-exterior.jpg" data-cap="مقر الشركة من الخارج">
+        <button class="shot" type="button" data-full="./img/factory-exterior.jpg" data-cap="مقر الشركة من الخارج" data-cap-en="The premises from outside">
           <img src="./img/factory-exterior.jpg" loading="lazy" decoding="async" width="1400" height="933" alt="واجهة مصنع الهنا اليكتريك من الخارج">
         </button>
         <figcaption><span data-ar>مقر الشركة في العاشر من رمضان: صالة التصنيع في الدور الأرضي والمكاتب أعلاها.</span>
           <span data-en-only>The company premises in 10th of Ramadan City: the production hall on the ground floor with offices above.</span></figcaption>
       </figure>
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/factory-front.jpg" data-cap="مدخل المصنع">
+        <button class="shot" type="button" data-full="./img/factory-front.jpg" data-cap="مدخل المصنع" data-cap-en="Factory entrance">
           <img src="./img/factory-front.jpg" loading="lazy" decoding="async" width="1400" height="933" alt="مدخل المصنع وبوابة التحميل">
         </button>
         <figcaption><span data-ar>المدخل وبوابة التحميل — تتّسع لخروج اللوحات والوحدات المغلّفة مجمّعة كقطعة واحدة.</span>
           <span data-en-only>The entrance and loading gate — wide enough for panels and enclosed units to leave fully assembled, in one piece.</span></figcaption>
       </figure>
       <figure class="rise">
-        <button class="shot" type="button" data-full="./img/hall-panels.jpg" data-cap="صالة التجميع">
+        <button class="shot" type="button" data-full="./img/hall-panels.jpg" data-cap="صالة التجميع" data-cap-en="Assembly hall">
           <img src="./img/hall-panels.jpg" loading="lazy" decoding="async" width="1400" height="933" alt="صالة التجميع وبها صف من اللوحات المكتملة">
         </button>
         <figcaption><span data-ar>صالة التجميع: اللوحات تُبنى وتُجهَّز وتُختبر في مكانها قبل أن تُغلَّف للشحن.</span>
@@ -2041,7 +2047,7 @@ setTimeout(function () {
       <div class="line rise">
         <div class="k"><span data-ar>المبيعات</span><span data-en-only>Sales</span></div>
         <div class="v num"><a href="https://wa.me/201050559450" target="_blank" rel="noopener">010 5055 9450</a>
-          <small style="color:var(--mute);font-size:.8em"> واتساب</small><br><a href="tel:+201050559451">010 5055 9451</a></div>
+          <small style="color:var(--mute);font-size:.8em"> <span data-ar>واتساب</span><span data-en-only>WhatsApp</span></small><br><a href="tel:+201050559451">010 5055 9451</a></div>
       </div>
       <div class="line rise">
         <div class="k"><span data-ar>البريد الإلكتروني</span><span data-en-only>Email</span></div>
@@ -2138,11 +2144,11 @@ setTimeout(function () {
   </div>
 </footer>
 
-<a class="wa" href="https://wa.me/201050559450" target="_blank" rel="noopener" aria-label="واتساب">
+<a class="wa" href="https://wa.me/201050559450" target="_blank" rel="noopener" aria-label="واتساب" data-aria-en="WhatsApp">
   <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.7 15l-1.3 4.7 4.8-1.3A10 10 0 1 0 12 2Zm5.3 14.1c-.2.6-1.3 1.2-1.8 1.2s-1.2.3-4-1.2-4.3-4.3-4.5-4.5-1.2-1.6-1.2-3 .8-2.1 1-2.4a1 1 0 0 1 .8-.4h.6c.2 0 .4 0 .6.5l.9 2c.1.2.1.4 0 .6l-.4.6-.3.3c-.1.2-.3.3-.1.6a9 9 0 0 0 1.6 2 8 8 0 0 0 2.3 1.4c.3.2.5.1.6 0l.9-1c.2-.3.4-.2.6-.1l2 1c.3.1.5.2.5.3a2 2 0 0 1-.1 1.1Z"/></svg>
 </a>
 
-<button id="toTop" type="button" aria-label="أعلى">
+<button id="toTop" type="button" aria-label="أعلى" data-aria-en="Back to top">
   <svg viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"/></svg>
 </button>
 
@@ -2157,19 +2163,19 @@ setTimeout(function () {
   </a>
 </div>
 
-<div id="lb" role="dialog" aria-modal="true" aria-label="عرض الصورة">
-  <button class="close" type="button" aria-label="إغلاق">✕</button>
+<div id="lb" role="dialog" aria-modal="true" aria-label="عرض الصورة" data-aria-en="Image viewer">
+  <button class="close" type="button" aria-label="إغلاق" data-aria-en="Close">✕</button>
   <div class="count" id="lb-count"></div>
-  <button class="nav prev" type="button" aria-label="السابق">
+  <button class="nav prev" type="button" aria-label="السابق" data-aria-en="Previous">
     <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
   </button>
-  <button class="nav next" type="button" aria-label="التالي">
+  <button class="nav next" type="button" aria-label="التالي" data-aria-en="Next">
     <svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
   </button>
   <div class="stage" id="lb-stage">
     <img id="lb-img" alt="">
   </div>
-  <div class="hint" id="lb-hint">اسحب لتنقّل بين الصور — اضغط ضغطتين للتكبير</div>
+  <div class="hint" id="lb-hint"><span data-ar>اسحب لتنقّل بين الصور — اضغط ضغطتين للتكبير</span><span data-en-only>Swipe between photos — double-tap to zoom</span></div>
   <div class="cap" id="lb-cap"></div>
 </div>
 
@@ -2231,6 +2237,10 @@ setTimeout(function () {
     document.documentElement.classList.toggle("en", en);
     document.documentElement.setAttribute("lang", en ? "en" : "ar");
     document.documentElement.setAttribute("dir", en ? "ltr" : "rtl");
+    document.querySelectorAll("[data-aria-en]").forEach(function (el) {
+      if (!el.dataset.ariaAr) { el.dataset.ariaAr = el.getAttribute("aria-label") || ""; }
+      el.setAttribute("aria-label", en ? el.dataset.ariaEn : el.dataset.ariaAr);
+    });
     document.querySelectorAll("option[data-ar]").forEach(function (o) {
       var t = en ? o.getAttribute("data-en") : o.getAttribute("data-ar");
       if (t) { o.textContent = t; }
@@ -2355,7 +2365,8 @@ setTimeout(function () {
     var b = shots[lbIndex];
     lbImg.src = b.dataset.full;
     lbImg.alt = b.querySelector("img").alt;
-    lbCap.textContent = b.dataset.cap || "";
+    var enNow = document.documentElement.classList.contains("en");
+    lbCap.textContent = (enNow && b.dataset.capEn) || b.dataset.cap || "";
     lbCount.textContent = (lbIndex + 1) + " / " + shots.length;
     resetZoom();
   }
